@@ -1,2 +1,2 @@
 # HNQAP
-Heat Network Quality Assurance Procedures
+Heat Network Quality Assurance Publications
