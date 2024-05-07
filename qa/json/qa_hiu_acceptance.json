@@ -8,6 +8,147 @@
     ],
     "sections": [
         {
+            "title": "Standard Data",
+            "questions": [
+                {
+                    "title": "HIU Types",
+                    "question": "Standard data on HIUs.",
+                    "id": "hiuTypes",
+                    "if": "true",
+                    "required": "true",
+                    "type": "sheet",
+                    "notes": "Add, edit and copy down lines as with a normal spreadsheet. Right click for further actions including deleting lines.",
+                    "units": "",
+                    "value": [
+                        {
+                            "hiuType": "DHW Only via PHEx",
+                            "classBS8635": "HWI-1",
+                            "typeDHW": "PHEx",
+                            "typeHTG": "None",
+                            "pumpHTG": "None"
+                        },
+                        {
+                            "hiuType": "HTG Only via PHEx",
+                            "classBS8635": "HI-1",
+                            "typeDHW": "None",
+                            "typeHTG": "PHEx",
+                            "pumpHTG": "Fitted"
+                        },
+                        {
+                            "hiuType": "HTG Only Direct",
+                            "classBS8635": "HD-1",
+                            "typeDHW": "None",
+                            "typeHTG": "Direct",
+                            "pumpHTG": "None"
+                        },
+                        {
+                            "hiuType": "DHW & Direct HTG",
+                            "classBS8635": "HD/HWI-1",
+                            "typeDHW": "PHEx",
+                            "typeHTG": "Direct",
+                            "pumpHTG": "None"
+                        },
+                        {
+                            "hiuType": "DHW & Direct HTG with Pump",
+                            "classBS8635": "HD-MV/HWI-1",
+                            "typeDHW": "PHEx",
+                            "typeHTG": "Direct",
+                            "pumpHTG": "Fitted"
+                        },
+                        {
+                            "hiuType": "Twin PHEx (DHW & HTG)",
+                            "classBS8635": "HI/HWI-1",
+                            "typeDHW": "PHEx",
+                            "typeHTG": "PHEx",
+                            "pumpHTG": "Fitted"
+                        }
+                    ],
+                    "columns": [
+                        {
+                            "type": "text",
+                            "name": "hiuType",
+                            "title": "HIU Type",
+                            "width": "250"
+                        },
+                        {
+                            "type": "text",
+                            "name": "classBS8635",
+                            "title": "BS8635 Class",
+                            "width": "120"
+                        },
+                        {
+                            "type": "text",
+                            "name": "typeDHW",
+                            "title": "DHW",
+                            "width": "120"
+                        },
+                        {
+                            "type": "text",
+                            "name": "typeHTG",
+                            "title": "HTG",
+                            "width": "120"
+                        },
+                        {
+                            "type": "text",
+                            "name": "pumpHTG",
+                            "title": "HTG Pump",
+                            "width": "120"
+                        }
+                    ]
+                },
+                {
+                    "title": "Engineers",
+                    "question": "Standard Engineer details.",
+                    "id": "engineers",
+                    "if": "true",
+                    "required": "true",
+                    "type": "sheet",
+                    "notes": "Add, edit and copy down lines as with a normal spreadsheet. Right click for further actions including deleting lines.",
+                    "units": "",
+                    "value": [
+                        {
+                            "engineerName": "Richard Hanson-Graville",
+                            "engineerPhone": "07557 342430",
+                            "engineerCompany": "Heatweb Solutions Limited",
+                            "engineerEmail": "rhg@heatweb.co.uk"
+                        },
+                        {
+                            "engineerName": "Aaron Gibbs",
+                            "engineerPhone": "07717 073276",
+                            "engineerCompany": "Heatweb Solutions Limited",
+                            "engineerEmail": "service@heatweb.co.uk"
+                        }
+                    ],
+                    "columns": [
+                        {
+                            "type": "text",
+                            "name": "engineerName",
+                            "title": "Name",
+                            "width": "200"
+                        },
+                        {
+                            "type": "text",
+                            "name": "engineerCompany",
+                            "title": "Company",
+                            "width": "200"
+                        },
+                        {
+                            "type": "text",
+                            "name": "engineerPhone",
+                            "title": "Telephone",
+                            "width": "120"
+                        },
+                        {
+                            "type": "text",
+                            "name": "engineerEmail",
+                            "title": "Email",
+                            "width": "200"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
             "title": "About",
             "questions": [
                 {
@@ -27,70 +168,15 @@
                     "required": "true",
                     "type": "text",
                     "units": ""
-                }
-            ]
-        },
-        {
-            "title": "HIU Type",
-            "questions": [
+                },
                 {
-                    "title": "HIU Types",
-                    "question": "Standard data on HIUs.",
-                    "id": "hiuTypes",
+                    "title": "Select Engineer",
+                    "question": "Please select engineer performing checks.",
+                    "id": "engineerName",
                     "if": "true",
                     "required": "true",
-                    "type": "sheet",
-                    "notes": "Add, edit and copy down lines as with a normal spreadsheet. Right click for further actions including deleting lines.",
-                    "units": "",
-                    "value": [
-                        {
-                            "hiuType": "DHW Only via PHEx",
-                            "typeDHW": "PHEx",
-                            "typeHTG": "None"
-                        },
-                        {
-                            "hiuType": "HTG Only via PHEx",
-                            "typeDHW": "None",
-                            "typeHTG": "PHEx"
-                        },
-                        {
-                            "hiuType": "HTG Only Direct",
-                            "typeDHW": "None",
-                            "typeHTG": "Direct"
-                        },
-                        {
-                            "hiuType": "DHW & Direct HTG",
-                            "typeDHW": "PHEx",
-                            "typeHTG": "Direct"
-                        },
-                        {
-                            "hiuType": "Twin PHEx",
-                            "typeDHW": "PHEx",
-                            "typeHTG": "PHEx"
-                        }
-                    ],
-                    "columns": [
-                        {
-                            "type": "text",
-                            "name": "hiuType",
-                            "title": "HIU Type",
-                            "width": "200"
-                        },
-                        {
-                            "type": "text",
-                            "name": "typeDHW",
-                            "title": "DHW",
-                            "width": "120",
-                            "decimal": "."
-                        },
-                        {
-                            "type": "text",
-                            "name": "typeHTG",
-                            "title": "HTG",
-                            "width": "120",
-                            "decimal": "."
-                        }
-                    ]
+                    "type": "select",
+                    "options": "lookup('engineers','engineerName','engineerName')"
                 }
             ]
         },
@@ -105,12 +191,17 @@
                     "required": "true",
                     "type": "select",
                     "options": "lookup('hiuTypes','hiuType','hiuType')"
-                },
+                }
+            ]
+        },
+        {
+            "title": "Central Heating Setup",
+            "questions": [
                 {
                     "title": "Central heating emitter",
                     "question": "What types of central heating emitter are used?",
                     "id": "typeEmitter",
-                    "if": "{{typeHTG}}!='None'",
+                    "if": "'{{typeHTG}}'!='None'",
                     "required": "true",
                     "type": "select",
                     "options": [
@@ -131,12 +222,7 @@
                             "value": "fan"
                         }
                     ]
-                }
-            ]
-        },
-        {
-            "title": "Central Heating (2)",
-            "questions": [
+                },
                 {
                     "title": "Radiator flow control",
                     "question": "What types of TRVs are used?",
@@ -167,7 +253,7 @@
                     "title": "Radiator return control",
                     "question": "Are return temperature limit valves fitted to radiators?",
                     "id": "typeRTL",
-                    "if": "'{{typeEmitter}}'=='radiator'",
+                    "if": "'{{typeEmitter}}'=='radiator' || '{{typeEmitter}}'=='mixed'",
                     "required": "true",
                     "type": "select",
                     "options": [
@@ -197,7 +283,7 @@
             "questions": [
                 {
                     "title": "HIU Casing",
-                    "question": "Is the HIU casing fitted correctly?",
+                    "question": "Is the HIU casing fitted correctly upon arrival?",
                     "notes": "",
                     "id": "checkCasing",
                     "if": "true",
@@ -205,7 +291,7 @@
                     "type": "select",
                     "options": [
                         {
-                            "title": "Fitted and secure",
+                            "title": "OK, fitted and secure",
                             "value": "OK"
                         },
                         {
@@ -224,7 +310,7 @@
                 },
                 {
                     "title": "Check All Off",
-                    "question": "Please ensure heating if off and no taps are running.",
+                    "question": "Please ensure heating is turned off and no taps are running.",
                     "notes": "",
                     "id": "allOff1",
                     "if": "'{{typeHTG}}'!='None'",
@@ -239,7 +325,7 @@
                 },
                 {
                     "title": "Heat Meter ",
-                    "question": "Is a Heat Meter accessible and working?",
+                    "question": "Is the Heat Meter accessible and working?",
                     "notes": "",
                     "id": "checkHeatMeter",
                     "if": "true",
@@ -247,7 +333,7 @@
                     "type": "select",
                     "options": [
                         {
-                            "title": "Fitted and working",
+                            "title": "OK, Fitted and working",
                             "value": "OK"
                         },
                         {
@@ -265,9 +351,74 @@
                     ]
                 },
                 {
+                    "title": "Remove Casing",
+                    "question": "Please remove the HIU casing.",
+                    "notes": "",
+                    "id": "removeCasing",
+                    "if": "true",
+                    "required": "true",
+                    "type": "select",
+                    "options": [
+                        {
+                            "title": "Done",
+                            "value": "Done"
+                        }
+                    ]
+                },
+                {
+                    "title": "Diffferential Pressure Test Points",
+                    "question": "Are there test points for measuring the Primary Differential Pressure?",
+                    "notes": "",
+                    "id": "checkTestPoints",
+                    "if": "true",
+                    "required": "true",
+                    "type": "select",
+                    "options": [
+                        {
+                            "title": "Binder Test Points",
+                            "value": "Binder"
+                        },
+                        {
+                            "title": "Schrader Test Points",
+                            "value": "Schrader"
+                        },
+                        {
+                            "title": "Test points unusable",
+                            "value": "Not working"
+                        },
+                        {
+                            "title": "No Test Points",
+                            "value": "Not fitted"
+                        }
+                    ]
+                },
+                {
+                    "title": "HIU Serial Number",
+                    "question": "Please give the HIU Serial Number.",
+                    "id": "serialHIU",
+                    "if": "true",
+                    "required": "true",
+                    "type": "text",
+                    "units": ""
+                },
+                {
+                    "title": "Heat Meter Serial Number",
+                    "question": "Please give the Heat Meter Serial Number.",
+                    "id": "serialHeatMeter",
+                    "if": "true",
+                    "required": "true",
+                    "type": "text",
+                    "units": ""
+                }
+            ]
+        },
+        {
+            "title": "Initial Meter Readings",
+            "questions": [
+                {
                     "title": "Initial Readings, Meter Energy",
                     "question": "What is current Energy (kWh) reading on the heat meter?",
-                    "notes": "Press the button on the meter until it shows kWh.",
+                    "notes": "Press the button on the meter until it shows kWh.  Remove HIU casing if needed.",
                     "id": "kwH1",
                     "if": "'{{checkHeatMeter}}'=='OK'",
                     "required": "true",
@@ -317,25 +468,20 @@
             ]
         },
         {
-            "title": "HIU Checks",
+            "title": "System Checks",
             "questions": [
                 {
-                    "title": "Remove Casing",
-                    "question": "Please remove the HIU casing.",
-                    "notes": "",
-                    "id": "removeCasing",
-                    "if": "true",
+                    "title": "Initial Readings, Differential Pressure",
+                    "question": "Please measure and record the primary differential pressure in bars.",
+                    "notes": "This will require a digital manometer.",
+                    "id": "dp1",
+                    "if": "'{{checkTestPoints}}'=='Binder' || '{{checkTestPoints}}'=='Schrader'",
                     "required": "true",
-                    "type": "select",
-                    "options": [
-                        {
-                            "title": "Done",
-                            "value": "Done"
-                        }
-                    ]
+                    "type": "number",
+                    "units": "bar"
                 },
                 {
-                    "title": "Initial Central Heating Pressure",
+                    "title": "Initial Readings, Central Heating Pressure",
                     "question": "What is the central heating pressure?",
                     "notes": "Please read from available pressure gauge.",
                     "id": "pHTG1",
@@ -350,6 +496,29 @@
                     "notes": "",
                     "id": "checkFLoop1",
                     "if": "'{{typeHTG}}'=='PHEx'",
+                    "required": "true",
+                    "type": "select",
+                    "options": [
+                        {
+                            "title": "Disconnected & Capped",
+                            "value": "OK"
+                        },
+                        {
+                            "title": "Disconnected, Not Capped",
+                            "value": "Uncapped"
+                        },
+                        {
+                            "title": "Connected.",
+                            "value": "Connected"
+                        }
+                    ]
+                },
+                {
+                    "title": "Check Pump Off",
+                    "question": "Please confirm the central heating pump is turned off.",
+                    "notes": "",
+                    "id": "checkPumpOff",
+                    "if": "'{{pumpHTG}}'=='Fitted'",
                     "required": "true",
                     "type": "select",
                     "options": [
@@ -385,10 +554,10 @@
             ]
         },
         {
-            "title": "DHW Tests",
+            "title": "DHW Response Test",
             "questions": [
                 {
-                    "title": "Time for Kitchen Tap to reach 45°C",
+                    "title": "DHW Readings, Time for Kitchen Tap to reach 45°C",
                     "question": "Start the kitchen tap, timing how long it takes for the tap temperature to reach 45°C?",
                     "notes": "A stopwatch and temperature probe are required for this step.",
                     "id": "tapTime45C",
@@ -398,7 +567,7 @@
                     "units": "seconds"
                 },
                 {
-                    "title": "Final Kitchen Tap Temperature",
+                    "title": "DHW Readings, Final Kitchen Tap Temperature",
                     "question": "What is the final temperature of the kitchen tap after it has settled?",
                     "notes": "A temperature probe is required for this step. Leave at least 60 seconds to settle. Leave tap running for next stages.",
                     "id": "tDHW1",
@@ -406,6 +575,236 @@
                     "required": "true",
                     "type": "number",
                     "units": "°C"
+                },
+                {
+                    "title": "DHW Readings, Meter Flow Rate",
+                    "question": "What is Flow Rate / Volume Flow on the heat meter?",
+                    "notes": "Press the button on the meter until it shows m3h or m3/h.",
+                    "id": "m3hDHW1",
+                    "if": "'{{typeDHW}}'=='PHEx' && '{{checkHeatMeter}}'=='OK'",
+                    "required": "true",
+                    "type": "number",
+                    "units": "m3/h"
+                },
+                {
+                    "title": "DHW Readings, Meter Power",
+                    "question": "What is current Power (kW) on the heat meter?",
+                    "notes": "Press the button on the meter until it shows kW.",
+                    "id": "kwDHW1",
+                    "if": "'{{typeDHW}}'=='PHEx' && '{{checkHeatMeter}}'=='OK'",
+                    "required": "true",
+                    "type": "number",
+                    "units": "kW"
+                },
+                {
+                    "title": "DHW Readings, Meter Flow Temperature",
+                    "question": "What is current Flow Temperature on the heat meter?",
+                    "notes": "Press the button on the meter until it shows tF or tFlow.",
+                    "id": "tFDHW1",
+                    "if": "'{{typeDHW}}'=='PHEx' && '{{checkHeatMeter}}'=='OK'",
+                    "required": "true",
+                    "type": "number",
+                    "units": "°C"
+                },
+                {
+                    "title": "DHW Readings, Meter Return Temperature",
+                    "question": "What is current Return Temperature on the heat meter?",
+                    "notes": "Press the button on the meter until it shows tR or tRtn.  Leave the tap running.",
+                    "id": "tRDHW1",
+                    "if": "'{{typeDHW}}'=='PHEx' && '{{checkHeatMeter}}'=='OK'",
+                    "required": "true",
+                    "type": "number",
+                    "units": "°C"
+                }
+            ]
+        },
+        {
+            "title": "DHW Peak Test",
+            "questions": [
+                {
+                    "title": "Run Peak DHW",
+                    "question": "In addition to the kitchen tap, turn on the main shower to full output on the hottest setting.",
+                    "notes": "This is to simulate peak load.",
+                    "id": "runDHWPeak",
+                    "if": "'{{typeDHW}}'=='PHEx'",
+                    "required": "true",
+                    "type": "select",
+                    "options": [
+                        {
+                            "title": "Done",
+                            "value": "Done"
+                        }
+                    ]
+                },
+                {
+                    "title": "DHW Readings, Shower Output Temperature",
+                    "question": "What is the temperature at the shower head?",
+                    "notes": "A temperature probe is required for this step. Leave taps running for next stages.",
+                    "id": "tDHWShower",
+                    "if": "'{{typeDHW}}'=='PHEx'",
+                    "required": "true",
+                    "type": "number",
+                    "units": "°C"
+                },
+                {
+                    "title": "DHW Readings, Peak Output Temperature",
+                    "question": "What is the temperature at the kitchen tap?",
+                    "notes": "A temperature probe is required for this step. Leave taps running for next stages.",
+                    "id": "tDHWPeak",
+                    "if": "'{{typeDHW}}'=='PHEx'",
+                    "required": "true",
+                    "type": "number",
+                    "units": "°C"
+                },
+                {
+                    "title": "DHW Readings, Meter Flow Rate",
+                    "question": "What is Flow Rate / Volume Flow on the heat meter?",
+                    "notes": "Press the button on the meter until it shows m3h or m3/h.",
+                    "id": "m3hDHWPeak",
+                    "if": "'{{typeDHW}}'=='PHEx' && '{{checkHeatMeter}}'=='OK'",
+                    "required": "true",
+                    "type": "number",
+                    "units": "m3/h"
+                },
+                {
+                    "title": "DHW Readings, Meter Power",
+                    "question": "What is current Power (kW) on the heat meter?",
+                    "notes": "Press the button on the meter until it shows kW.",
+                    "id": "kwDHWPeak",
+                    "if": "'{{typeDHW}}'=='PHEx' && '{{checkHeatMeter}}'=='OK'",
+                    "required": "true",
+                    "type": "number",
+                    "units": "kW"
+                },
+                {
+                    "title": "DHW Readings, Meter Flow Temperature",
+                    "question": "What is current Flow Temperature on the heat meter?",
+                    "notes": "Press the button on the meter until it shows tF or tFlow.",
+                    "id": "tFDHWPeak",
+                    "if": "'{{typeDHW}}'=='PHEx' && '{{checkHeatMeter}}'=='OK'",
+                    "required": "true",
+                    "type": "number",
+                    "units": "°C"
+                },
+                {
+                    "title": "DHW Readings, Meter Return Temperature",
+                    "question": "What is current Return Temperature on the heat meter?",
+                    "notes": "Press the button on the meter until it shows tR or tRtn.",
+                    "id": "tRDHWPeak",
+                    "if": "'{{typeDHW}}'=='PHEx' && '{{checkHeatMeter}}'=='OK'",
+                    "required": "true",
+                    "type": "number",
+                    "units": "°C"
+                },
+                {
+                    "title": "Check All Off",
+                    "question": "Please turn off all hot water outlets.",
+                    "notes": "",
+                    "id": "allOff2",
+                    "if": "'{{typeDHW}}'=='PHEx'",
+                    "required": "true",
+                    "type": "select",
+                    "options": [
+                        {
+                            "title": "Done",
+                            "value": "Done"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "title": "HTG Test",
+            "questions": [
+                {
+                    "title": "Run Central Heating",
+                    "question": "Turn up all room thermostats.",
+                    "notes": "This is to simulate peak load.",
+                    "id": "runHTG",
+                    "if": "'{{typeHTG}}'!='None'",
+                    "required": "true",
+                    "type": "select",
+                    "options": [
+                        {
+                            "title": "Done",
+                            "value": "Done"
+                        }
+                    ]
+                },
+                {
+                    "title": "HTG Readings, Tertiary Output Temperature",
+                    "question": "After 10 minutes, What is the temperature supplied from the HIU to heating?",
+                    "notes": "A temperature clamp is required for this step. ",
+                    "id": "tHTGOut",
+                    "if": "'{{typeHTG}}'!='None'",
+                    "required": "true",
+                    "type": "number",
+                    "units": "°C"
+                },
+                {
+                    "title": "HTG Readings, Tertiary Return Temperature",
+                    "question": "What is the peak temperature returning from the heating to the HIU, when it has stopped increasing?",
+                    "notes": "A temperature clamp is required for this step. ",
+                    "id": "tHTGTRtn",
+                    "if": "'{{typeHTG}}'!='None'",
+                    "required": "true",
+                    "type": "number",
+                    "units": "°C"
+                },
+                {
+                    "title": "HTG Readings, Meter Flow Rate",
+                    "question": "What is Flow Rate / Volume Flow on the heat meter?",
+                    "notes": "Press the button on the meter until it shows m3h or m3/h.",
+                    "id": "m3hHTGPeak",
+                    "if": "'{{typeHTG}}'!='None' && '{{checkHeatMeter}}'=='OK'",
+                    "required": "true",
+                    "type": "number",
+                    "units": "m3/h"
+                },
+                {
+                    "title": "HTG Readings, Meter Power",
+                    "question": "What is current Power (kW) on the heat meter?",
+                    "notes": "Press the button on the meter until it shows kW.",
+                    "id": "kwHTGPeak",
+                    "if": "'{{typeHTG}}'!='None' && '{{checkHeatMeter}}'=='OK'",
+                    "required": "true",
+                    "type": "number",
+                    "units": "kW"
+                },
+                {
+                    "title": "HTG Readings, Meter Flow Temperature",
+                    "question": "What is current Flow Temperature on the heat meter?",
+                    "notes": "Press the button on the meter until it shows tF or tFlow.",
+                    "id": "tFHTGPeak",
+                    "if": "'{{typeHTG}}'!='None' && '{{checkHeatMeter}}'=='OK'",
+                    "required": "true",
+                    "type": "number",
+                    "units": "°C"
+                },
+                {
+                    "title": "HTG Readings, Meter Return Temperature",
+                    "question": "What is current Return Temperature on the heat meter?",
+                    "notes": "Press the button on the meter until it shows tR or tRtn.",
+                    "id": "tRHTGPeak",
+                    "if": "'{{typeHTG}}'!='None' && '{{checkHeatMeter}}'=='OK'",
+                    "required": "true",
+                    "type": "number",
+                    "units": "°C"
+                },
+                {
+                    "title": "Check All Off",
+                    "question": "Please turn off central heating.",
+                    "notes": "",
+                    "id": "allOff3",
+                    "if": "'{{typeHTG}}'!='None'",
+                    "required": "true",
+                    "type": "select",
+                    "options": [
+                        {
+                            "title": "Done",
+                            "value": "Done"
+                        }
+                    ]
                 }
             ]
         },
@@ -479,6 +878,30 @@
             "vlookup": [
                 "hiuTypes",
                 "typeHTG",
+                "hiuType",
+                "hiuType"
+            ],
+            "units": ""
+        },
+        {
+            "id": "pumpHTG",
+            "title": "Central Heating Connection",
+            "if": "'{{hiuType}}'!==''",
+            "vlookup": [
+                "hiuTypes",
+                "pumpHTG",
+                "hiuType",
+                "hiuType"
+            ],
+            "units": ""
+        },
+        {
+            "id": "classBS8635",
+            "title": "BS8635 Classification",
+            "if": "'{{hiuType}}'!==''",
+            "vlookup": [
+                "hiuTypes",
+                "classBS8635",
                 "hiuType",
                 "hiuType"
             ],
