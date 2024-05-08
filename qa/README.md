@@ -1,3 +1,7 @@
+Online Example:
+
+https://heatweb.b-cdn.net/browserware/hwforms.html?loadCID=bafkreihhzkiycddmz5js7nnxczj645i3li2uglzgqcpyz2sayxikzkndxe
+
 The HNQAP Forms Browserware can be run locally by opening hwforms.html in a browser, and adding a loadCID reference.
 
 file:///C:/Users/.../HNQAP/qa/browserware/hwforms.html?loadCID=bafkreihhzkiycddmz5js7nnxczj645i3li2uglzgqcpyz2sayxikzkndxe
