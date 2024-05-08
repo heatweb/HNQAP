@@ -1,6 +1,6 @@
 Online Example:
 
-https://heatweb.b-cdn.net/browserware/hwforms.html?loadCID=bafkreihhzkiycddmz5js7nnxczj645i3li2uglzgqcpyz2sayxikzkndxe
+https://heatweb-api.flowforge.cloud/hwforms?loadCID=bafkreigf5vbaoe37s22ev74wthiq7hhnotxwo7637kl2aa4uqgnwlfliem
 
 The HNQAP Forms Browserware can be run locally by opening hwforms.html in a browser, and adding a loadCID reference.
 
@@ -12,4 +12,4 @@ A list of CIDs are as follows:
 
 | Procedure | CID |
 | ------ | ------ |
-| HIU Acceptance Testing | bafkreihhzkiycddmz5js7nnxczj645i3li2uglzgqcpyz2sayxikzkndxe |
+| HIU Acceptance Testing | bafkreigf5vbaoe37s22ev74wthiq7hhnotxwo7637kl2aa4uqgnwlfliem |
