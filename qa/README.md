@@ -1,6 +1,7 @@
-Online Example:
+Online Examples:
 
-https://heatweb.b-cdn.net/browserware/hwforms.html?loadCID=bafkreigf5vbaoe37s22ev74wthiq7hhnotxwo7637kl2aa4uqgnwlfliem
+# https://heatweb.b-cdn.net/browserware/hwforms.html?loadCID=bafkreigf5vbaoe37s22ev74wthiq7hhnotxwo7637kl2aa4uqgnwlfliem  (No Save)
+# https://heatweb-api.flowforge.cloud/hwforms?loadCID=bafkreigf5vbaoe37s22ev74wthiq7hhnotxwo7637kl2aa4uqgnwlfliem  (Saving to IPFS enabled)
 
 The HNQAP Forms Browserware can be run locally by opening hwforms.html in a browser, and adding a loadCID reference.
 
