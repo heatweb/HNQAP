@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script src="https://cdn.tiny.cloud/1/21bxk0zzwhaxyaj7hnbfhwdtqodi8f4p617m08ew0hdgdivn/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+</head>
+<body>
+
+  
+ 
+<style>
+
+
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@700&family=Roboto:wght@300&display=swap&family=Inter:wght@300;400;500;600;800&display=swap');
+
+
+body ,  input , select {
+  font-family: 'Inter', sans-serif;
+	font-size: 16px;
+}
+
+body  {
+  padding: 0px;
+  margin: 0px;
+  background-color: #3883fa;
+}
+
+input  {
+  padding: 3px;
+}
+
+
+.mybutt {
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    margin-right: 3px;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #a4eba4;
+    border-color: #4aa55a;
+    border: solid;
+    border-width: 1px;
+    box-shadow: 2px 2px 3px 1px rgb(0 0 0 / 28%);
+    display: inline-block;
+    margin: 3px;
+    transition: background 250ms ease-in-out, transform 150ms ease;
+}
+
+
+.actiondiv {
+  float:right; text-align: right; margin-right: 3px; margin-top: 3px;
+}
+
+.titdiv {
+    margin-left: 8px;
+    margin-top: 8px;
+    display: inline-block;
+  }
+</style>
+
+  
+
+
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsoneditor/9.5.5/jsoneditor.min.js" integrity="sha512-j54mlrSyC7F9BRZhRiEjFTq6ESmJYXdznKy8lJeqIVlQOxkVNkn8lCveNphcX7MMXnyNU774ZeiDDahKl3YyYg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsoneditor/9.5.5/jsoneditor.css" integrity="sha512-Sbn0ZCJ/Sq+RcpmI2np6vYlQBolmDPIrx95V3kOQU7RfEOWRCgEmDvj5lD4oNnx55KVIUfadYs8rk3OudD+dFA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+<div id="jsoneditor" style="width: 100%; height: calc(100vh - 42px);"></div>
+
+<script>
+
+ // <section></section>
+
+    // create the editor
+    var container = document.getElementById("jsoneditor");
+    var editor = new JSONEditor(container);
+
+    var jsonin;
+
+    var dtable = "";
+
+    // set json
+    function setJSON (dat) {
+        
+        editor.set(jsonin);
+    }
+
+    
+    var myfilename = "";
+    var form_url;
+    
+	
+	
+	
+	
+	
+    $(document).ready(function () {
+        
+		
+		console.log("+++++++++++++++++START");
+            calculated = {};
+            
+            //var urlParams = new URLSearchParams(window.location.search);
+            //if (urlParams.get('display')) { loadstring = ",," + urlParams.get('display'); }
+
+            calculated["jsonQ"] = "hndesign";
+            
+            console.log(calculated);
+
+            var urlParams = window.location.search.replace("?","").split("&");
+            for(var upa in urlParams) {
+                
+                var vin = decodeURIComponent(urlParams[upa].split("=")[1]);
+                calculated[urlParams[upa].split("=")[0]] = ""+vin;
+                
+                console.log(vin);
+                    
+                if(vin.indexOf("[")>-1 || vin.indexOf("{")==0) { 
+                    
+                    try {
+                        console.log("+++++++++++++++++ ARRAY");
+                        console.log(vin);
+                        console.log(JSON.parse(vin));
+                        calculated[urlParams[upa].split("=")[0]] = JSON.parse(vin);
+                        
+                    } catch {}
+                    
+                }
+                
+            }
+            
+            // adding line below allows overwriting entries. Wish to force all updates as a new entry.
+            // if (calculated.submissionID) { submissionID = ""+calculated.submissionID; }
+
+            console.log(calculated);
+            
+          
+            var form_url; 
+            
+            if (calculated["loadCID"]) {
+                
+                form_url = "https://heatweb.mypinata.cloud/ipfs/" + calculated["loadCID"];
+			}
+
+
+
+        var form_data = {};
+      //var ftarget = "#" + form_target;
+      var form_method = "GET";
+      
+        
+            $.ajax({
+                url: form_url, 
+                type: form_method,      
+                data: form_data,     
+                cache: false,
+                success: function(returnhtml){   
+                    
+                    console.log("results...",returnhtml);
+                    
+                    //userdata = JSON.parse(returnhtml);
+                    
+                    var data = returnhtml; //returnhtml.data || returnhtml; 
+                    dtable = returnhtml.table;
+                    
+                    jsonin = data;
+                    setJSON(data);
+                    
+                    //$(ftarget).html(returnhtml);               
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                    
+                    
+                }            
+            });    
+
+
+
+  
+        
+        
+         
+    });
+    
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="titdiv" style="padding-left: 8px; color: white;">
+Heatweb QA Form <small>heatweb.co.uk</small>
+</div>
+<div class="actiondiv">
+  
+  <span class="mybutt redlink" onclick="setJSON()" style="padding-left:20px; padding-right:20px; font-size: 16px; font-weight: 800; background-color: #ffffff; border-color: #3a3a3a;">Reset</span>
+ 
+  <!-- <span class="mybutt redlink" onclick="postjson()" style="padding-left:20px; padding-right:20px; font-size: 16px; font-weight: 800; background-color: #ffffff; border-color: #3a3a3a;">Save</span> -->
+  
+   <span class="mybutt redlink" onclick="postIPFS()" style="padding-left:20px; padding-right:20px; font-size: 16px; font-weight: 800; background-color: #ffffff; border-color: #3a3a3a;">Save</span>
+  
+ 
+    <span id="savesecmore" style="display:none">
+	<!-- 
+	  <span class="mybutt redlink" onclick="ipfsmore('datalink')" style="padding-left:20px; padding-right:20px; font-size: 16px; font-weight: 800; background-color: #ffffff; border-color: #3a3a3a;">Copy Data Link</span>
+      <span class="mybutt redlink" onclick="ipfsmore('designlink')" style="padding-left:20px; padding-right:20px; font-size: 16px; font-weight: 800; background-color: #ffffff; border-color: #3a3a3a;">Copy Form Link</span>
+   -->
+    </span>
+    <br><small><span id="ipfsinfo"></span></small>
+  
+  
+  </div>
+
+  <script>
+
+    var htmltit = "hiu-acceptance";
+    
+    //var ctype="card";
+    //var cstyle="";
+
+    
+	function postIPFS(){
+	    
+	    document.getElementById("ipfsinfo").innerHTML = "saving... please wait";
+	    
+	    var jsonData = editor.get();
+		
+        // https://hw7.ddns.net/ui/posttoipfs
+	    $.ajax({
+                url: "https://heatweb-api.flowforge.cloud/posttoipfs", //
+                type: "POST",      
+                data: jsonData,     
+                cache: false,
+                success: function(results){   
+                    
+                    ipfsCID = results.IpfsHash;
+                    
+                    document.getElementById("ipfsinfo").innerHTML = '<a href="https://heatweb.mypinata.cloud/ipfs/' + results.IpfsHash + '" target="_new">' +  results.IpfsHash + '</a>';
+                    
+                    document.getElementById("savesecmore").style.display = "inline";
+                    
+                    //alert(results.IpfsHash);
+                    
+                                  
+                }           
+            });  
+	    
+	}
+    
+
+    function postjson() {
+
+      var pdata = {};
+      pdata.data = editor.get();
+      
+      //htmltit = document.getElementById("htmltitle").value.replaceAll(" ","_").replaceAll("'",""); 
+      pdata.queryin = {"table":"formjson","user":"rhg@heatweb.co.uk","title":"hiu-acceptance"};
+      pdata.table = dtable;
+      
+      //pdata.style = cstyle;
+      //pdata.type = ctype;
+
+      //pdata.html = document.getElementById("htmltext").value;
+
+      //pdata.html = tinymce.get("htmltext").getContent();
+
+
+
+        $.ajax({
+                url: "/data/post-json", 
+                type: "POST", 
+                data:  pdata, 
+                cache: false,
+                success: function(results){   
+                    
+                    console.log("=================== Results");
+                    console.log(results);
+                    
+                    alert(results.data.result || "Error.");
+                                  
+                }           
+            });  
+
+    }
+
+    
+  </script>
+</body>
+</html>
