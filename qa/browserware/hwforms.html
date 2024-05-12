@@ -62,6 +62,7 @@ small {
   font-weight: 300;
 }
 
+
 @media (max-width: 1480px) {
 
     section {
@@ -78,6 +79,15 @@ small {
         
         padding: 10px 8px;
         
+        }
+
+
+        .dropselect {
+            width:10%;
+            display:inline;
+            background-color:#a4eba4; 
+            border: 1px solid #020202; 
+            margin-right:5px;
         }
 
 }
@@ -613,9 +623,106 @@ function useDefault(qid,s,q) {
     
 }
 
+
+function useTesto(qid,testoRef) {
+    
+    testoData();
+    
+    var def;
+    def = ""+ testoD[testoRef].payload; 
+    
+    document.getElementById(qid).value = def;
+    
+    //runCalcs();
+    
+}
+
+var testoD={};
+var testoButtons="";
+
+function testoData() {
+
+    //alert(calculated.testoEnabled);
+    
+    // fetch data from Testo sensor App on same LAN
+    var ip = calculated.ip || "localhost";
+
+    $.ajax({
+        url: "http://" + ip + ":54000",
+        type: "GET",
+        data: {},
+        cache: false,
+        success: function(results){
+
+            var dp = {}; dp.count = 0;
+            var bits1 = results.split("<th>testo ");
+            for (var b1 in bits1) {
+
+                if (bits1[b1].indexOf("&nbsp;&nbsp;&nbsp;&nbsp;")<0) { continue; }
+
+                var bits2 = bits1[b1].split("&nbsp;&nbsp;&nbsp;&nbsp;")
+                var device = bits2[0] + "-" + bits2[1];
+
+            
+                var bits3 = bits1[b1].split("<tr>");
+                
+                
+
+                for (var b3 in bits3) {
+
+                    if (bits3[b3].indexOf("°C")<0 && bits3[b3].indexOf("bar")<0) { continue; }
+
+                    var bits4 = bits3[b3].split("<td>");     
+                    var mytopic = device + "/testo/" + bits4[1].split("<")[0];
+
+                    var msg1 = {};
+                    msg1.payload = bits4[2].split(" ")[0];
+                    msg1.units = bits4[2].split("<")[0].split(" ")[1];        
+                    msg1.topic = "testo/rhg-shed-pc-nr/" + mytopic;
+                    msg1.device = device;
+                    //alert(device + "   " + msg1.payload + " " + msg1.units)
+                    calculated[device] = msg1.payload;
+                    testoD[device] = msg1;
+                    
+                    if (msg1.units =="bar") { 
+                        
+                        if(dp.count>0) { 
+                            dp.two = parseFloat(msg1.payload); dp.count=2; 
+                            var msgdp = {};
+                            msgdp.payload = Math.abs(dp.two - dp.one);
+                            msgdp.units = "bar";        
+                            msgdp.topic = "testo/rhg-shed-pc-nr/testo/testo/dP";
+                            msgdp.device = "testo-dp";
+                            calculated["testo-dp"] = msgdp.payload;
+                            testoD["testo-dp"] = msgdp;
+
+                            var msgkpa = {};
+                            msgkpa.payload = 100 * Math.abs(dp.two - dp.one);
+                            msgkpa.units = "kPa";
+                            msgkpa.topic = "testo/rhg-shed-pc-nr/testo/testo/kPa";
+                            msgkpa.device = "testo-kPa";
+                            calculated["testo-kPa"] = msgkpa.payload;
+                            testoD["testo-kpa"] = msgkpa;
+                            
+                        }
+                        else  { dp.one = parseFloat(msg1.payload); dp.count=1; }
+                    }
+
+                    //node.send(msg1);
+                }
+
+            }
+
+        }
+    });
+
+
+}
+
 function gotoSection(sectoGo) {
 
     console.log("======== Select Section ======",sectoGo );
+
     selectedSection = sectoGo;
     runCalcs();
     selectedSection = "";
@@ -658,6 +765,7 @@ function parseQuestions(qdata) {
     var showcount = 0;
     var buttcount = 0;
     var outputscount = 0;
+    var sectionList = [];
 
     var ootoot = "";
     for (var s in qdata["sections"]) {
@@ -933,6 +1041,18 @@ function parseQuestions(qdata) {
                         
                     }
                     oot += '>';
+
+                    //testo
+                    if (calculated.testoEnabled=="true" && qdata.sections[s].questions[q].type == "number") {  
+                        
+                        var testoButts = "";
+                        for (var testoDev in testoD) {
+                            if (qdata.sections[s].questions[q].units == testoD[testoDev].units) {
+                                testoButts += '<span onclick="useTesto(' + "'" + qdata.sections[s].questions[q].id + "','"  + testoD[testoDev].device + "'" +')"><b class="mybutt testobutton' + testoD[testoDev].device + '">' + testoD[testoDev].device + '</b></span> '; // + " " + testoD[testoDev].payload + " " + testoD[testoDev].units
+                            }
+                        }
+                        if (testoButts != "") { oot += '<br>' + testoButts + '<br>'; }
+                    }
                 }
                 
                 if (qdata.sections[s].questions[q].type !== "sheet") { 
@@ -1085,6 +1205,8 @@ function parseQuestions(qdata) {
 
         if (qcount>0) {
 
+            sectionList.push(qdata.sections[s].title);
+
             buttcount++;
             if (isSecDisplayed==true) { selectSection+='<span class="mybutt" title="' + qdata.sections[s].title + '" style="font-size: 11px; background-color: #beffbe;"><b>' + qdata.sections[s].title + '</b></span>'; }
             else { selectSection+='<span class="mybutt" title="' + qdata.sections[s].title + '" style="font-size: 11px;" onclick="gotoSection(' + "'" + qdata.sections[s].title + "'" + ')">' + buttcount + '</span>';  }
@@ -1107,15 +1229,29 @@ function parseQuestions(qdata) {
     else {  document.getElementById("inputssec").style="display:none" ;  }
  
     if (buttcount>10) { selectSection+='<br>'; }
+
     selectSection+='<span class="mybutt" title="Inputs" style="font-size: 11px;" onclick="gotoSection(' + "'Inputs'" + ')">Inputs</span>';
+    sectionList.push('Inputs');
+
     selectSection+='<span class="mybutt" title="Calculations" style="font-size: 11px;" onclick="gotoSection(' + "'Calculations'" + ')">Calcs</span>';
+    sectionList.push('Calculations');
     
     if (outputscount>0) {
         selectSection+='<span class="mybutt" title="Outputs" style="font-size: 11px;" onclick="gotoSection(' + "'Outputs'" + ')">Outputs</span>';
+        sectionList.push('Outputs');
     }
 
-    document.getElementById("selSection").innerHTML = selectSection ;
+    var dropSelect = '<select class="dropselect form-control" name="dropselect" id="dropselect" onchange="gotoSection(this.value)">'; //
+    // dropSelect += '<option value="" selected>Go</option>';
+    for (var drs in sectionList) {
+        //dropSelect += '<option value="'+sectionList[drs]+'">'+sectionList[drs]+'</option>';
+        if (sectionList[drs]==(selectedSection||currentSection)) { dropSelect += '<option value="'+sectionList[drs]+'" selected>'+sectionList[drs]+'</option>'; }
+        else   { dropSelect += '<option value="'+sectionList[drs]+'">'+sectionList[drs]+'</option>'; }
+    }                        
+    dropSelect += '</select>';
 
+    //document.getElementById("selSection").innerHTML = selectSection ;
+    document.getElementById("selSection").innerHTML = dropSelect ;
     
     return ootoot;
 }
@@ -1428,6 +1564,7 @@ function runCalcs() {
     
     // ================================
     
+    if (calculated.testoEnabled=="true") { testoData(); }
     
     for (var calc in (qdata["calculations"]||[])) {
         
@@ -1494,7 +1631,11 @@ function runCalcs() {
             
         
             
-            calcsOut +=  '<td align="right">' + cv + "</td>";
+            var cvstyled = ""+cv;
+            if (cv=="PASS") { cvstyled = '<b style="color: #158915;">PASS</b>'}
+            else if (cv=="FAIL") { cvstyled = '<b style="color: #f00;">FAIL</b>'}
+
+            calcsOut +=  '<td align="right">' + cvstyled + "</td>";
             
             calcsOut +=  '<td width="14%">' + (qdata.calculations[calc].units||"") + "</td></tr>\n";
             
@@ -1665,7 +1806,7 @@ function tosvg(obid) {
 
 
 
-<div id="selSection" style="float:right; text-align: right;"></div>
+<div id="selSection" style="float:right; text-align: right; "></div>
 
 <div style="float:right; display:none;">
 <input type="checkbox" id="oneS" name="oneS" checked> <small>One section at a time</small><br>
@@ -1720,12 +1861,21 @@ function tosvg(obid) {
 		  a.click();
 	}
 
+
+    function downJSON() {
+    
+        var jsonData = { "calculated": calculated, "qdata": qdata, "objects": objects, "files": files };
+        download(JSON.stringify(jsonData), calculated.jsonQ + "-" + (new Date().getTime()) + ".json", "text/plain");
+    }
+
 	function onDownload(){
 	    
 	    var jsonData = { "url": (window.location.href.split("hndesign")[0]+ 'hndesign?' + inputString),"calculated": calculated, "qdata": qdata, "objects": objects, "files": files };
 		download(JSON.stringify(jsonData), "hndesign.json", "text/plain");
 	}
     
+
+
     function ipfsmore(func){
      
         if (func == "datalink") {
@@ -1882,7 +2032,12 @@ function tosvg(obid) {
 
     <table width="100%">
         <tr>
-            <td align="right"><span class="mybutt" onclick="postIPFS()">Save to IPFS</span>
+            <td align="right">
+                
+                <span class="mybutt" onclick="testoData()" style="display:none">Testo</span>
+
+                <span class="mybutt" onclick="downJSON()">Download</span>
+                <span class="mybutt" onclick="postIPFS()">Save to IPFS</span>
                 <span id="savesecmore" style="display:none">
     <span class="mybutt" onclick="ipfsmore('datalink')">Copy Data Link</span>
                 <span class="mybutt" onclick="ipfsmore('designlink')">Copy Form Link</span>
