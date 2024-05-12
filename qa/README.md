@@ -17,4 +17,7 @@ A list of CIDs are as follows:
 
 | Procedure | CID |
 | ------ | ------ |
-| HIU Acceptance Testing | bafkreig7p25jpsfah5gqulpiygrourbbyloz4y75x7yulgca5ecxwjanjm |
+| HIU Acceptance Testing v1 | bafkreig7p25jpsfah5gqulpiygrourbbyloz4y75x7yulgca5ecxwjanjm |
+| HIU Acceptance Testing v2 (Testo) | bafkreibzzbqxdiarxedpnwcdlxdqmbuyjt27g7pco2qoex4xuvdcqzzv34 |
+
+
