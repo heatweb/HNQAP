@@ -1,0 +1,275 @@
+[
+    {
+        "id": "19b1c20180de9fbc",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "a7921a1ae1f11b28",
+        "type": "http request",
+        "z": "19b1c20180de9fbc",
+        "name": "",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "192.168.0.79:54000",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 430,
+        "y": 320,
+        "wires": [
+            [
+                "43230aa03416f858",
+                "4b5d69a2207272d6"
+            ]
+        ]
+    },
+    {
+        "id": "cfbd0d8aed1d29cf",
+        "type": "inject",
+        "z": "19b1c20180de9fbc",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "1",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 270,
+        "y": 320,
+        "wires": [
+            [
+                "a7921a1ae1f11b28"
+            ]
+        ]
+    },
+    {
+        "id": "43230aa03416f858",
+        "type": "debug",
+        "z": "19b1c20180de9fbc",
+        "name": "debug 3",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 700,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "a145a1a3f92b19ac",
+        "type": "mqtt out",
+        "z": "19b1c20180de9fbc",
+        "name": "",
+        "topic": "",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "2cd62bbc57913566",
+        "x": 1050,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "4b5d69a2207272d6",
+        "type": "function",
+        "z": "19b1c20180de9fbc",
+        "name": "function 5",
+        "func": "\nflow.set(\"testoin\",msg.payload);\n\nvar bits1 = msg.payload.split(\"<th>testo \");\nfor (var b1 in bits1) {\n\n    if (bits1[b1].indexOf(\"&nbsp;&nbsp;&nbsp;&nbsp;\")<0) { continue; }\n\n    var bits2 = bits1[b1].split(\"&nbsp;&nbsp;&nbsp;&nbsp;\")\n    var device = bits2[0] + \"-\" + bits2[1];\n\n   \n    var bits3 = bits1[b1].split(\"<tr>\");\n    \n    for (var b3 in bits3) {\n\n        if (bits3[b3].indexOf(\"°C\")<0 && bits3[b3].indexOf(\"bar\")<0) { continue; }\n\n        var bits4 = bits3[b3].split(\"<td>\");     \n        var mytopic = device + \"/testo/\" + bits4[1].split(\"<\")[0];\n\n        var msg1 = {};\n        msg1.payload = bits4[2].split(\" \")[0];\n        msg1.units = bits4[2].split(\"<\")[0].split(\" \")[1];        \n        msg1.topic = \"testo/rhg-shed-pc-nr/\" + mytopic;\n        node.send(msg1);\n    }\n\n}\nreturn null;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 700,
+        "y": 320,
+        "wires": [
+            [
+                "0e52887e86a6e323"
+            ]
+        ]
+    },
+    {
+        "id": "9dfa653483a62037",
+        "type": "debug",
+        "z": "19b1c20180de9fbc",
+        "name": "debug 10",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1120,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "0e52887e86a6e323",
+        "type": "rbe",
+        "z": "19b1c20180de9fbc",
+        "name": "",
+        "func": "rbe",
+        "gap": "",
+        "start": "",
+        "inout": "out",
+        "septopics": true,
+        "property": "payload",
+        "topi": "topic",
+        "x": 890,
+        "y": 320,
+        "wires": [
+            [
+                "a145a1a3f92b19ac",
+                "9dfa653483a62037"
+            ]
+        ]
+    },
+    {
+        "id": "4560aa504d010642",
+        "type": "change",
+        "z": "19b1c20180de9fbc",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "testoin",
+                "tot": "flow",
+                "dc": true
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 600,
+        "y": 480,
+        "wires": [
+            [
+                "b36aedb7c5fd7c41",
+                "1aa28312393759f2"
+            ]
+        ]
+    },
+    {
+        "id": "b36aedb7c5fd7c41",
+        "type": "debug",
+        "z": "19b1c20180de9fbc",
+        "name": "debug 11",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 780,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "e835f61e9481811b",
+        "type": "debug",
+        "z": "19b1c20180de9fbc",
+        "name": "debug 12",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 540,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "9ca1be42ecbcdabc",
+        "type": "http in",
+        "z": "19b1c20180de9fbc",
+        "name": "",
+        "url": "/testo",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 420,
+        "y": 440,
+        "wires": [
+            [
+                "4560aa504d010642"
+            ]
+        ]
+    },
+    {
+        "id": "1aa28312393759f2",
+        "type": "http response",
+        "z": "19b1c20180de9fbc",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 770,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "2cd62bbc57913566",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "mqtt.heatweb.cloud",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "5",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    }
+]
