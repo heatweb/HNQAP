@@ -1,0 +1,2706 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+
+   
+    <script src="https://kit.fontawesome.com/c6b21b7a8f.js" crossorigin="anonymous"></script>
+
+ 
+    <title>Thermal Integration Heatweb Node</title>
+
+
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css">
+
+
+  
+    <style>
+    
+    body, textarea, input, select {
+    font-size: 18px;
+    background: transparent;    
+    font-family: 'Inter', sans-serif;
+}
+
+section  {
+    /*border-bottom: 1px solid rgb(255, 255, 255);*/
+    padding: 20px 50px;
+    /* height: 100vh; */
+    scroll-snap-align: start;
+    /* text-align: center; */
+    position: relative;
+    /*background: #ffffff;*/
+    font-size: 18px;
+    }
+
+section .table {
+            font-size: 16px;
+        }
+
+table.dataTable.compact tbody td {
+    
+    padding: 2px;
+}   
+
+section .jstree-node {
+    font-size: 16px;
+}
+
+.nowrap {
+    white-space: nowrap;
+}
+
+
+small {
+  font-weight: 300;
+}
+
+
+@media (max-width: 1480px) {
+
+    section {
+        
+        padding: 20px 20px;
+        
+        }
+
+}
+
+@media (max-width:480px) {
+
+    section {
+        
+        padding: 10px 8px;
+        
+        }
+
+
+        .dropselect {
+            width:10%;
+            display:inline;
+            background-color:#a4eba4; 
+            border: 1px solid #020202; 
+            margin-right:5px;
+        }
+
+}
+
+    
+        .maxsiz {
+
+        width: 100%; 
+        height: 100vh;
+
+        }
+
+        .maxsiz2 {
+
+        width: 100%; 
+        height: calc(100vh - 70px);
+
+        }
+
+        .dot {
+            height: 13px;
+            width: 13px;
+            background-color: rgb(52, 58, 52);
+            border-radius: 20%;
+            border: 2px;
+            border-color: rgb(5, 5, 20);
+            display: inline-block;
+        }
+
+        .thindot {
+            height: 13px;
+            width: 6px;
+            background-color: rgb(52, 58, 52);
+            border-radius: 20%;
+            border: 2px;
+            border-color: rgb(5, 5, 20);
+            display: inline-block;
+        }
+
+        .dotspacer {
+            height: 13px;
+            width: 2px;
+            display: inline-block;
+        }
+
+        .navReadings  {
+            /* border-bottom: 1px solid rgb(32, 28, 28); */
+            padding: 20px 50px 0px 50px;
+            /* background: #6d6d70; */
+            font-size: 80%;   
+            /* font-weight: bold; */
+            text-align: left;
+            color: #212529;   
+        }
+
+        .navReadings a {
+            color: #212529;         
+        }
+
+        
+
+           
+    </style>
+    
+</head>
+<body><section>
+<script src="https://bossanova.uk/jspreadsheet/v4/jexcel.js"></script>
+<link rel="stylesheet" href="https://bossanova.uk/jspreadsheet/v4/jexcel.css" type="text/css" />
+ 
+<script src="https://jsuites.net/v4/jsuites.js"></script>
+<link rel="stylesheet" href="https://jsuites.net/v4/jsuites.css" type="text/css" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+<!--https://www.sitepoint.com/basic-jquery-form-validation-tutorial/-->
+
+<script src="https://unpkg.com/mustache@latest"></script>
+
+<script src="https://bossanova.uk/jspreadsheet/v4/jexcel.js"></script>
+<link rel="stylesheet" href="https://bossanova.uk/jspreadsheet/v4/jexcel.css" type="text/css" />
+ 
+<script src="https://jsuites.net/v4/jsuites.js"></script>
+<link rel="stylesheet" href="https://jsuites.net/v4/jsuites.css" type="text/css" />
+
+
+<script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/inline/ckeditor.js"></script>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js" type="text/javascript"></script>
+
+<script>
+
+
+var urlParamsM = new URLSearchParams(window.location.search);
+
+// wss://broker.emqx.io:8084/mqtt  wss://zc62a82b.ala.us-east-1.emqxsl.com:8084/mqtt
+var mqttServer = urlParamsM.get('server') || "zc62a82b.ala.us-east-1.emqxsl.com" || "mqtt.heatweb.cloud";
+var mqttPort = urlParamsM.get('port') || "8084" || "8081";
+var mqttUser = urlParamsM.get('user') || "testo";
+var mqttPassword = urlParamsM.get('password') || "t3st0";
+var mqttSSL = urlParamsM.get('ssl') || "true";
+if (mqttSSL=="true") { mqttSSL = true; } else { mqttSSL=false; }
+
+var serverdes ="";
+
+function changeserver() {
+    
+    
+   // var n = parseInt(document.getElementById("serverserver").value);
+    
+    // if (userdata.networks[n].server) { mqttServer = userdata.networks[n].server; }
+    // if (userdata.networks[n].port) { mqttPort = userdata.networks[n].port; }
+    // if (userdata.networks[n].user) { mqttUser = userdata.networks[n].user; }
+    // if (userdata.networks[n].password) { mqttPassword = userdata.networks[n].password; }
+    
+    connectMQTT();
+}
+
+function connectMQTT() {
+    
+    
+                    client = new Paho.MQTT.Client(mqttServer, Number(mqttPort), "cl"+a.getTime());
+                
+                    client.onConnectionLost = onConnectionLost;
+                    client.onMessageArrived = onMessageArrived;
+                    
+                    if (mqttSSL==true || mqttSSL=="true") { mqttSSL = true; } else { mqttSSL=false; }
+                    
+                    serverdes = mqttUser + "@" + mqttServer + ":" + mqttPort;
+                    //document.getElementById("infodiv").innerHTML = " connecting to " + serverdes;
+                    
+                    client.connect({onSuccess:onConnect, userName:mqttUser, password:mqttPassword, useSSL:mqttSSL });
+    
+    
+}
+
+var mqttConnected = false;
+
+function onConnect() {
+  // Once a connection has been made, make a subscription and send a message.
+  console.log("onConnect");
+  alert("Connected to MQTT Server.");
+
+  mqttConnected = true;
+  //document.getElementById("infodiv").innerHTML = "Connected";
+  
+  message = new Paho.MQTT.Message("Hello World");
+	message.destinationName = "testo/hello";
+	client.send(message);
+  
+
+    if (1==2) {
+
+        var shs = urlParamsM.get('show').split(",");
+        for (var sssh in shs) {
+            
+          var subtop = shs[sssh];
+          var tops = shs[sssh].split("/");
+          for (var t in tops) {
+              if (tops[t]=="") { tops[t]="+"; }
+          }
+          if (tops[tops.length-1]=="+") { tops[tops.length-1] = "#"; }
+          subtop="";
+          for (var t in tops) {
+              subtop += (subtop==""?"":"/") + tops[t];
+          }     
+          console.log("Subscribing to " + subtop) ;
+          client.subscribe(subtop); 
+          
+          subscriptions += " " + subtop;
+       
+        }   
+    } else {
+        
+        
+      //  client.subscribe("+/+/+/stat/state"); 
+      //  client.subscribe("+/+/+/+/plot");
+      //  client.subscribe("+/+/+/+/property");
+      //  client.subscribe("+/+/+/settings/title");
+    }
+  
+ 
+}
+
+// called when the client loses its connection
+function onConnectionLost(responseObject) {
+  if (responseObject.errorCode !== 0) {
+    console.log("onConnectionLost:"+responseObject.errorMessage);
+    }
+}
+
+
+
+// called when a message arrives
+function onMessageArrived(message) {
+  console.log(message.destinationName + ":"+message.payloadString);
+  try { 
+      
+      var ttt = new Date().getTime();
+      
+      var topics = message.destinationName.split("/");
+      var mynet = topics[0];
+      var devid = topics[2];
+      var dkey = topics[4];
+      
+  } catch {}
+
+}
+
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.10/pdfmake.min.js" integrity="sha512-w61kvDEdEhJPJLSAJpuL+RWp1+zTBUUpgPaP+6pcqCk78wQkOaExjnGWrVbovojeisWGQS7XZKz+gr3L+GPYLg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.10/vfs_fonts.js" integrity="sha512-nNkHPz+lD0Wf0eFGO0ZDxr+lWiFalFutgVeGkPdVgrG4eXDYUnhfEj9Zmg1QkrJFLC0tGs8ZExyU/1mjs4j93w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+
+
+function runPDF() {
+
+	console.log(tableArrays.calcsArray);
+	console.log(testoimage);	
+	
+	var dd = {
+		content: [
+			{
+				text: qdata.title + '\n\n',
+				style: 'header'
+			},
+			{
+				style: 'tableExample',
+				table: {
+					headerRows: 1,
+					body: tableArrays.qArray
+				},
+				layout: 'lightHorizontalLines'
+			}
+			,
+			{
+				text: 'Calculations:\n\n',
+				style: 'subheader'
+			},
+			{
+				style: 'tableExample',
+				table: {
+					headerRows: 1,
+					body: tableArrays.calcsArray
+				},
+				layout: 'lightHorizontalLines'
+			}
+		],
+		styles: {
+			header: {
+				fontSize: 18,
+				bold: true,
+				margin: [0, 0, 0, 10]
+			},
+			subheader: {
+				fontSize: 16,
+				bold: true,
+				margin: [0, 10, 0, 5]
+			},
+			tableExample: {
+				fontSize: 9,
+				margin: [0, 5, 0, 15]
+			},
+			tableHeader: {
+				bold: true,
+				fontSize: 12,
+				color: 'black'
+			}
+		},
+		defaultStyle: {
+			// alignment: 'justify'
+		}
+		
+	}
+
+	
+	if (testoimage) { dd.content.push("\n\n"); dd.content.push({ image: testoimage, width: 500 }); }
+	console.log(dd);
+
+	//pdftable(tableArrays.qArray, {"widths":[100,210,110,60],"align":["left","left","right","left"], "title":"Inputs", "fontSize":9});
+	//pdfMake.createPdf(dd).download();
+
+	pdfMake.createPdf(dd).open();
+
+	console.log(tableArrays.qArray);
+}
+
+var tableCount = 0;
+
+function pdftable(tdata,toptions) {
+    
+    tableCount++;
+
+    var pdfoot = [];
+    
+        
+    pdfoot.push({
+        text: thead,
+        style: 'subheader'
+    });
+
+    //doc.text(thead, docL, doc.y, {"align":"left", "width": 400, lineGap: 2});
+
+   
+    
+    for (var tr in tdata) {
+        
+        if (trow>99) {
+            
+            //doc.addPage(layoutP);
+            //standardStuff(curSec,false);
+            
+            //doc.text(thead + " (continued)", doc.x, 100, {"align":"left", "width": 400, lineGap: 2});
+            
+            
+        }
+        
+        trow++;
+        tcol=-1;
+        cellhmax = 0;
+
+        tx = 1*tx1;
+        for (var td in tdata[tr]) {
+            tcol++;
+            //var tdw = 1 * (twidths[td] || tdaw);
+            //var tdal = aligns[td] || "left";
+            
+            var tdval = "" + tdata[tr][td];
+            if (tdval.substr(0,1)=="{") { tdval = "{object}"; }  // dont display objects
+            
+            //console.log("tdval.. " + tdval + "..." + tdw + "..." + tdaw  + "..." + twidths[td]);
+            //////////////////////////////  doc.text(tdval, tx+5, ty+5, {"align":tdal, "width": tdw-10, lineGap: 2});
+            
+            //var cellh = doc.y - (ty+5) + 3;
+            //cellhmax = Math.max(cellhmax,cellh);
+            
+            //tx = tx + tdw;
+        }
+        
+        
+        
+        
+        
+    }
+    
+}
+
+
+</script>
+
+<style>
+    
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@700&family=Roboto:wght@300&display=swap&family=Inter:wght@300;500;800&display=swap');
+
+    .jexcel_content {
+        font-size: 14px;
+    }
+    
+    .jexcel {
+        white-space: normal;
+    }
+
+/*for wiki*/
+li.gallerybox {
+    
+    display: inline-block;
+}
+
+.mybutt {
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    margin-right: 3px;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #a4eba4;
+    border-color: #4aa55a;
+    border: solid;
+    border-width: 1px;
+    box-shadow: 2px 2px 3px 1px rgb(0 0 0 / 28%);
+    display: inline-block;
+    margin: 3px;
+    transition: background 250ms ease-in-out, transform 150ms ease;
+}
+.mybutt:hover {
+  background-color: #dcffdc;
+}
+.section {
+    margin: auto;
+    min-height: 20px;
+    max-width: 1200px;
+    padding: 19px;
+    margin-bottom: 5px;
+    background-color: transparent;
+    border-radius: 4px;
+    font-family: 'Inter', sans-serif;
+}
+
+.question {
+    min-height: 20px;
+    padding: 19px;
+    margin-bottom: 2px;
+    background-color: transparent;
+    border-radius: 4px;
+}
+
+textarea.form-control {
+    font-size: 0.9rem;
+}
+
+.outputbox {
+    margin: auto;
+    min-height: 20px;
+    max-width: 1500px;
+    padding: 19px;
+    margin-bottom: 20px;
+    background-color: #ffffff;
+    border: 1px solid #e3e3e3;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 1px rgb(0 0 0 / 5%);
+    font-size: 16px;
+}
+
+.cframe {
+    border-radius: 0.25rem;
+    margin: 0px 0px 20px 0px;
+}
+
+.h1, h1 {
+    font-size: 30px;
+}
+
+.h2, h2 {
+    font-size: 24px;
+}
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+    margin-bottom: 20px;
+    font-weight: 500;
+    line-height: 1.2;
+    text-transform: uppercase;
+    font-weight: 800;
+}
+
+.small small {
+    font-weight: 300;
+}
+.qtext {
+    
+    padding: 6px 0px 4px;
+    font-size: 18px;
+    font-weight: 500;
+}
+.notes {
+    
+    padding: 5px 0px 0px;
+    font-size: .75em;
+    color: #57647E;
+    font-weight: 300;
+}
+.qunits {
+    
+    padding: 10px 10px 0px;
+    line-height: 2;
+}
+
+.video-wrapper {
+	position: relative;
+	padding-bottom: 56.25%; /* 16:9 */
+	padding-top: 15px;
+	height: 0;
+	margin: 10px 0;
+}
+.video-wrapper iframe {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+form .error {
+  color: #ff0000;
+  font-size: 16px;
+}
+
+::-webkit-input-placeholder { /* Edge */
+  color: yellow;
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: yellow;
+}
+
+::placeholder {
+  color: yellow;
+}
+
+.table td, .table th {
+    padding: 3px;
+}
+
+
+</style>
+<script type="text/javascript">
+
+var a = new Date(); 
+var timin = a.getTime();
+
+var qdata;
+var calculated = {};  calculated.objects = {};
+var hasFocus;
+var currentSection;
+var selectSection;
+var selectedSection = "";
+var inputsOut;
+var inputString;
+var calcsString;
+var tableArrays=[];
+tableArrays["calcsArray"] = [];
+
+var objects={}; 
+var sheets = {};
+var sheetdata = {};
+var initsheets;
+
+var testoimage;
+
+var validdata = {}
+
+var ipfsCID = "";
+var formID = "";
+
+	$(document).ready(function(e) {
+    
+        // $("form[ajax=true]").submit(function(e) {
+            
+        //     //alert("submit");
+            
+        //     e.preventDefault();
+        
+            console.log("+++++++++++++++++START");
+            calculated = {};
+            
+            //var urlParams = new URLSearchParams(window.location.search);
+            //if (urlParams.get('display')) { loadstring = ",," + urlParams.get('display'); }
+
+            calculated["jsonQ"] = "hndesign";
+            
+            console.log(calculated);
+
+            var urlParams = window.location.search.replace("?","").split("&");
+            for(var upa in urlParams) {
+                
+                var vin = decodeURIComponent(urlParams[upa].split("=")[1]);
+                calculated[urlParams[upa].split("=")[0]] = ""+vin;
+                
+                console.log(vin);
+                    
+                if(vin.indexOf("[")>-1 || vin.indexOf("{")==0) { 
+                    
+                    try {
+                        console.log("+++++++++++++++++ ARRAY");
+                        console.log(vin);
+                        console.log(JSON.parse(vin));
+                        calculated[urlParams[upa].split("=")[0]] = JSON.parse(vin);
+                        
+                    } catch {}
+                    
+                }
+                
+            }
+            
+            // adding line below allows overwriting entries. Wish to force all updates as a new entry.
+            // if (calculated.submissionID) { submissionID = ""+calculated.submissionID; }
+
+            console.log(calculated);
+            
+            
+            //var form_url = "/qdata/" + calculated["jsonQ"];
+            var form_url = "/data/get-form-json?table=jsonforms&title=" + calculated["jsonQ"];
+            
+            
+            if (calculated["loadCID"]) {
+                
+                form_url = "https://heatweb.mypinata.cloud/ipfs/" + calculated["loadCID"];
+                document.getElementById("savesec").style.display = "block";
+
+            } else if (calculated["id"]) {
+            
+                form_url = "/data/get-form-entries?id=" + calculated["id"];
+                formID = "" + calculated["id"];
+            }
+            
+            var form_data = {};
+            var form_target = $(this).attr("target") || "result";
+            var ftarget = "#" + form_target;
+            var form_method = "GET";
+            
+        //     $("#loadingimg").show();
+            
+            $.ajax({
+                url: form_url, 
+                type: form_method,      
+                data: form_data,     
+                cache: false,
+                success: function(results){   
+                    
+                    
+                    if (results.qdata) {
+                        
+                        console.log("=================== Loading IPFS");
+                        console.log(results);
+                    
+                        qdata = results.qdata;
+                        console.log("=================== qdata", qdata);
+
+                        calculated = results.calculated;
+
+                        testoSensorData = results.testodata || {}; 
+                        
+                    } else if (results.data) {
+                    
+                        console.log("=================== Loading Form");
+                        console.log(results);
+                        
+                        qdata = JSON.parse(results.data[0].json).qdata;
+                        console.log("=================== qdata", qdata);
+                        
+                        calculated = JSON.parse(results.data[0].json).calculated;
+
+                        testoSensorData = JSON.parse(results.data[0].json).testodata || {};
+                    
+                    } else {
+                        
+                        qdata = results;
+                    }
+                    
+                    //qdata = JSON.parse(returnhtml);
+                    console.log(qdata);
+                   
+                    //if(urlParams['nBuildings']) { runCalcs(); runCalcs();  }
+                    runCalcs(); 
+                    runCalcs();
+                    
+                    //var myTimeout = setTimeout(runCalcs(), 250);
+                    
+                    document.getElementById("formName").innerHTML = qdata.title || "Unamed Form"; //JSON.stringify(qdata) ;
+                    
+                    // document.getElementById("section1").innerHTML = parseQuestions(qdata); //JSON.stringify(qdata) ;
+                    
+                    for (var sht in initsheets) {  initSheet(initsheets[sht]);   }
+                    
+                    // validform();
+                                  
+                }           
+            });    
+            
+        // });
+        
+      
+        
+    });
+
+
+ 
+
+
+
+
+function initSheet(id) {
+
+    console.log("initSheet " + id);
+    console.log(sheetdata);
+    
+    var shid = 'sheet-' + id;
+    var sdata = sheetdata[id];
+    
+    
+
+    try {
+    
+        document.getElementById(shid).innerHTML = "";
+        
+        sheets[id] = jspreadsheet(document.getElementById(shid), {
+            data: sdata.data,
+            columns: sdata.columns,
+            onchange: function(instance, cell, x, y, value) {
+                
+                console.log(value);
+                getSheetData(id);
+            },
+            updateTable:function(instance, cell, col, row, val, label, cellName) {
+               
+                //console.log(instance);
+                //console.log(val);
+                
+            },
+            columnSorting:false
+        });
+
+    } catch {}
+}
+
+function getSheetData(id) {
+    
+    
+    //alert(id);
+    
+    //console.log(sheets[id].getData());
+    
+    sheetdata[id].data = sheets[id].getData();
+    sheetdata[id].data = sheets[id].getJson();
+    
+    console.log(sheetdata);
+    
+    // var oots = "";
+    // for (var row in sheetdata[id].data) {
+    //   for (var c in sheetdata[id].data[row]) {
+           
+    //       var val = "" + (sheetdata[id].data[row][c] || "");
+    //       val = val.replace(/ /g,"_")
+    //       oots += val + ",";
+    //     } 
+    //     oots += " ";
+    // }
+    
+    // oots = oots.substr(0, oots.length - 2);
+    // console.log(oots);
+    
+    // returncalc(id,oots)
+    
+    
+    returncalc(id,sheetdata[id].data);
+    
+}
+
+
+function getObject(id) {
+    
+  
+    return (objects[id]||null);
+    
+}
+
+
+function setObject(id,value) {
+    
+
+    try { objects[id] = value; }
+    catch {}
+
+    console.log("objects",objects);
+}
+	
+function returncalc(id,value) {
+    
+    //alert(id + " = " + value);
+    
+    
+    try { 
+        
+        if (Array.isArray(value)) {
+            
+            document.getElementById(id).value = JSON.stringify(value);
+            
+        } else if (typeof value == "object") {
+            
+            document.getElementById(id).value = JSON.stringify(value);
+            
+        } else {
+            
+            document.getElementById(id).value = value; 
+        };
+        
+    }
+    catch {}
+    
+    try { calculated[id] = value; }
+    catch {}
+    
+}
+
+function suggestcalc(id,value) {
+    
+    //alert(id + " = " + value);
+    
+    try { document.getElementById(id).placeholder = value + " ... please confirm"; }
+    catch {}
+}
+
+function useDefault(qid,s,q) {
+    
+    var def;
+    
+    if(Array.isArray(qdata.sections[s].questions[q].default)) { def = JSON.stringify(qdata.sections[s].questions[q].default); }
+    
+    else { def = ""+ qdata.sections[s].questions[q].default; }
+    
+    document.getElementById(qid).value = def;
+    
+    runCalcs();
+    
+}
+
+
+function useTesto(qid,testoRef) {
+    
+    testoData();
+    
+    var def;
+    def = ""+ testoD[testoRef].payload; 
+    
+    document.getElementById(qid).value = def;
+    
+    //runCalcs();
+    
+}
+
+var testoInterval;
+// testoInterval = setInterval(testoTimer, 1000);
+
+function testoTimer() {
+    var date = new Date();
+    testoData();
+}
+
+function testoStop() {
+    try { clearInterval(testoInterval); } catch {}
+}
+
+
+var testoD={};
+var testoButtons="";
+var testoSensorData = {}; 
+
+function testoData() {
+
+    //alert(calculated.testoEnabled);
+    
+    // fetch data from Testo sensor App on same LAN
+    var ip = calculated.testoIpPort || "localhost:54000";
+
+    $.ajax({
+        url: "http://" + ip,
+        type: "GET",
+        data: {},
+        cache: false,
+        success: function(results){
+
+            var dp = {}; dp.count = 0;
+            var bits1 = results.split("<th>testo ");
+            for (var b1 in bits1) {
+
+                if (bits1[b1].indexOf("&nbsp;&nbsp;&nbsp;&nbsp;")<0) { continue; }
+
+                var bits2 = bits1[b1].split("&nbsp;&nbsp;&nbsp;&nbsp;")
+                var device = bits2[0] + "-" + bits2[1];
+
+                
+                if (!testoSensorData[device] ) { testoSensorData[device] = []; }
+                var tline = {timestamp:(new Date().getTime())}; 
+                var changed = false;
+
+                var bits3 = bits1[b1].split("<tr>");
+                
+                
+
+                for (var b3 in bits3) {
+
+                    if (bits3[b3].indexOf("°C")<0 && bits3[b3].indexOf("bar")<0) { continue; }
+
+                    var bits4 = bits3[b3].split("<td>");     
+                    var varkey = bits4[1].split("<")[0];
+                    var mytopic = device + "/testo/" + varkey;
+
+                    var msg1 = {};
+                    msg1.payload = bits4[2].split(" ")[0];
+                    msg1.units = bits4[2].split("<")[0].split(" ")[1];        
+                    msg1.topic = "testo/rhg-shed/" + mytopic;
+                    msg1.device = device;
+                    //alert(device + "   " + msg1.payload + " " + msg1.units)
+                    calculated[device] = msg1.payload;
+
+                    if (testoD[device] && ((""+msg1.payload) != (testoD[device].payload))) { 
+                    
+                        changed = true; 
+                        console.log(device + " " + varkey + " " + msg1.payload + " " + msg1.units); 
+
+                        let tabs = document.getElementsByClassName("testobutton"+device);
+                        for (var tab in tabs) {
+
+                            tabs[tab].style="background-color:#a4eba4"; // #a4eba4  #ef626f"
+                            tabs[tab].innerHTML = "<small>" + device + "</small><br>" + msg1.payload + " " + msg1.units;
+                        }
+                    
+                        if (mqttConnected) {
+                        
+                            message = new Paho.MQTT.Message(msg1.payload);
+                            message.destinationName = msg1.topic;
+                            client.send(message);     
+
+                            
+                        }
+
+                        if (chartExists==true) { updateGraph(); }
+
+
+                    }
+
+                    testoD[device] = msg1;
+
+                    tline[varkey] = parseFloat(msg1.payload);
+
+                   
+
+                    
+
+                    if (msg1.units =="bar") { 
+                        
+                        if(dp.count>0) { 
+                            dp.two = parseFloat(msg1.payload); dp.count=2; 
+                            var msgdp = {};
+                            msgdp.payload = Math.abs(dp.two - dp.one);
+                            msgdp.units = "bar";        
+                            msgdp.topic = "testo/rhg-shed-pc-nr/testo/testo/dP";
+                            msgdp.device = "testo-dp";
+                            calculated["testo-dp"] = msgdp.payload;
+                            testoD["testo-dp"] = msgdp;
+
+                            var msgkpa = {};
+                            msgkpa.payload = parseInt(1000 * Math.abs(dp.two - dp.one)) / 10;
+                            msgkpa.units = "kPa";
+                            msgkpa.topic = "testo/rhg-shed-pc-nr/testo/testo/kPa";
+                            msgkpa.device = "testo-kPa";
+                            calculated["testo-kPa"] = msgkpa.payload;
+                            testoD["testo-kPa"] = msgkpa;
+                            
+                        }
+                        else  { dp.one = parseFloat(msg1.payload); dp.count=1; }
+                    }
+
+                    //node.send(msg1);
+                }
+
+                
+                if (changed == true) { testoSensorData[device].push(tline); }
+
+            }
+
+        }
+    });
+
+
+}
+
+function gotoSection(sectoGo) {
+
+    if (sectoGo=="Save to IPFS") { runCalcs(); postIPFS(); }
+    else if (sectoGo=="Download") { runCalcs(); downJSON(); } 
+    else if (sectoGo=="Connect MQTT" && mqttServer) { changeserver(); setTestoTimer(1); } 
+    else if (sectoGo=="PDF") { runPDF(); }
+    else if (sectoGo=="Graph Testo Data") { if (chartExists==true) { updateGraph(); } else { drawGraph();} }
+    
+
+    else if (sectoGo=="Next") { runCalcs(); }
+    else {
+
+        console.log("======== Select Section ======",sectoGo );
+
+        selectedSection = sectoGo;
+        runCalcs();
+        selectedSection = "";
+    }
+}
+
+var testoPeriod = 0;
+function setTestoTimer(ttp) {
+
+    if (ttp==0) {
+        testoStop();
+        testoPeriod = 0;
+    }
+    else if (calculated.testoEnabled=="true" && testoPeriod==0) {
+        testoStop();
+        testoInterval = setInterval(testoTimer, ttp * 1000);
+        testoPeriod = ttp;
+    }
+}
+
+function parseQuestions(qdata) {
+    
+    console.log(qdata);
+    console.log(calculated);
+    
+    validdata = {
+        rules:{},
+        submitHandler: function(form) { runCalcs(); }
+    };
+
+    tableArrays["qArray"] = [["Time","Key","Description","Value","Units"]];
+    
+    var linkstxt="";
+    if (qdata.links) {
+        for (var lnk in qdata.links) {
+            linkstxt += (linkstxt!==""?"<br>":"") + '<a href="' + qdata.links[lnk].src + '" target="_blank">' + (qdata.links[lnk].title||qdata.links[lnk].src) + '</a>';
+        }
+        
+    }
+    document.getElementById("links").innerHTML = linkstxt ; //JSON.stringify(qdata) ;
+    
+    
+    inputsOut = '<input id="jsonQ" name="jsonQ" value="' + calculated["jsonQ"] + '" class="form-control" type="hidden">';
+                    
+    
+    inputsOut += '<table class="table">';
+    
+    inputString = "jsonQ=" + calculated["jsonQ"];  // data source for form is fixed
+    
+    hasFocus = null;
+    currentSection = null;
+    selectSection = "";
+    initsheets = [];
+    var showcount = 0;
+    var buttcount = 0;
+    var outputscount = 0;
+    var sectionList = [];
+    
+    sectionList.push('Next');
+    sectionList.push('---');
+
+    var ootoot = "";
+    for (var s in qdata["sections"]) {
+        console.log(s);
+        console.log(qdata.sections[s]);
+        
+        var oot = "";
+        var ootcount=0;
+        var qcount=0;
+
+        //oot += "<div class='section'><h2>" + qdata.sections[s].title + "</h2>\n";
+        oot += "<h2>" + qdata.sections[s].title + "</h2>\n";
+        
+        
+        
+        for (var q in qdata.sections[s].questions) {
+            
+            
+            var qif = qdata.sections[s].questions[q].if || true;
+            var qift = Mustache.render(qif, calculated);
+            
+            var goq = true;
+            try {
+              goq = looseJsonParse(qift); 
+            }
+            catch(err) {
+              goq = false;
+            }
+            
+            var v="";
+            if ((""+calculated[qdata.sections[s].questions[q].id])!=="" && (""+calculated[qdata.sections[s].questions[q].id])!=="undefined") { v= calculated[qdata.sections[s].questions[q].id] ; }
+            else if (qdata.sections[s].questions[q].value) { v= qdata.sections[s].questions[q].value ; }
+            
+            if (v!=="" && qdata.sections[s].questions[q].type != "sheet" && v!==qdata.sections[s].questions[q].value) { qdata.sections[s].questions[q].timestamp = new Date().getTime(); } // add timestamp on first answer.
+            
+
+            if (v!=="") { qdata.sections[s].questions[q].value = v; }    // save answers back into json.
+            
+            //if (v!=="" && !qdata.sections[s].questions[q].timestamp) { qdata.sections[s].questions[q].timestamp = new Date().getTime(); } // add timestamp on first answer.
+            
+            if(goq) {
+                
+                qcount++;
+
+                var calcfr = "";
+                if (qdata.sections[s].questions[q].calculator) { calcfr = '<iframe class="cframe" frameBorder="0" src="' +qdata.sections[s].questions[q].calculator + '?field=' + qdata.sections[s].questions[q].id + (calcsString||"") + '" style="' + (qdata.sections[s].questions[q].calculatorStyle ? qdata.sections[s].questions[q].calculatorStyle:'width:100%; height:300px;') + '"></iframe>'}
+            
+            
+                if (v!=="") { 
+                    inputsOut += "<tr>";  
+                    
+                    var cOs1 = "";  var cOs2 = "";
+            
+                    if (document.getElementById("hideID").checked!==true) {
+                        cOs2 = " <small>[<i>" + qdata.sections[s].questions[q].id + "</i>]</small>";  
+                    }
+                    
+                    inputsOut += '<td width="40%">' + (qdata.sections[s].questions[q].title||qdata.sections[s].questions[q].id) + cOs2 + "</td>";
+                    
+                    var vs1=""; var vs2="";
+                    if((""+v).indexOf(",") > -1) { vs1="<small>"; vs2="</small>"; }
+                    if((""+v).indexOf("&") > -1) { vs1="<small style='width:400px; word-wrap:break-word; display:inline-block;'>"; vs2="</small>"; }
+                    
+                    
+                    inputsOut +=  ('<td align="right">' + vs1 + (typeof v =="object"?"{table}":v) + vs2 + "</td>").replace(/\, /g,"<br>").replace(/\,/g,", ");
+                    inputsOut +=  '<td width="14%">' + (qdata.sections[s].questions[q].units||"") + "</td></tr>\n";
+                    
+                    
+                    //if(Array.isArray(v)) {
+                    if(typeof v == "object") {
+                        
+                        inputString += (inputString!==""?"&":"") + qdata.sections[s].questions[q].id + "=" + encodeURIComponent(JSON.stringify(v));
+                        
+                    } else {
+                        
+                        inputString += (inputString!==""?"&":"") + qdata.sections[s].questions[q].id + "=" + encodeURIComponent(v);
+                    }
+                    
+                    
+                }
+            
+                var isDisplayed = false;
+            
+                if (selectedSection=="" && hasFocus && document.getElementById("oneQ").checked==true) {  oot += '<div class="question" style="display:none">'; }
+            
+                else if (v!=="") { 
+                    
+                    if (selectedSection=="" && document.getElementById("hideDone").checked==true) {  oot += '<div class="question" style="display:none">';   }
+                    else {  oot += '<div class="question" style="background-color: #f1fdf1;">'; ootcount++; isDisplayed=true; }
+                    
+                } else { oot += '<div class="question">'; ootcount++; isDisplayed=true; if (!hasFocus) { hasFocus = qdata.sections[s].questions[q].id;  currentSection = qdata.sections[s].title;  } }
+                
+
+                
+                
+                //oot += "<div class='qtext'>" + qdata.sections[s].questions[q].title + '</div>';
+                oot += '<label for="' + qdata.sections[s].questions[q].id + '" class="qtext">' + Mustache.render((qdata.sections[s].questions[q].question||qdata.sections[s].questions[q].title), calculated) + '</label>';
+                
+                if (calcfr!=="") { oot += "\n" + calcfr + "\n"; }
+                
+                 
+                if (qdata.sections[s].questions[q].type == "sheet") {
+                    
+                    oot += '<br><div id="sheet-' + qdata.sections[s].questions[q].id + '">';
+                
+                    oot += '<span onclick="initSheet(' + "'" + qdata.sections[s].questions[q].id + "'"  + ')"><small class="mybutt">Load Sheet</small></span> ';
+                    
+                    oot += '</div>';
+                    
+                    //oot += '<script>initSheet(' + "'" + qdata.sections[s].questions[q].id + "'"  + ');</scrip' + 't> ';
+                    //var myTimeout = setTimeout(initSheet(qdata.sections[s].questions[q].id), 1000);
+                    if (isDisplayed) { initsheets.push(qdata.sections[s].questions[q].id); }
+                
+                    var shob = {};
+                    shob['columns'] = qdata.sections[s].questions[q].columns;
+                    shob['data'] = [[]];
+                    
+                    if(Array.isArray(v)) { shob['data']=v; }
+                    
+                    // else if((""+v)!=="") {
+                        
+                    //     shob['data']=[];
+                    //     var vv = v.replace(/\%20/g," ").replace(/_/g," ");
+                    //     var lns = vv.split(", ");
+                    //     for (var lnsv in lns) {
+                    //         shob['data'].push(lns[lnsv].split(","));
+                    //     }
+                    // }
+                    
+                    // else if (Array.isArray(qdata.sections[s].questions[q].default)) { 
+                        
+                    //     shob['data']=qdata.sections[s].questions[q].default;
+                        
+                        
+                    // }
+                    
+                    else if (qdata.sections[s].questions[q].default) { 
+                        
+                        shob['data']=qdata.sections[s].questions[q].default;
+                        
+                        oot += '<br><span onclick="useDefault(' + "'" + qdata.sections[s].questions[q].id + "'"  + ','+s+','+q+')"><small class="mybutt">Use Default Values</small></span> <br> <br> ';
+                        //oot += '<br><br>';
+                        
+                    
+                        
+                    }
+                   
+                    // replace calcs in sheet
+
+                    try {
+                        var shobtxt = JSON.stringify(shob);
+
+                        var shobtxt = Mustache.render(shobtxt, calculated);
+                        
+                        shob = JSON.parse(shobtxt);
+                    } catch {}
+
+                    sheetdata[qdata.sections[s].questions[q].id] = shob;
+                    
+                }
+                
+                
+                
+                if (qdata.sections[s].questions[q].type=="html") {
+                    
+                    oot += '<br><br><div class="form-control htmlinput" style="height:fit-content" name="' + qdata.sections[s].questions[q].id + '" id="' + qdata.sections[s].questions[q].id + '">';
+                    oot += decodeURIComponent('' + v + '')
+                    oot += '</div>';
+                
+                }
+                
+                
+                if (qdata.sections[s].questions[q].type !== "sheet") { oot += '<table width="100%"><tr><td width="80%">'; }
+                
+                if (qdata.sections[s].questions[q].type == "sheet") {
+                    
+                    
+                    oot += '<textarea class="form-control" style="display:none" name="' + qdata.sections[s].questions[q].id + '" id="' + qdata.sections[s].questions[q].id + '">';
+                    
+                    if((""+v)!=="") {
+                    
+                        try { oot += JSON.stringify(v); }
+                        
+                        catch { oot += decodeURIComponent('' + v + ''); }
+                    
+                    }   
+                    oot += '</textarea>';
+                    
+                } 
+                
+                 
+                else if (qdata.sections[s].questions[q].jsonQ) {
+                    
+                    
+                    oot += '<textarea class="form-control" name="' + qdata.sections[s].questions[q].id + '" id="' + qdata.sections[s].questions[q].id + '">';
+                    //oot += ('' + v + '').replace(/\%20/g," ").replace(/_/g," ");
+                    
+                    if (typeof v == "object") {
+                        
+                        try { oot += JSON.stringify(v); }
+                        catch { oot += decodeURIComponent('' + v + ''); }
+                        
+                    } else if ('' + v + '' !=='') {
+                        
+                        oot += decodeURIComponent('' + v + ''); 
+                    }
+                    
+                    oot += '</textarea>';
+                    
+                } 
+                
+                else if (qdata.sections[s].questions[q].type=="html") {
+                    
+                    oot += '';
+                    
+                   
+                
+                }
+                    
+                else if (qdata.sections[s].questions[q].type=="boolean") {
+                    
+                    oot += '<select class="form-control" name="' + qdata.sections[s].questions[q].id + '" id="' + qdata.sections[s].questions[q].id + '">';
+                      if (v=="true") { oot += '<option value="false">No</option><option value="true" selected>Yes</option>'; }
+                      else if (v=="false")  { oot += '<option value="false" selected>No</option><option value="true">Yes</option>'; }
+                      else  { oot += '<option value=""></option><option value="false">No</option><option value="true">Yes</option>'; }
+                    oot += '</select>';
+                    
+                } else if (qdata.sections[s].questions[q].options) {
+                    
+                    oot += '<select class="form-control" name="' + qdata.sections[s].questions[q].id + '" id="' + qdata.sections[s].questions[q].id + '">';
+                    if (v=="") { oot += '<option value=""></option>'; }
+                    
+                    
+                    if ((typeof qdata.sections[s].questions[q].options == "string") && qdata.sections[s].questions[q].options.substr(0,6)=="lookup") {
+                        
+                        
+                        var lookupOn = qdata.sections[s].questions[q].options.split("(")[1].split(")")[0].split(",");
+                        if (lookupOn.length==3) {
+                            
+                            var lookupD = calculated[lookupOn[0].replace(/\'/g,"").replace(/\"/g,"")];
+                            
+                            var srchk = lookupOn[2].replace(/\'/g,"").replace(/\"/g,"");   // the key used as a value
+                            var srchtit = lookupOn[1].replace(/\'/g,"").replace(/\"/g,"");  // the key used as an option title
+                            
+                            //var lookupO = [];
+                            for (var opt in lookupD) {
+                            
+                              var optobj = lookupD[opt];
+                              if (v==optobj[srchk]) { oot += '<option selected value="' + optobj[srchk] + '">' + optobj[srchtit] + '</option>'; }
+                              else  { oot += '<option value="' + optobj[srchk] + '">' + optobj[srchtit] + '</option>'; }
+                              
+                            }  
+                        }
+                    }
+                    else {
+                        for (var opt in qdata.sections[s].questions[q].options) {
+                        
+                          var optobj = qdata.sections[s].questions[q].options[opt];
+                          if (v==optobj.value) { oot += '<option selected value="' + optobj.value + '">' + optobj.title + '</option>'; }
+                          else  { oot += '<option value="' + optobj.value + '">' + optobj.title + '</option>'; }
+                          
+                        }  
+                    }
+                    oot += '</select>';
+                    
+                }  else {
+                
+                    oot += '<input id="' + qdata.sections[s].questions[q].id + '" name="' + qdata.sections[s].questions[q].id + '" class="form-control"';
+                    if (qdata.sections[s].questions[q].type == "number") { oot += ' type="number"'; }
+                    if (qdata.sections[s].questions[q].type == "email") { oot += ' type="email"'; }
+                    else { oot += ' type="text"'; }
+
+                    if (v!=="") { oot += (' value="' + decodeURIComponent(v) + '"'); }
+                    if (qdata.sections[s].questions[q].default) { 
+                        
+                        oot += ' placeholder="' + Mustache.render(""+qdata.sections[s].questions[q].default, calculated)  + " " + (qdata.sections[s].questions[q].units||"") + ' ... please confirm"'; 
+                        
+                    }
+                    oot += '>';
+
+                    //testo
+                    if (calculated.testoEnabled=="true" && qdata.sections[s].questions[q].type == "number" && qdata.sections[s].questions[q].title.indexOf("Meter")<0) {  
+                        
+                        var testoButts = "";
+                        for (var testoDev in testoD) {
+                            if (qdata.sections[s].questions[q].units == testoD[testoDev].units) {
+                                testoButts += '<span onclick="useTesto(' + "'" + qdata.sections[s].questions[q].id + "','"  + testoD[testoDev].device + "'" +')"><b class="mybutt testobutton' + testoD[testoDev].device + '">' + testoD[testoDev].device + '</b></span> '; // + " " + testoD[testoDev].payload + " " + testoD[testoDev].units
+                            }
+                        }
+                        if (testoButts != "") { oot += '<br>' + testoButts + '<br>'; }
+                    }
+                }
+                
+                if (qdata.sections[s].questions[q].type !== "sheet") { 
+                    oot += '</td><td valign="top"><span class="qunits">' + (qdata.sections[s].questions[q].units||"") + '</span></td></tr></table>';
+                }
+                
+                if (qdata.sections[s].questions[q].notes) { oot += '<div class="notes">' +
+                    convertLinks(Mustache.render(qdata.sections[s].questions[q].notes, calculated)) + '</div>'; }
+                
+                oot += '</div>\n';
+                
+                if (typeof v !="object") {
+                    var timest = "";
+                    if (qdata.sections[s].questions[q].timestamp) {
+                        //timest = qdata.sections[s].questions[q].timestamp;
+                        var date = new Date(qdata.sections[s].questions[q].timestamp);
+                        
+                        // Hours part from the timestamp
+                        var hours = date.getHours();
+                        
+                        // Minutes part from the timestamp
+                        var minutes = "0" + date.getMinutes();
+                        
+                        // Seconds part from the timestamp
+                        var seconds = "0" + date.getSeconds();
+                        
+                        // Will display time in 10:30:23 format
+                        timest = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+                    }
+
+                    tableArrays.qArray.push([timest||"", qdata.sections[s].questions[q].id, qdata.sections[s].questions[q].title||"".id,(""+v).replace(/\,/g,", "),qdata.sections[s].questions[q].units||""]);
+                }
+                
+                validdata.rules[qdata.sections[s].questions[q].id] = {};
+                if (qdata.sections[s].questions[q].required) { validdata.rules[qdata.sections[s].questions[q].id].required = true; }
+
+            }
+        }
+    
+        oot += '<table width="100%"><tr><td width="100%" align="right"><button class="mybutt" type="submit">Submit</button></td></tr></table>';
+
+        oot += "</div>\n";
+       
+        
+        
+
+        var outhtml = "";   
+        for (var q in qdata.sections[s].outputs) {
+            
+            var qif = qdata.sections[s].outputs[q].if || true;
+            var qift = Mustache.render(qif, calculated);
+            
+            var goq = true;
+            try {
+            goq = looseJsonParse(qift); 
+            }
+            catch(err) {
+            goq = false;
+            }
+            
+
+            if(goq && (calcsString||"")!=="") {
+                
+                var calcfr = "";
+                outputscount++;
+                //if (!objects[qdata.sections[s].outputs[q].id]) { objects[qdata.sections[s].outputs[q].id] = {}; }
+
+                // Only parse outputs when on selected page.
+                if (selectedSection=="Outputs") {
+
+                    if (qdata.sections[s].outputs[q].type=="wiki") { 
+                        
+                        var oid = 'output'+qdata.sections[s].outputs[q].id;
+                        
+                        //qdata.sections[s].outputs[q].url
+                        //http://heatweb.co.uk/w/index.php?title=The_DATA_HIU#Description
+                        
+                        qdata.sections[s].outputs[q].url = qdata.sections[s].outputs[q].url.replace("http://heatweb.co.uk/w/index.php?title=","").replace("https://heatweb.co.uk/w/index.php?title=","")
+                        
+                        var tit = qdata.sections[s].outputs[q].url;
+                        if (tit.indexOf("#")>-1) { tit = qdata.sections[s].outputs[q].url.split("#")[0]; }
+                        
+                        var wikilocal = "hnoutputs/wiki?id=" + qdata.sections[s].outputs[q].id + "&des=" + qdata.sections[s].outputs[q].title.replace(/ /g,"_") + "&title=" + tit;
+                        if(qdata.sections[s].outputs[q].url.split("#")[1]) { wikilocal += "&section=" + qdata.sections[s].outputs[q].url.split("#")[1]; }
+                    
+                        
+                        outhtml += prepWebPage(qdata.sections[s].outputs[q],wikilocal);
+                        
+                        
+                        
+                    }
+                    else if (qdata.sections[s].outputs[q].type=="heatwebcouk") { 
+                        
+                        var oid = 'output'+qdata.sections[s].outputs[q].id;
+                        
+                        //qdata.sections[s].outputs[q].url
+                        //https://www.heatweb.co.uk/district-heating-substations/heating-substations/
+                        
+                        //qdata.sections[s].outputs[q].url = qdata.sections[s].outputs[q].url.replace("https://www.heatweb.co.uk/w/index.php?title=","").replace("https://heatweb.co.uk/w/index.php?title=","")
+                        
+                        var sec = "";
+                        var tit = qdata.sections[s].outputs[q].url.replace("https://www.heatweb.co.uk/","").replace("https://heatweb.co.uk/","");
+                        if (tit.indexOf("/")>-1) { tit = qdata.sections[s].outputs[q].url.split("/")[0]; sec = qdata.sections[s].outputs[q].url.split("/")[1]; }
+                        
+                        var wikilocal = "hnoutputs/wiki?id=" + qdata.sections[s].outputs[q].id + "&des=" + qdata.sections[s].outputs[q].title.replace(/ /g,"_") + "&title=" + tit;
+                        if(sec) { wikilocal += "&section=" + sec; }
+                    
+                        wikilocal += "&type=" + qdata.sections[s].outputs[q].type;
+                        wikilocal += "&url=" + encodeURIComponent(qdata.sections[s].outputs[q].url);
+                        outhtml += prepWebPage(qdata.sections[s].outputs[q],wikilocal);
+                        
+                        
+                        
+                    }
+                    else if (qdata.sections[s].outputs[q].url) { 
+                        // 
+                        calcfr = '<iframe id="opframe' + qdata.sections[s].outputs[q].id + '" class="cframe" frameBorder="0" src="' + Mustache.render(""+qdata.sections[s].outputs[q].url, calculated) + (qdata.sections[s].outputs[q].url.indexOf("?")>0?'':'?') + (calcsString||"") + '" style="' + (qdata.sections[s].outputs[q].style ? qdata.sections[s].outputs[q].style:'width:100%; height:300px;') + '"></iframe>'
+                        
+                        outhtml += '<div class="outputbox">';
+                        outhtml += "<table width='100%'><tr><td><b>" + qdata.sections[s].outputs[q].title + "</b></td>\n";
+                        
+                        if (qdata.sections[s].outputs[q].buttons) { 
+                            
+                            outhtml += '<td align="right">';
+                            for (var btn in qdata.sections[s].outputs[q].buttons) {
+                                
+                                outhtml += '<span class="mybutt" onclick="' + qdata.sections[s].outputs[q].buttons[btn].onClick + '">' + qdata.sections[s].outputs[q].buttons[btn].text + '</span> ';
+                            }
+                            outhtml += '<span id="opopen' + qdata.sections[s].outputs[q].id + '" class="mybutt" onclick="opopen(' + "'" + qdata.sections[s].outputs[q].id + "'" + ')">Open</span> ';
+                            
+                            outhtml += '</td>';
+                        }
+                        
+                        outhtml += '</tr></table><br>';
+                        
+                        outhtml += calcfr ; 
+                        
+                        
+                        
+                        outhtml += "</div>\n";
+                    }
+                }
+            
+            }
+        
+            
+            if (outhtml!=="") {
+                
+                //oot += '<div class="outputbox">';
+                oot += outhtml;
+                //oot += "</div>\n";
+            }
+            
+        }
+        
+        var isSecDisplayed = false;
+
+        if (selectedSection!=="" && (selectedSection == qdata.sections[s].title)) { ootoot += "<div class='section'>" + oot; showcount++; isSecDisplayed=true; }
+        
+        else if (selectedSection!=="") { ootoot += '<div class="section" style="display:none">' + oot; }
+
+        else if (document.getElementById("oneS").checked==true && (currentSection != qdata.sections[s].title)) {  ootoot += '<div class="section" style="display:none">' + oot; }
+        
+        else if (ootcount>0) {  ootoot += "<div class='section'>" + oot;  showcount++; isSecDisplayed=true; }
+        
+        else {  ootoot += '<div class="section" style="display:none">' + oot; }
+
+        console.log("showcount",showcount);
+
+        if (qcount>0) {
+
+            sectionList.push(qdata.sections[s].title);
+
+            buttcount++;
+            if (isSecDisplayed==true) { selectSection+='<span class="mybutt" title="' + qdata.sections[s].title + '" style="font-size: 11px; background-color: #beffbe;"><b>' + qdata.sections[s].title + '</b></span>'; }
+            else { selectSection+='<span class="mybutt" title="' + qdata.sections[s].title + '" style="font-size: 11px;" onclick="gotoSection(' + "'" + qdata.sections[s].title + "'" + ')">' + buttcount + '</span>';  }
+        }
+    }
+    inputsOut +=  "</table>\n";  
+    
+
+    if (showcount<1) {
+
+         if (formID=="" ) { postSQL(); formID=="new" ; } // MOVE TO SAVE selectedSection
+
+         document.getElementById("savesec").style.display = "block";
+
+         setTestoTimer(0);
+
+    }
+
+    if (selectedSection=="Calculations" || (showcount<1 && selectedSection=="")) {  document.getElementById("calcsssec").style="display:inline" ;   } 
+    else {  document.getElementById("calcsssec").style="display:none" ;  }
+
+    if (selectedSection=="Inputs" || (showcount<1 && selectedSection=="")) {  document.getElementById("inputssec").style="display:inline" ; } 
+    else {  document.getElementById("inputssec").style="display:none" ;  }
+ 
+    if (buttcount>10) { selectSection+='<br>'; }
+
+    selectSection+='<span class="mybutt" title="Inputs" style="font-size: 11px;" onclick="gotoSection(' + "'Inputs'" + ')">Inputs</span>';
+    sectionList.push('---');
+    sectionList.push('Inputs');
+
+    selectSection+='<span class="mybutt" title="Calculations" style="font-size: 11px;" onclick="gotoSection(' + "'Calculations'" + ')">Calcs</span>';
+    sectionList.push('Calculations');
+    
+    if (outputscount>0) {
+        selectSection+='<span class="mybutt" title="Outputs" style="font-size: 11px;" onclick="gotoSection(' + "'Outputs'" + ')">Outputs</span>';
+        sectionList.push('Outputs');
+    }
+
+    sectionList.push('---');
+    sectionList.push('Connect MQTT');
+    sectionList.push('Graph Testo Data');
+
+    sectionList.push('---');
+    sectionList.push('Save to IPFS');
+    sectionList.push('Download');
+    sectionList.push('PDF');
+
+    var dropSelect = '<select class="dropselect form-control" name="dropselect" id="dropselect" onchange="gotoSection(this.value)">'; //
+    // dropSelect += '<option value="" selected>Go</option>';
+    for (var drs in sectionList) {
+        //dropSelect += '<option value="'+sectionList[drs]+'">'+sectionList[drs]+'</option>';
+        if (sectionList[drs]==(selectedSection||currentSection)) { dropSelect += '<option value="'+sectionList[drs]+'" selected>'+sectionList[drs]+'</option>'; }
+        else if (sectionList[drs].substring(0,3)=="---") { dropSelect += '<hr>'; }
+        else   { dropSelect += '<option value="'+sectionList[drs]+'">'+sectionList[drs]+'</option>'; }
+    }                        
+    dropSelect += '</select>';
+
+    //document.getElementById("selSection").innerHTML = selectSection ;
+    document.getElementById("selSection").innerHTML = dropSelect ;
+    
+    return ootoot;
+}
+
+function prepWebPage(qd,url) {
+                    
+    var nn = ""+ qd.id;
+    var des = "" + qd.title;
+    if (qd["maxImageHeight"]) { var maxImageHeight = qd["maxImageHeight"]; }
+    
+    var outhtml='';
+    
+    $.ajax({
+        url: url, 
+        type: "GET",      
+        data: {},     
+        cache: false,
+        success: function(results){   
+            
+            
+            var obid = results.split('obid="')[1].split('"')[0];
+            var des = results.split('title="')[1].split('"')[0];
+            
+            console.log('#'+obid);
+            console.log(results);
+            var opb = document.querySelector('#output'+obid);
+            opb.innerHTML = results || "No Data"; //JSON.stringify(qdata) ;
+            //document.getElementById("output"+qd.id).innerHTML = results || "No Data"; //JSON.stringify(qdata) 
+            
+            feImages(results);
+            
+            var myob = {};
+            myob.id = obid;
+            myob.filename = obid + ".html";
+            myob.page = des;
+            myob.type = "text/html";
+            if (maxImageHeight) { myob["maxImageHeight"]=maxImageHeight; }
+            myob.value = "" + results;
+            try { setObject(obid, myob); } catch {}
+            myob = null;
+            
+            
+            
+        }           
+    });    
+    
+    
+    //calcfr = '<iframe class="cframe" frameBorder="0" src="' +qd.url + (qd.url.indexOf("?")>0?'':'?') + (calcsString||"") + '" style="' + (qd.style ? qd.style:'width:100%; height:300px;') + '"></iframe>'
+    var calcfr = '<div id="output'+qd.id + '">waiting... ' + qd.id + '</div>'
+    
+    outhtml += '<div class="outputbox">';
+    outhtml += "<table width='100%'><tr><td><b>WIKI: " + qd.title + "</b></td>\n";
+    
+    if (qd.buttons) { 
+        
+        outhtml += '<td align="right">';
+        for (var btn in qd.buttons) {
+            
+            outhtml += '<span class="mybutt" onclick="' + qd.buttons[btn].onClick + '">' + qd.buttons[btn].text + '</span> ';
+        }
+        outhtml += '</td>';
+    }
+    
+    outhtml += '</tr></table><br>';
+    
+    outhtml += calcfr ; 
+    
+    
+    
+    outhtml += "</div>\n";
+    
+    return (outhtml);
+    
+}
+
+
+	
+function vlookup (vlk)	 {
+    
+
+    //         "vlookup": [
+    //             "propertyTypes",
+    //             "windowFactor",
+    //             "propertyType",
+    //             "propertyType",
+    //             "above"
+   
+    
+    
+    var rtv = 0;
+    var lastv = -1;
+    var lastoo = -1;
+    
+    if (calculated[vlk[0]]) {
+        
+        var searchField = ""+vlk[2];
+        var ootField = ""+vlk[1];
+        ootField = Mustache.render(ootField, calculated);  // 
+            
+        var rtvlist = calculated[vlk[0]];
+        
+        for(var rtvit in rtvlist) {
+            
+            
+            if (rtvlist[rtvit][searchField]==calculated[vlk[3]]) {
+                
+                return (rtvlist[rtvit][ootField]);
+            }
+            else if (lastv!==-1 && !isNaN(rtvlist[rtvit][searchField])) {  
+                
+                
+                if (lastv < calculated[vlk[3]] && parseFloat(rtvlist[rtvit][searchField]) > calculated[vlk[3]]) {
+                    
+                    var ootv;
+                    
+                    if (vlk[4]=="above" || vlk[4]=="higher") {
+                        
+                        ootv = (rtvlist[rtvit][ootField]);
+                        
+                    } else if (vlk[4]=="below" || vlk[4]=="lower") {
+                        
+                        //console.log("============== VLOOKUP BELOW");
+                        ootv = (lastoo);
+                        
+                    } else{
+                    
+                        var ootr = parseFloat(rtvlist[rtvit][ootField]) - parseFloat(lastoo);
+                        
+                        ootv =  parseFloat(lastoo) + (ootr * (    (calculated[vlk[3]] - parseFloat(lastv) ) / (parseFloat(rtvlist[rtvit][searchField]) -  parseFloat(lastv) )  ) );
+                        
+                        console.log("vvvvvvvvvvvvvvvvvvvvvvvvv");
+                        console.log(parseFloat(lastoo) + " + (" + ootr + "* (    (" + calculated[vlk[3]] + " - " + parseFloat(lastv) + " ) / ( " + parseFloat(rtvlist[rtvit][searchField]) + " - " +  parseFloat(lastv) + " )  ) )");
+                    
+                    }
+                    return (ootv);
+                }
+                
+            }
+            
+            lastv = rtvlist[rtvit][searchField];  //hold for interpolation
+            lastoo =  rtvlist[rtvit][ootField];
+        }
+    }
+    
+    return (rtv);
+}
+
+
+function looseJsonParse(obj) {
+    return Function('"use strict";return (' + obj + ')')();
+}
+// console.log(looseJsonParse(
+//   "{a:(4-1), b:function(){}, c:new Date()}"
+// ))
+
+function runCalcs() {
+
+
+    calcsString = "";
+    tableArrays.calcsArray = [["key","Description","Value","Units"]];
+    
+    // run through form inputs and store current values into calculated.
+    var cells =  document.getElementsByClassName("form-control");
+	var i;
+	for (i = 0; i < cells.length; i++) {
+	
+	    
+	    
+	
+		calcsOut += cells[i].value + "<br>\n";
+        
+        if ("" + cells[i].value !== "") { 
+            
+            if (isNaN(cells[i].value)) { 
+                
+                if ((cells[i].classList+" ").indexOf("htmlinput")>-1) {     // && cells[i].classList.indexOf("ck")>-1
+                    
+                    calculated[cells[i].id] = cells[i].innerHTML;
+                }
+                else {
+                    
+                    calculated[cells[i].id] = (cells[i].value);
+                
+                    if ((calculated[cells[i].id]+" ").substr(0,1)=="{" || (calculated[cells[i].id]+" ").substr(0,1)=="[") {    // detect objects in textboxes
+                        
+                        console.log("***********************************")
+                        console.log(calculated[cells[i].id]);
+                        
+                        try  { calculated[cells[i].id] = JSON.parse(calculated[cells[i].id]) } catch {  }
+                        
+                        console.log(calculated[cells[i].id]);
+                        
+                        
+                    }
+                
+                }
+               
+                
+            } else {
+                
+                calculated[cells[i].id] = parseFloat(cells[i].value);
+            }
+            
+            calcsString += "&" + cells[i].id + "=" + encodeURIComponent(cells[i].value);
+        }
+	}
+	
+    var calcsOut = '<table class="table">';
+    
+    //calculated.objects = objects;
+    
+    // ================== Sheet Custom Calculations
+    
+    
+    if (calculated['loadSchedule']) {
+        
+        console.log("Load Schedule = ");
+        console.log(calculated['loadSchedule']);
+        
+        
+            
+            var cv1 = calculated['loadSchedule'];
+            var cv = 0;
+            var np = 0;
+            var kwCHMax = 0;
+            
+            //var ldata=[];
+            
+            if (Array.isArray(cv1)) { // should be
+            
+                for (var lnsv in cv1) {
+                        
+                    //ldata.push(lns[lnsv].split(","));
+                    
+                    cv = cv + parseFloat(cv1[lnsv]["qty"])
+                    
+                    np = np + (parseFloat(cv1[lnsv]["occupants"]) * parseFloat(cv1[lnsv]["qty"]));
+                    
+                    kwCHMax = kwCHMax + (parseFloat(cv1[lnsv]["kwCH"]) * parseFloat(cv1[lnsv]["qty"]));
+                    
+                    
+                }
+            
+            
+            } else { // legacy 
+                
+                if((""+cv1)!=="") {
+                    
+                    var vv = (""+cv1).replace(/\%20/g," ").replace(/_/g," ");
+                    var lns = vv.split(", ");
+                    for (var lnsv in lns) {
+                        
+                        //ldata.push(lns[lnsv].split(","));
+                        
+                        cv = cv + parseFloat(lns[lnsv].split(",")[4])
+                        
+                        np = np + (parseFloat(lns[lnsv].split(",")[2]) * parseFloat(lns[lnsv].split(",")[4]));
+                        
+                        kwCHMax = kwCHMax + (parseFloat(lns[lnsv].split(",")[3]) * parseFloat(lns[lnsv].split(",")[4]));
+                        
+                        
+                    }
+                }
+                
+            }
+            
+            calcsOut += "<tr>";  
+            calcsOut += "<td>Total Properties</td>";
+            
+            if (document.getElementById("hideMaths").checked!==true) {
+                calcsOut += "<td><small></small></td>";   //"<br>\n";
+            }
+            calcsOut +=  '<td align="right">' + cv + "</td>";
+            calcsOut +=  '<td width="14%">properties</td></tr>\n';
+            
+            calculated['nProperties'] = cv;
+            calcsString += "&nProperties=" + cv;
+            
+            
+            
+            calcsOut += "<tr>";  
+            calcsOut += "<td>Total People</td>";
+            
+            if (document.getElementById("hideMaths").checked!==true) {
+                calcsOut += "<td><small></small></td>";   //"<br>\n";
+            }
+            calcsOut +=  '<td align="right">' + np + "</td>";
+            calcsOut +=  '<td width="14%">people</td></tr>\n';
+            
+            calculated['nPeople'] = np;
+            calcsString += "&nPeople=" + np;
+            
+            
+            calcsOut += "<tr>";  
+            calcsOut += "<td>Total of central heating outputs</td>";
+            
+            if (document.getElementById("hideMaths").checked!==true) {
+                calcsOut += "<td><small></small></td>";   //"<br>\n";
+            }
+            calcsOut +=  '<td align="right">' + kwCHMax + "</td>";
+            calcsOut +=  '<td width="14%">kW</td></tr>\n';
+            
+            calculated['kwCHMax'] = kwCHMax;
+            calcsString += "&kwCHMax=" + kwCHMax;
+            
+        
+        
+    }
+    
+    
+    // ================================
+    
+    if (calculated.testoEnabled=="true") { testoData(); }
+    
+    for (var calc in (qdata["calculations"]||[])) {
+        
+        console.log(calc);
+        console.log(qdata.calculations[calc]);
+        
+        var cif = qdata.calculations[calc].if || true;
+        var cift = Mustache.render(cif, calculated);
+        var goc = true;
+        try {
+          goc = looseJsonParse(cift); 
+        }
+        catch(err) {
+          goc = false;
+        }
+        
+        if (goc) {
+            
+            
+            var cv,f,ft;
+            
+            if(qdata.calculations[calc].vlookup) {
+            
+                f="";
+                ft="";
+                cv = vlookup(qdata.calculations[calc].vlookup);
+                console.log(cv);
+            
+            } else {
+                
+            
+                f = qdata.calculations[calc].function;
+                ft = Mustache.render(f, calculated);
+                
+                cv = "";
+                try {
+                  cv = looseJsonParse(ft); //  looseJsonParse("{a:(4-1), b:function(){}, c:new Date()}");
+                }
+                catch(err) {
+                  
+                }
+             
+            }
+            
+            if (!isNaN(cv)) { cv = parseInt(cv*1000)/1000; }
+            
+            calcsOut += "<tr>";  //<td>" + qdata.calculations[calc].id + "</td>";
+            calcsOut += "<td>";
+            
+            var cOs1 = "";  var cOs2 = "";
+            
+            if (document.getElementById("hideID").checked!==true) {
+                cOs2 = " <small>[<i>" + qdata.calculations[calc].id + "</i>]</small>";  
+            }
+            
+            calcsOut += cOs1 + (qdata.calculations[calc].title||qdata.calculations[calc].id) + cOs2 + "</td>";
+            
+            
+            
+            //calcsOut += f + " = ";
+            if (document.getElementById("hideMaths").checked!==true) {
+                calcsOut += "<td><small>" + ft.replace(/\,/g,", ") + "</small></td>";   //"<br>\n";
+            }
+            
+        
+            
+            var cvstyled = ""+cv;
+            if (cv=="PASS") { cvstyled = '<b style="color: #158915;">PASS</b>'}
+            else if (cv=="FAIL") { cvstyled = '<b style="color: #f00;">FAIL</b>'}
+
+            calcsOut +=  '<td align="right">' + cvstyled + "</td>";
+            
+            calcsOut +=  '<td width="14%">' + (qdata.calculations[calc].units||"") + "</td></tr>\n";
+            
+            calculated[qdata.calculations[calc].id] = cv;
+            calcsString += "&" + qdata.calculations[calc].id + "=" + cv;
+            
+            tableArrays.calcsArray.push([qdata.calculations[calc].id,qdata.calculations[calc].title||"".id,cv,qdata.calculations[calc].units||""]);
+        }
+        
+    }
+    
+    calcsOut +=  "</table>\n";
+    
+    // for (var calc in calculated) {
+        
+        
+    // }
+    
+    document.getElementById("calcs").innerHTML = calcsOut; //JSON.stringify(qdata) ;
+    
+    // rebuild form
+    document.getElementById("section1").innerHTML = parseQuestions(qdata); //JSON.stringify(qdata) ;
+    
+    document.getElementById("inputs").innerHTML = inputsOut; //JSON.stringify(qdata) ;
+    
+    document.getElementById("mylink").innerHTML = '<a href="hndesign?' + inputString + '" target="_blank">Open/share design...</a>'; //JSON.stringify(qdata) ;
+    
+    if(document.getElementById("description")) {  // work in progress - need to link to all
+
+        //document.getElementById("description").innerHTML = '<div style="border: 1px solid #e5e3e3; border-radius: 6px; height:200px;">' + document.getElementById("description").innerHTML + '</div>';
+
+        InlineEditor
+                .create( document.querySelector( '#description' ) )
+                .catch( error => {
+                    console.error( error );
+                } );
+        
+        
+        //for (var sht in initsheets) {  initSheet(initsheets[sht]);   }
+    }
+    
+    if(calculated["goSave"]=="xx") {
+        
+        document.getElementById("savesec").style.display = "block";
+        document.getElementById("ipfsinfo").innerHTML = 'changes unsaved';
+        
+        document.getElementById("savesecmore").style.display = "none";
+                    
+    }
+        
+    validform(validdata);
+                    
+}
+
+
+const convertLinks = ( input ) => {
+
+  let text = input;
+  const linksFound = text.match( /(?:www|https?)[^\s]+/g );
+  const aLink = [];
+
+  if ( linksFound != null ) {
+
+    for ( let i=0; i<linksFound.length; i++ ) {
+      let replace = linksFound[i];
+      if ( !( linksFound[i].match( /(http(s?)):\/\// ) ) ) { replace = 'http://' + linksFound[i] }
+      let linkText = replace.split( '/' )[2];
+      if ( linkText.substring( 0, 3 ) == 'www' ) { linkText = linkText.replace( 'www.', '' ) }
+      if ( linkText.match( /youtu/ ) ) {
+
+        let youtubeID = replace.split( '/' ).slice(-1)[0];
+        aLink.push( '<div class="video-wrapper"><iframe src="https://www.youtube.com/embed/' + youtubeID + '" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>' )
+      }
+      else if ( linkText.match( /vimeo/ ) ) {
+        let vimeoID = replace.split( '/' ).slice(-1)[0];
+        aLink.push( '<div class="video-wrapper"><iframe src="https://player.vimeo.com/video/' + vimeoID + '" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>' )
+      }
+      else {
+        aLink.push( '<a href="' + replace + '" target="_blank">' + linkText + '</a>' );
+      }
+      text = text.split( linksFound[i] ).map(item => { return aLink[i].includes('iframe') ? item.trim() : item } ).join( aLink[i] );
+    }
+    return text;
+
+  }
+  else {
+    return input;
+  }
+}
+
+
+//var validdata = {};
+
+function validform(validdata) {
+    
+    if(hasFocus && document.getElementById(hasFocus)) {
+        document.getElementById(hasFocus).focus();
+        
+        initSheet(hasFocus);
+        
+    }
+    
+    
+    
+// Initialize form validation on the registration form.
+  // It has the name attribute "registration"
+  $("form[name='qform']").validate(validdata);
+  
+  var xxvalid = {
+    // Specify validation rules
+    rules: {
+      // The key name on the left side is the name attribute
+      // of an input field. Validation rules are defined
+      // on the right side
+       nFloors: {
+         required: true,
+         digits: true,
+         min: 1
+       },
+      lastname: "required",
+      email: {
+        required: true,
+        // Specify that email should be validated
+        // by the built-in "email" rule
+        email: true
+      },
+      password: {
+        required: true,
+        minlength: 5
+      }
+    },
+    // Specify validation error messages
+    messages: {
+      nProperties: "Please enter a number.",
+      lastname: "Please enter your lastname",
+      password: {
+        required: "Please provide a password",
+        minlength: "Your password must be at least 5 characters long"
+      },
+      email: "Please enter a valid email address",
+      nFloors: "Please enter a number greater than 0."
+      
+    },
+    // Make sure the form is submitted to the destination defined
+    // in the "action" attribute of the form when valid
+    submitHandler: function(form) {
+      //form.submit();
+      runCalcs();
+      //alert("hello");
+    }
+  }
+
+  
+}
+
+
+function tosvg(obid) {
+
+    var nn = prompt("Fileame", objects[obid].id || obid);
+    if (nn===null) { return(null); }
+    nn = nn || "download.svg";
+    if (nn.indexOf(".svg")<0) { nn=nn + ".svg" ; } 
+    download( objects[obid].value, nn, "image/svg+xml" );
+ }
+
+
+</script>
+
+
+
+<div id="selSection" style="float:right; text-align: right; "></div>
+
+<div style="float:right; display:none;">
+<input type="checkbox" id="oneS" name="oneS" checked> <small>One section at a time</small><br>
+<input type="checkbox" id="oneQ" name="oneQ"> <small>One question at a time</small><br>
+<input type="checkbox" id="hideDone" name="hideDone"> <small>Hide completed questions</small><br>
+<input type="checkbox" id="hideMaths" name="hideMaths" checked> <small>Hide maths equations</small><br>
+<input type="checkbox" id="hideID" name="hideID" checked> <small>Hide IDs</small>
+</div>
+<div id="formName" class="h1"></div>
+
+<div class='section' style='display:none;'>
+    
+    <table width="100%"><tr>
+    <td valign="top" width="70%">
+        
+        <a href="https://heatweb.co.uk/w/index.php?title=Heat_Network_Designer" target="_blank"><small>Wiki Help Page</small></a>
+    </td>
+    <td width="30%">
+        
+    </td>
+    </tr></table>
+</div>
+
+<form action="" name="qform" id="qform">
+
+
+
+<div id="section1"></div>
+
+<script>
+
+
+    function opopen(secid) {
+        
+        //alert(window.location.href.split(".svg")[0]+".svg&display="+displayed);
+        
+        var url = document.getElementById("opframe"+secid).contentWindow.location.href;
+        
+        window.open(url);  //
+        
+         
+    
+    }
+
+   function download(content, fileName, contentType) {
+       
+       if(!contentType) contentType = 'application/octet-stream';
+		  const a = document.createElement("a");
+		  const file = new Blob([content], { type: contentType });
+		  a.href = URL.createObjectURL(file);
+		  a.download = fileName;
+		  a.click();
+	}
+
+
+    function downJSON() {
+    
+        var jsonData = { "calculated": calculated, "qdata": qdata, "objects": objects, "files": files, testodata: testoSensorData };
+        download(JSON.stringify(jsonData), calculated.jsonQ + "-" + (new Date().getTime()) + ".json", "text/plain");
+    }
+
+	function onDownload(){
+	    
+	    var jsonData = { "url": (window.location.href.split("hndesign")[0]+ 'hndesign?' + inputString),"calculated": calculated, "qdata": qdata, "objects": objects, "files": files };
+		download(JSON.stringify(jsonData), "hndesign.json", "text/plain");
+	}
+    
+
+
+    function ipfsmore(func){
+     
+        if (func == "datalink") {
+            
+            navigator.clipboard.writeText('https://heatweb.mypinata.cloud/ipfs/' + ipfsCID);  //
+            alert("IPFS Data Link Copied to Clipboard");
+            
+            
+            
+        } else if (func == "designlink") {
+            
+            navigator.clipboard.writeText(window.location.href.split("?")[0]+ '?loadCID=' + ipfsCID);  //
+            alert("IPFS Design Link Copied to Clipboard");
+            
+            
+        }
+    }
+    
+
+	function postIPFS(){
+	    
+	    document.getElementById("ipfsinfo").innerHTML = "saving... please wait";
+	    
+	    //var jsonData = { "calculated": calculated, "qdata": qdata, "objects": objects, "tableArrays": tableArrays, "files": files };
+		var jsonData = { "calculated": calculated, "qdata": qdata, testodata: testoSensorData };
+		
+		jsonData = { "json": JSON.stringify(jsonData) };
+		//var jsonData = {};
+		
+        // https://hw7.ddns.net/ui/posttoipfs
+	    $.ajax({
+                url: "https://heatweb-api.flowforge.cloud/posttoipfs", //
+                type: "POST",      
+                data: jsonData,     
+                cache: false,
+                success: function(results){   
+                    
+                    ipfsCID = results.IpfsHash;
+                    
+                    document.getElementById("ipfsinfo").innerHTML = '<a href="https://heatweb.mypinata.cloud/ipfs/' + results.IpfsHash + '" target="_new">' +  results.IpfsHash + '</a>';
+                    
+                    document.getElementById("savesecmore").style.display = "inline";
+                    
+                    //alert(results.IpfsHash);
+                    
+                                  
+                }           
+            });  
+	    
+	}
+    
+
+    var savedSQL = false;
+    var submissionID = "";
+
+	function postSQL(){
+	    
+        // comment aout to allow save as changes made
+        //if (savedSQL) { return null; }
+
+        if (submissionID=="") { submissionID = "hwf" + (new Date().getTime()); calculated.submissionID = ""+submissionID; }
+	    
+	    var jsonData = { "calculated": calculated, "qdata": qdata, "submissionID": submissionID, testodata: testoSensorData };
+		
+		jsonData = { "json": JSON.stringify(jsonData) }; // , "outputjson": JSON.stringify(objects)
+		
+        
+	    $.ajax({
+                url: "hwforms", //
+                type: "POST",      
+                data: jsonData,     
+                cache: false,
+                success: function(results){   
+                    
+                    
+                    savedSQL = true;
+                                  
+                }           
+            });  
+	    
+	}
+    
+   //
+    
+    function copyData(){
+	    
+	    var jsonData = calculated ;
+		navigator.clipboard.writeText(JSON.stringify(jsonData));
+		alert("Data Copied to Clipboard");
+	}
+    
+    
+    function copylink() {
+        
+        //alert(window.location.href.split(".svg")[0]+".svg&display="+displayed);
+        
+        navigator.clipboard.writeText(window.location.href.split("?")[0]+ '?' + inputString);  //
+        alert("Link Copied to Clipboard");
+         
+    
+    }
+    
+    function openlink() {
+        
+        //alert(window.location.href.split(".svg")[0]+".svg&display="+displayed);
+        
+        window.open(window.location.href.split("?")[0] + '?' + inputString);  //
+        
+         
+    
+    }
+    
+    function shareTwitter() {       
+        
+        var text = "My latest heat network design.";
+        var url = window.location.href.split("hndesign")[0]+ 'hndesign?' + inputString.replace(/ /g,"%20");
+        window.open('http://twitter.com/share?url='+encodeURIComponent(url)+'&text='+encodeURIComponent(text), '', 'left=0,top=0,width=550,height=450,personalbar=0,toolbar=0,scrollbars=0,resizable=0');
+
+    } 
+
+</script>
+<!-- style="display:none" -->
+
+<div id="inputssec" name="inputssec"  class='section' style="display:none" >
+    <h2>Inputs</h2>
+    <div id="inputs" class="notes"></div>
+</div>
+
+<div id="calcsssec" name="calcsssec" class='section' style="display:none">
+    <h2>Numeric Values and Calculations</h2>
+    <div id="calcs" class="notes"></div>
+</div>
+
+<div class='section'  style="display:none">
+    <h2>Links</h2>
+    <div id="mylink" class="notes"></div>
+    <div id="links" class="notes"></div>
+</div>
+
+</form>
+
+
+
+
+ <form id="nextform" name="nextform" method="post" action="/api/print" ajax="true" target="result1">
+    <input type="hidden" id="svgtext" name="svgtext" value="">
+    <input type="hidden" id="svgfile" name="svgfile" value="">
+    <input type="hidden" id="show" name="show" value="">
+    </form>
+ <iframe width="100%" frameborder="0" id="result1" name="result1" style="display:none"></iframe>
+
+
+<div id="savesec" class='section' style="display:none">
+
+    <table width="100%">
+        <tr>
+            <td align="right">
+                
+                <span class="mybutt" onclick="testoData()" style="display:none">Testo</span>
+
+                <span class="mybutt" onclick="downJSON()">Download</span>
+                <span class="mybutt" onclick="postIPFS()">Save to IPFS</span>
+                <span id="savesecmore" style="display:none">
+    <span class="mybutt" onclick="ipfsmore('datalink')">Copy Data Link</span>
+                <span class="mybutt" onclick="ipfsmore('designlink')">Copy Form Link</span>
+                </span>
+                <br><small><span id="ipfsinfo"></span></small>
+
+            </td>
+        </tr>
+    </table>
+
+</div>
+
+<div>
+	<canvas id="myChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/luxon@^2"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@^1"></script>
+
+<script>
+
+var chartExists = false;
+var myChart;
+
+function drawGraph() {
+
+  // const DATA_COUNT = 4;
+  // const NUMBER_CFG = {count: DATA_COUNT, min: 0, max: 100};
+
+  console.log(testoSensorData["115i-378"]);
+
+  chartExists = true;
+
+  const ctx = document.getElementById('myChart');
+
+  dsets = [];
+  dcolours = ['red','blue','green','orange'];
+  var dcnt=0;
+  for (var sensor in testoSensorData) {
+  
+    if (sensor.indexOf("115i")>-1) {
+
+        dsets.push({
+          label: sensor,
+          data: testoSensorData[sensor],               
+          backgroundColor: 'transparent',
+          borderColor: dcolours[dcnt],
+          borderWidth: 2,
+          pointStyle: false,
+          tension: 0.5
+        });
+
+        dcnt++;
+    }
+  }
+
+  const config = {
+  type: 'line',
+  data: {
+    datasets: dsets
+  },
+  options: {
+      parsing: {
+        xAxisKey: 'timestamp',
+        yAxisKey: 'Temperature'
+      },
+      animation: {
+          duration: 0.01,
+          onComplete: function () {
+            //console.log(myChart.toBase64Image());
+            testoimage = myChart.toBase64Image();
+          }
+      },
+      scales: {
+        x: {
+          type: 'time',
+          time: {
+            unit: 'second'
+          },
+          title: {
+            display: true,
+            text: 'Time'
+          }
+        },
+        y: {
+          title: {
+            display: true,
+            text: 'Temperature'
+          }
+        }
+      }
+    }
+  }
+
+  myChart = new Chart(ctx,config);
+
+  //console.log(image);
+
+}
+
+function updateGraph() {
+
+  myChart.update();
+
+}
+
+</script>
+
+<script>
+    
+
+var filesLoaded = 0;
+
+var files = {
+  img1: {
+    url: "logo.png"
+  }
+};
+
+var fonts = {};
+
+var fontsx = {
+  f1: {
+    url: "https://hw7.ddns.net/fonts/Roboto-Regular.ttf"
+  },
+  f2: {
+    url: "https://hw7.ddns.net/fonts/Roboto-Bold.ttf"
+  },
+  f3: {
+    url:
+      "https://hw7.ddns.net/fonts/Roboto-Italic.ttf"
+  },
+  f4: {
+    url:
+      "https://hw7.ddns.net/fonts/Roboto-BoldItalic.ttf"
+  }
+};
+
+var doc;
+
+
+function loadedFile(xhr) {
+  for (var file in files) {
+    if (files[file].url === xhr.responseURL) {
+      files[file].data = xhr.response;
+    }
+  }
+  filesLoaded += 1;
+  
+  console.log(xhr);
+  
+  if (filesLoaded == Object.keys(files).length) {
+    // showPDF();
+  }
+}
+
+
+
+for (var file in files) {
+  files[file].xhr = new XMLHttpRequest();
+  files[file].xhr.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      loadedFile(this);
+    }
+  };
+  files[file].xhr.responseType = "arraybuffer";
+  files[file].xhr.open("GET", files[file].url);
+  files[file].xhr.send(null);
+}
+
+for (var font in fonts) {
+  fonts[font].xhr = new XMLHttpRequest();
+  fonts[font].xhr.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      //loadedFile(this);
+      console.log("font...");
+      console.log(fonts[font].xhr)
+    }
+  };
+  fonts[font].xhr.responseType = "arraybuffer";
+  fonts[font].xhr.open("GET", fonts[font].url);
+  fonts[font].xhr.send(null);
+}
+
+
+
+function prepImage (imid, imurl) {
+    
+       files[imid] = {};
+       files[imid]["url"] = imurl;
+    
+    //for (var file in files) {
+      files[imid].xhr = new XMLHttpRequest();
+      files[imid].xhr.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          loadedFile(this);
+          console.log(files);
+        }
+      };
+      files[imid].xhr.responseType = "arraybuffer";
+      files[imid].xhr.open("GET", files[imid].url);
+      files[imid].xhr.send(null);
+    //}
+   
+}
+
+function feImages(htmlt) {
+    
+    var bits = htmlt.split('src="');
+    //var hoot = "";
+    
+    var ic=0;
+    for (var i in bits) {
+        
+        ic++;
+        
+        if (ic>1) {  
+            
+            try {
+            
+                var src = bits[i].split('"')[0];
+                
+                // bits[i] = bits[i].substr(bits[i].indexOf('"'));
+                
+                var fn = src.substr(src.lastIndexOf("/")+1);
+                fn = fn.replace(/ /g,"_").replace(/\./g,"_").toLowerCase();
+                
+                console.log(fn + " ... " + src);
+                
+        //        prepImage (fn, src);
+                
+                //src = "/ui/w/images/" + src;
+                
+                // bits[i] = 'src="' + src + bits[i]; 
+                
+                
+            } catch {}
+            
+            
+        }
+        
+        
+        //hoot += bits[i];
+    }
+
+}
+
+
+ var secscnt = 0;
+            
+
+
+const ppp = document.createElement("a");
+document.body.appendChild(ppp);
+ppp.style = "display: none";
+
+let blob;
+
+function downloadp() {
+  if (!blob) return;
+  var url = window.URL.createObjectURL(blob);
+  ppp.href = url;
+  ppp.download = 'test.pdf';
+  ppp.click();
+  window.URL.revokeObjectURL(url);
+}
+
+
+
+</script>
+
+
+</section></body></html>
