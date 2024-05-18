@@ -1,6 +1,6 @@
 Online Examples:
 
-* [HIU Acceptance Test](https://heatweb.b-cdn.net/browserware/hwforms.html?loadCID=bafkreig7p25jpsfah5gqulpiygrourbbyloz4y75x7yulgca5ecxwjanjm)
+* [HIU Acceptance Test](https://heatweb.b-cdn.net/browserware/hwforms3.html?loadCID=bafkreibb3h2appcsvztmvfz4eiybfudqlf3bfaobrsjcly63pp6i5vgygi)
 
 The HNQAP Forms Browserware can be run locally by opening hwforms.html in a browser, and adding a loadCID reference.
 The CID refers to where the JSON data file is to be found, and it as default set to use the Heatweb IPFS storage system.
