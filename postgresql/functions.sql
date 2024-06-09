@@ -15,9 +15,6 @@ END;
 $$ LANGUAGE plpgsql;
 
 
-SELECT * FROM fn_get_values('eon_fulhamrs1','3016031af27a0c25','dat','tHoDHW')
-
-
 CREATE FUNCTION fn_average(networknode varchar, device varchar, vargroup varchar, varkey varchar) RETURNS FLOAT AS $$
 DECLARE
     avg_value FLOAT := 0;
@@ -39,7 +36,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-SELECT * FROM fn_average('eon_fulhamrs1','3016031af27a0c25','dat','tHoDHW')
+
 
 
 
