@@ -8,11 +8,32 @@ AS $$
 BEGIN
 	RETURN QUERY
 	EXECUTE 'SELECT value, time FROM '
-    || quote_ident(networknode)
-    || ' WHERE device = $1 AND vargroup = $2 AND varkey = $3'
-   USING device, vargroup, varkey;
+	|| quote_ident(networknode)
+	|| ' WHERE device = $1 AND vargroup = $2 AND varkey = $3'
+	USING device, vargroup, varkey;
 END;
 $$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION fn_get_values_ext(networknode varchar, device varchar, vargroup varchar, varkey varchar)
+RETURNS table
+(
+	"value" text,
+	"time" timestamp with time zone,
+	"title" text,
+	"units" character varying(8)
+)
+AS $$
+BEGIN
+	RETURN QUERY
+	EXECUTE 'SELECT t1.value, t1.time, t2.title, t2.units FROM '
+	|| quote_ident(networknode) 
+	|| ' t1 INNER JOIN fields t2 ON t1.varkey = t2.varkey AND t1.vargroup = t2.vargroup'
+	|| ' WHERE t1.device = $1 AND t1.vargroup = $2 AND t1.varkey = $3'
+	USING device, vargroup, varkey;
+END;
+$$ LANGUAGE plpgsql;
+
 
 
 CREATE FUNCTION fn_average(networknode varchar, device varchar, vargroup varchar, varkey varchar) RETURNS FLOAT AS $$
