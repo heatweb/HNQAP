@@ -16,6 +16,7 @@ Quality assurance procedures are grouped by objects (object oriented), by which 
 * DHW Supply / Circuit
 * Substation
 * Property
+* HIU
 * BMS System 
 * AMR System
 * Compliance System
