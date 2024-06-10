@@ -46,8 +46,10 @@ $$ LANGUAGE plpgsql;
 
 
 -- SELECT * FROM fn_get_value('mynetwork','node0001','3016031af27a0c25','dat','tHoDHW')
+-- SELECT * FROM fn_get_value('3016031af27a0c25','tHoDHW') 
+-- SELECT * FROM fn_get_value('3016031af27a0c25','tHoDHW') WHERE vargroup='dat'
 
------------------------------------------------------------------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------------------------------------------------------------
 
 CREATE OR REPLACE FUNCTION fn_get_values(networknode varchar, device varchar, vargroup varchar, varkey varchar)
 RETURNS table
