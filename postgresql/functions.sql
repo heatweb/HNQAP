@@ -8,13 +8,14 @@ RETURNS table
 	varkey character varying(64),
 	"value" text,
 	"time" timestamp,
+	age interval,
 	"title" text,
 	"units" character varying(8)
 )
 AS $$
 BEGIN
 	RETURN QUERY
-	EXECUTE 'SELECT t1.network, t1.node, t1.device, t1.vargroup, t1.varkey, t1.value, t1.timestamp as time, t2.title, t2.units FROM readings t1'
+	EXECUTE 'SELECT t1.network, t1.node, t1.device, t1.vargroup, t1.varkey, t1.value, t1.timestamp as time, AGE(t1.timestamp) as age, t2.title, t2.units FROM readings t1'
 	|| ' INNER JOIN fields t2 ON t1.varkey = t2.varkey AND t1.vargroup = t2.vargroup'
 	|| ' WHERE t1.network = $1 AND t1.node = $2 AND t1.device = $3 AND t1.vargroup = $4 AND t1.varkey = $5'
 	USING networkref, noderef, deviceref, vargroupref, varkeyref;
@@ -31,13 +32,14 @@ RETURNS table
 	varkey character varying(64),
 	"value" text,
 	"time" timestamp,
+	age interval,
 	"title" text,
 	"units" character varying(8)
 )
 AS $$
 BEGIN
 	RETURN QUERY
-	EXECUTE 'SELECT t1.network, t1.node, t1.device, t1.vargroup, t1.varkey, t1.value, t1.timestamp as time, t2.title, t2.units FROM readings t1'
+	EXECUTE 'SELECT t1.network, t1.node, t1.device, t1.vargroup, t1.varkey, t1.value, t1.timestamp as time, AGE(t1.timestamp) as age, t2.title, t2.units FROM readings t1'
 	|| ' INNER JOIN fields t2 ON t1.varkey = t2.varkey AND t1.vargroup = t2.vargroup'
 	|| ' WHERE t1.device = $1 AND t1.varkey = $2'
 	USING deviceref, varkeyref;
