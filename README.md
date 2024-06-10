@@ -13,7 +13,7 @@ Quality assurance procedures are grouped by objects (object oriented), by which 
 * Buffer Storage
 * Hydraulic Circuit (Primary or Secondary)
 * Circulation Pump Sets
-* DHW Supply / Circuit
+* Communal DHW Supply / Circuit
 * Substation
 * Property
 * HIU
