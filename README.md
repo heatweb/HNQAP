@@ -5,7 +5,7 @@ This project contains documents, tools and data used in quality assurance proced
 
 As well as guidance documents, the project provides open-source JSON data files that describe procedures and records outcomes. A calculations engine and conditional branching are built into the data structure to allow complex conditional procedures to be followed and recorded.    
 
-Quality assurance procedures are grouped by objects (object oriented), by which a set of procedures apply to a specific item in a heat network, often with a heat meter(s) at entry and/or exit.  The object list is as follows.
+Quality assurance procedures are grouped by objects (object oriented), by which a set of procedures apply to a specific item in a heat network, often with a heat or water meter(s) at entry and/or exit.  The object list is as follows.
 
 * Boilers
 * Heat Pumps
