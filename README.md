@@ -17,7 +17,8 @@ Quality assurance procedures are grouped by objects (object oriented), by which 
 * Substation
 * Property
 * BMS System 
-* AMR System 
+* AMR System
+* Compliance System
   
 It is the aim to avoid duplication of KPIs between objects.  In this way, objects can be assembled, and a complete list of indexed KPIs obtained.
   
