@@ -1,3 +1,28 @@
+CREATE OR REPLACE FUNCTION fn_get_value(networknode varchar, deviceref varchar, vargroupref varchar, varkeyref varchar)
+RETURNS table
+(
+	network character varying(64),
+	node character varying(32),
+	device character varying(32),
+	vargroup character varying(16),
+	varkey character varying(64),
+	"value" text,
+	"time" timestamp,
+	"title" text,
+	"units" character varying(8)
+)
+AS $$
+BEGIN
+	RETURN QUERY
+	EXECUTE 'SELECT t1.network, t1.node, t1.device, t1.vargroup, t1.varkey, t1.value, t1.timestamp as time, t2.title, t2.units FROM readings t1'
+	|| ' INNER JOIN fields t2 ON t1.varkey = t2.varkey AND t1.vargroup = t2.vargroup'
+	|| ' WHERE t1.device = $1 AND t1.vargroup = $2 AND t1.varkey = $3'
+	USING deviceref, vargroupref, varkeyref;
+END;
+$$ LANGUAGE plpgsql;
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
 CREATE OR REPLACE FUNCTION fn_get_values(networknode varchar, device varchar, vargroup varchar, varkey varchar)
 RETURNS table
 (
