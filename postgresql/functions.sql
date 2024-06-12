@@ -114,7 +114,7 @@ $$ LANGUAGE plpgsql;
 
 -- -------------------------------------------------------------------------------------------
 
-CREATE FUNCTION avg_weighted_step(state numeric[], value numeric, weight numeric)
+CREATE FUNCTION fn_avg_weighted_step(state numeric[], value numeric, weight numeric)
 RETURNS numeric[]
 LANGUAGE plpgsql
 AS $$
@@ -124,7 +124,7 @@ END;
 $$ IMMUTABLE;
 
 
-CREATE FUNCTION avg_weighted_finalizer(state numeric[])
+CREATE FUNCTION fn_avg_weighted_finalizer(state numeric[])
 RETURNS numeric
 LANGUAGE plpgsql
 AS $$
@@ -138,9 +138,9 @@ $$ IMMUTABLE;
 
 
 CREATE AGGREGATE avg_weighted(value numeric, weight numeric) (
-    sfunc = avg_weighted_step, 
+    sfunc = fn_avg_weighted_step, 
     stype = numeric[],
-    finalfunc = avg_weighted_finalizer,
+    finalfunc = fn_avg_weighted_finalizer,
     initcond = '{0,0}' );
 
 
