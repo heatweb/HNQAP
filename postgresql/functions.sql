@@ -147,4 +147,50 @@ CREATE AGGREGATE avg_weighted(value numeric, weight numeric) (
 -- SELECT avg_weighted(v, w) FROM tmp;
 
 
+-- -------------------------------------------------------------------------------------------------
 
+CREATE OR REPLACE FUNCTION fn_weighted_average(networknode varchar, device varchar, vargroup varchar, varkey1 varchar, varkey2 varchar)
+RETURNS FLOAT AS $$
+DECLARE
+	avg_cnt INTEGER := 0;
+	avg_record RECORD;
+	tot_wv FLOAT := 0;
+	tot_w FLOAT := 0;
+	last_v FLOAT := 0;
+	last_w FLOAT := 0;
+	last_time FLOAT := 0;
+	period FLOAT := 0;
+BEGIN
+    	FOR avg_record IN
+	   	EXECUTE 'SELECT varkey, value, EXTRACT(EPOCH FROM time) AS time FROM '
+    		|| quote_ident(networknode)
+    		|| ' WHERE device = $1 AND vargroup = $2 AND (varkey = $3 OR varkey = $4)'
+   		USING device, vargroup, varkey1, varkey2
+	LOOP
+		
+	IF avg_cnt > 0 THEN
+		period := avg_record.time - last_time;
+		tot_wv := tot_wv + (last_v * last_w * period);
+		tot_w := tot_w + (last_w * period);
+	END IF;
+
+	IF avg_record.varkey = varkey1 THEN 
+		last_v := avg_record.value::numeric;
+	ELSE
+		last_w := avg_record.value::numeric;
+	END IF;
+
+	last_time = avg_record.time;
+	avg_cnt := avg_cnt + 1;
+
+    END LOOP;
+
+    IF avg_cnt > 0 THEN
+	RETURN tot_wv / tot_w;
+    ELSE
+        RETURN 0;
+    END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+-- SELECT fn_weighted_average('heatweb_network1','3016031af27a0c25','dat','tHoDHW','fHDHW')
