@@ -112,41 +112,6 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- -------------------------------------------------------------------------------------------
-
-CREATE FUNCTION fn_avg_weighted_step(state numeric[], value numeric, weight numeric)
-RETURNS numeric[]
-LANGUAGE plpgsql
-AS $$
-BEGIN
-    RETURN array[state[1] + value*weight, state[2] + weight];
-END;
-$$ IMMUTABLE;
-
-
-CREATE FUNCTION fn_avg_weighted_finalizer(state numeric[])
-RETURNS numeric
-LANGUAGE plpgsql
-AS $$
-BEGIN
-    IF state[2] = 0 THEN
-        RETURN null;
-    END IF;
-    RETURN state[1]/state[2];
-END;
-$$ IMMUTABLE;
-
-
-CREATE AGGREGATE avg_weighted(value numeric, weight numeric) (
-    sfunc = fn_avg_weighted_step, 
-    stype = numeric[],
-    finalfunc = fn_avg_weighted_finalizer,
-    initcond = '{0,0}' );
-
-
--- SELECT avg_weighted(v, w) FROM tmp;
-
-
 -- -------------------------------------------------------------------------------------------------
 
 CREATE OR REPLACE FUNCTION fn_weighted_average(networknode varchar, device varchar, vargroup varchar, varkey1 varchar, varkey2 varchar)
