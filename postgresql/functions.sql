@@ -126,35 +126,35 @@ DECLARE
 	last_time FLOAT := 0;
 	period FLOAT := 0;
 BEGIN
-    	FOR avg_record IN
-	   	EXECUTE 'SELECT varkey, value, EXTRACT(EPOCH FROM time) AS time FROM '
-    		|| quote_ident(networknode)
-    		|| ' WHERE device = $1 AND vargroup = $2 AND (varkey = $3 OR varkey = $4) ORDER BY time ASC'
-   		USING device, vargroup, varkey1, varkey2
+	FOR avg_record IN
+		EXECUTE 'SELECT varkey, value, EXTRACT(EPOCH FROM time) AS time FROM '
+		|| quote_ident(networknode)
+		|| ' WHERE device = $1 AND vargroup = $2 AND (varkey = $3 OR varkey = $4) ORDER BY time ASC'
+		USING device, vargroup, varkey1, varkey2
 	LOOP
 		
-	IF avg_cnt > 0 THEN
-		period := avg_record.time - last_time;
-		tot_wv := tot_wv + (last_v * last_w * period);
-		tot_w := tot_w + (last_w * period);
-	END IF;
-
-	IF avg_record.varkey = varkey1 THEN 
-		last_v := avg_record.value::numeric;
-	ELSE
-		last_w := avg_record.value::numeric;
-	END IF;
-
-	last_time = avg_record.time;
-	avg_cnt := avg_cnt + 1;
-
-    END LOOP;
-
-    IF avg_cnt > 0 THEN
-	RETURN tot_wv / tot_w;
-    ELSE
-        RETURN 0;
-    END IF;
+		IF avg_cnt > 0 THEN
+			period := avg_record.time - last_time;
+			tot_wv := tot_wv + (last_v * last_w * period);
+			tot_w := tot_w + (last_w * period);
+		END IF;
+	
+		IF avg_record.varkey = varkey1 THEN 
+			last_v := avg_record.value::numeric;
+		ELSE
+			last_w := avg_record.value::numeric;
+		END IF;
+	
+		last_time = avg_record.time;
+		avg_cnt := avg_cnt + 1;
+	
+	END LOOP;
+	
+    	IF avg_cnt > 0 THEN
+		RETURN tot_wv / tot_w;
+    	ELSE
+		RETURN 0;
+    	END IF;
 END;
 $$ LANGUAGE plpgsql;
 
