@@ -164,7 +164,7 @@ BEGIN
     	FOR avg_record IN
 	   	EXECUTE 'SELECT varkey, value, EXTRACT(EPOCH FROM time) AS time FROM '
     		|| quote_ident(networknode)
-    		|| ' WHERE device = $1 AND vargroup = $2 AND (varkey = $3 OR varkey = $4)'
+    		|| ' WHERE device = $1 AND vargroup = $2 AND (varkey = $3 OR varkey = $4) ORDER BY time ASC'
    		USING device, vargroup, varkey1, varkey2
 	LOOP
 		
