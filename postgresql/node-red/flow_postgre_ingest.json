@@ -1,0 +1,1628 @@
+[
+    {
+        "id": "ddbe7c6ad82f7957",
+        "type": "tab",
+        "label": "Aiven PostgreSQL",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "b0e9ed3e06701b3b",
+        "type": "mqtt in",
+        "z": "ddbe7c6ad82f7957",
+        "name": "MQTT Server",
+        "topic": "brunelstreet/#",
+        "qos": "0",
+        "datatype": "utf8",
+        "broker": "100564e47f14dbea",
+        "nl": true,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 170,
+        "y": 180,
+        "wires": [
+            [
+                "b1b1f5ab2b240551",
+                "114ba8d15971a9d8"
+            ]
+        ]
+    },
+    {
+        "id": "b1b1f5ab2b240551",
+        "type": "debug",
+        "z": "ddbe7c6ad82f7957",
+        "name": "debug 124",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 330,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "bcdd980b1f9b8a67",
+        "type": "catch",
+        "z": "ddbe7c6ad82f7957",
+        "name": "",
+        "scope": [
+            "ea0ffcde1ec328f7"
+        ],
+        "uncaught": false,
+        "x": 850,
+        "y": 180,
+        "wires": [
+            [
+                "1e5fef38eff0e71b"
+            ]
+        ]
+    },
+    {
+        "id": "1e5fef38eff0e71b",
+        "type": "debug",
+        "z": "ddbe7c6ad82f7957",
+        "name": "debug 125",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "topic",
+        "statusType": "msg",
+        "x": 1010,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "92451359ccf1b3de",
+        "type": "digitaloak-postgresql-query",
+        "z": "ddbe7c6ad82f7957",
+        "name": "",
+        "server": "d0e99faa9453a604",
+        "inputs": 1,
+        "outputs": 1,
+        "x": 370,
+        "y": 880,
+        "wires": [
+            [
+                "64b760eb0a6cae7e",
+                "9732d9a755b88176"
+            ]
+        ]
+    },
+    {
+        "id": "64b760eb0a6cae7e",
+        "type": "debug",
+        "z": "ddbe7c6ad82f7957",
+        "name": "debug 311",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 570,
+        "y": 940,
+        "wires": []
+    },
+    {
+        "id": "4adb08f72234a91e",
+        "type": "link in",
+        "z": "ddbe7c6ad82f7957",
+        "name": "Eon PostgreSQL",
+        "links": [],
+        "x": 175,
+        "y": 880,
+        "wires": [
+            [
+                "92451359ccf1b3de",
+                "a64c1211a9573753"
+            ]
+        ]
+    },
+    {
+        "id": "9732d9a755b88176",
+        "type": "link out",
+        "z": "ddbe7c6ad82f7957",
+        "name": "link out 18",
+        "mode": "return",
+        "links": [],
+        "x": 615,
+        "y": 880,
+        "wires": []
+    },
+    {
+        "id": "a64c1211a9573753",
+        "type": "debug",
+        "z": "ddbe7c6ad82f7957",
+        "name": "debug 312",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 370,
+        "y": 820,
+        "wires": []
+    },
+    {
+        "id": "0555545142b3d859",
+        "type": "template",
+        "z": "ddbe7c6ad82f7957",
+        "name": "CREATE TABLE readings",
+        "field": "query",
+        "fieldType": "msg",
+        "format": "sql",
+        "syntax": "mustache",
+        "template": "DROP TABLE IF EXISTS readings;\nCREATE TABLE readings (\n\tid SERIAL PRIMARY KEY,\n\tnetwork VARCHAR (64) NOT NULL,\n\tnode VARCHAR (32) NOT NULL,\n\tdevice VARCHAR (32) NOT NULL,\n\tvargroup VARCHAR (16) NOT NULL,\n\tvarkey VARCHAR (64) NOT NULL,\n\tdatapolicy VARCHAR (16),\n\tvalue TEXT,\n\ttimestamp TIMESTAMP,\n\tUNIQUE (network, node, device, vargroup,varkey)\n);\n",
+        "output": "str",
+        "x": 390,
+        "y": 1040,
+        "wires": [
+            [
+                "92e393586a997c1f"
+            ]
+        ]
+    },
+    {
+        "id": "af8af6ccdd575ca9",
+        "type": "link call",
+        "z": "ddbe7c6ad82f7957",
+        "name": "",
+        "links": [
+            "4adb08f72234a91e"
+        ],
+        "linkType": "static",
+        "timeout": "30",
+        "x": 595,
+        "y": 280,
+        "wires": [
+            [
+                "1c38bffabc97bb6b"
+            ]
+        ],
+        "l": false
+    },
+    {
+        "id": "1c38bffabc97bb6b",
+        "type": "debug",
+        "z": "ddbe7c6ad82f7957",
+        "name": "debug 313",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 730,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "9c195abc58b71b8d",
+        "type": "inject",
+        "z": "ddbe7c6ad82f7957",
+        "d": true,
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 180,
+        "y": 1040,
+        "wires": [
+            [
+                "0555545142b3d859"
+            ]
+        ]
+    },
+    {
+        "id": "971cfba5a42ae179",
+        "type": "template",
+        "z": "ddbe7c6ad82f7957",
+        "name": "INSERT",
+        "field": "query",
+        "fieldType": "msg",
+        "format": "sql",
+        "syntax": "mustache",
+        "template": "\nINSERT INTO readings (network,node,device,vargroup,varkey,timestamp,value)\nVALUES ('{{{network}}}','{{{node}}}','{{{device}}}','{{{vargroup}}}','{{{varkey}}}',now(),'{{{payload}}}')\nON CONFLICT(network,node,device,vargroup,varkey) \nDO UPDATE SET\n  value = EXCLUDED.value,\n  timestamp = EXCLUDED.timestamp;",
+        "output": "str",
+        "x": 460,
+        "y": 260,
+        "wires": [
+            [
+                "d5b7b8c77bf3141a",
+                "af8af6ccdd575ca9"
+            ]
+        ]
+    },
+    {
+        "id": "bd8e343670173034",
+        "type": "function",
+        "z": "ddbe7c6ad82f7957",
+        "name": "format",
+        "func": "var tops = msg.topic.split(\"/\");\nmsg.network = tops[0];\nmsg.node = tops[1];\nmsg.device = tops[2];\nmsg.vargroup = tops[3];\nmsg.varkey = tops[4];\n//msg.valueString = (\"\"+msg.payload).replaceAll(\"'\", \"''\");\n\nmsg.tablename = msg.network + \"_\" + msg.node;\n\nif (isNaN(msg.payload)) {\n    try{\n        if (msg.payload.indexOf(\"'\") > -1) { msg.payload = msg.payload.replaceAll(\"'\", \"''\"); }\n    } catch {}\n}\n\nif (!flow.get(\"tables.\" + msg.tablename)) {\n\n    return [msg, { \"payload\": msg.tablename, \"tablename\": msg.tablename }];\n\n} else {\n\n    return [msg,null];\n\n}\n\n",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 250,
+        "y": 300,
+        "wires": [
+            [
+                "971cfba5a42ae179",
+                "f386dc7bca9cdd4e"
+            ],
+            [
+                "f3f18b34e1c50427"
+            ]
+        ]
+    },
+    {
+        "id": "d5b7b8c77bf3141a",
+        "type": "debug",
+        "z": "ddbe7c6ad82f7957",
+        "name": "debug 314",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "query",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 650,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "114ba8d15971a9d8",
+        "type": "change",
+        "z": "ddbe7c6ad82f7957",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "timestamp",
+                "pt": "msg",
+                "to": "",
+                "tot": "date"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 155,
+        "y": 300,
+        "wires": [
+            [
+                "bd8e343670173034"
+            ]
+        ],
+        "l": false
+    },
+    {
+        "id": "6e7ea64d67237a8a",
+        "type": "template",
+        "z": "ddbe7c6ad82f7957",
+        "name": "CREATE TABLE fields",
+        "field": "query",
+        "fieldType": "msg",
+        "format": "sql",
+        "syntax": "mustache",
+        "template": "DROP TABLE IF EXISTS fields;\nCREATE TABLE fields (\n\tid SERIAL PRIMARY KEY,\n\tvargroup VARCHAR (16) NOT NULL,\n\tvarkey VARCHAR (64) NOT NULL,\n\tdevice VARCHAR (32),\n\ttitle TEXT,\n\tunits VARCHAR (8),\n\tdecimals INTEGER,\n\tcolour VARCHAR (12),\n\ttimestamp TIMESTAMP,\n\tUNIQUE (vargroup,varkey)\n);\n",
+        "output": "str",
+        "x": 400,
+        "y": 1080,
+        "wires": [
+            [
+                "92e393586a997c1f"
+            ]
+        ]
+    },
+    {
+        "id": "b8da481c00522dc4",
+        "type": "inject",
+        "z": "ddbe7c6ad82f7957",
+        "d": true,
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 180,
+        "y": 1080,
+        "wires": [
+            [
+                "6e7ea64d67237a8a"
+            ]
+        ]
+    },
+    {
+        "id": "92e393586a997c1f",
+        "type": "link call",
+        "z": "ddbe7c6ad82f7957",
+        "name": "",
+        "links": [
+            "4adb08f72234a91e"
+        ],
+        "linkType": "static",
+        "timeout": "30",
+        "x": 595,
+        "y": 1060,
+        "wires": [
+            [
+                "da66c6a70c3f4e35"
+            ]
+        ],
+        "l": false
+    },
+    {
+        "id": "da66c6a70c3f4e35",
+        "type": "debug",
+        "z": "ddbe7c6ad82f7957",
+        "name": "debug 315",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 910,
+        "y": 1060,
+        "wires": []
+    },
+    {
+        "id": "ed63e6ea358eb7b0",
+        "type": "link call",
+        "z": "ddbe7c6ad82f7957",
+        "name": "",
+        "links": [
+            "4adb08f72234a91e"
+        ],
+        "linkType": "static",
+        "timeout": "30",
+        "x": 975,
+        "y": 600,
+        "wires": [
+            [
+                "d05b7e00f91a74ac"
+            ]
+        ],
+        "l": false
+    },
+    {
+        "id": "d05b7e00f91a74ac",
+        "type": "debug",
+        "z": "ddbe7c6ad82f7957",
+        "name": "debug 316",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1130,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "11d998750a763317",
+        "type": "template",
+        "z": "ddbe7c6ad82f7957",
+        "name": "INSERT",
+        "field": "query",
+        "fieldType": "msg",
+        "format": "sql",
+        "syntax": "mustache",
+        "template": "\nINSERT INTO fields (vargroup,varkey,timestamp,title,units)\nVALUES ('{{{vargroup}}}','{{{varkey}}}',now(),'{{{title}}}','{{{units}}}')\nON CONFLICT(vargroup,varkey) \nDO UPDATE SET\n  title = EXCLUDED.title,\n  units = EXCLUDED.units,\n  timestamp = now();",
+        "output": "str",
+        "x": 800,
+        "y": 600,
+        "wires": [
+            [
+                "ed63e6ea358eb7b0",
+                "8206420771f3d472"
+            ]
+        ]
+    },
+    {
+        "id": "0c96acdc65d5517c",
+        "type": "function",
+        "z": "ddbe7c6ad82f7957",
+        "name": "function 13",
+        "func": "\n\nfor (var g in msg.payload) {\n    for (var f in msg.payload[g]) {\n\n        var msg1={}\n        msg1.vargroup = g;\n        msg1.varkey = f;\n        msg1.title = msg.payload[g][f].title;\n        msg1.units = msg.payload[g][f].units;\n\n        node.send (msg1);\n    }\n}\n\n\n\n\nreturn null;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 600,
+        "wires": [
+            [
+                "b564cb3bc328506e"
+            ]
+        ]
+    },
+    {
+        "id": "8206420771f3d472",
+        "type": "debug",
+        "z": "ddbe7c6ad82f7957",
+        "name": "debug 317",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "query",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1010,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "6c881746fee807e0",
+        "type": "inject",
+        "z": "ddbe7c6ad82f7957",
+        "d": true,
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "topics.default",
+        "payloadType": "global",
+        "x": 210,
+        "y": 600,
+        "wires": [
+            [
+                "0c96acdc65d5517c"
+            ]
+        ]
+    },
+    {
+        "id": "b564cb3bc328506e",
+        "type": "delay",
+        "z": "ddbe7c6ad82f7957",
+        "name": "",
+        "pauseType": "rate",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "20",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 640,
+        "y": 600,
+        "wires": [
+            [
+                "11d998750a763317"
+            ]
+        ]
+    },
+    {
+        "id": "c0af84fba4982858",
+        "type": "inject",
+        "z": "ddbe7c6ad82f7957",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "0",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 190,
+        "y": 720,
+        "wires": [
+            [
+                "259646af48683c71"
+            ]
+        ]
+    },
+    {
+        "id": "259646af48683c71",
+        "type": "template",
+        "z": "ddbe7c6ad82f7957",
+        "name": "LIST TABLES",
+        "field": "query",
+        "fieldType": "msg",
+        "format": "sql",
+        "syntax": "mustache",
+        "template": "SELECT *\nFROM pg_catalog.pg_tables\nWHERE schemaname != 'pg_catalog' AND \n    schemaname != 'information_schema';\n",
+        "output": "str",
+        "x": 400,
+        "y": 720,
+        "wires": [
+            [
+                "08970bd698ec6528"
+            ]
+        ]
+    },
+    {
+        "id": "08970bd698ec6528",
+        "type": "link call",
+        "z": "ddbe7c6ad82f7957",
+        "name": "",
+        "links": [
+            "4adb08f72234a91e"
+        ],
+        "linkType": "static",
+        "timeout": "30",
+        "x": 535,
+        "y": 720,
+        "wires": [
+            [
+                "37a45e53c22baa97"
+            ]
+        ],
+        "l": false
+    },
+    {
+        "id": "6efb929571730cbb",
+        "type": "debug",
+        "z": "ddbe7c6ad82f7957",
+        "name": "debug 318",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 790,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "dd08bd3b428cd910",
+        "type": "function",
+        "z": "ddbe7c6ad82f7957",
+        "name": "save to flow",
+        "func": "//for (var t in msg.payload) {\n\n    flow.set(\"tables.\" + msg.payload.tablename, { \"tablename\": msg.payload.tablename });\n//}\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 790,
+        "y": 740,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "37a45e53c22baa97",
+        "type": "change",
+        "z": "ddbe7c6ad82f7957",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.rows",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 595,
+        "y": 720,
+        "wires": [
+            [
+                "90e6e92d98c0acf0"
+            ]
+        ],
+        "l": false
+    },
+    {
+        "id": "90e6e92d98c0acf0",
+        "type": "split",
+        "z": "ddbe7c6ad82f7957",
+        "name": "",
+        "splt": "\\n",
+        "spltType": "str",
+        "arraySplt": 1,
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "",
+        "x": 655,
+        "y": 720,
+        "wires": [
+            [
+                "6efb929571730cbb",
+                "dd08bd3b428cd910"
+            ]
+        ],
+        "l": false
+    },
+    {
+        "id": "a2fc5d7d4fdba36e",
+        "type": "debug",
+        "z": "ddbe7c6ad82f7957",
+        "name": "debug 319",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 590,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "f0d780a4f1f4f971",
+        "type": "template",
+        "z": "ddbe7c6ad82f7957",
+        "name": "CREATE TABLE network_node",
+        "field": "query",
+        "fieldType": "msg",
+        "format": "sql",
+        "syntax": "mustache",
+        "template": "CREATE TABLE {{{tablename}}} (\n\tdevice VARCHAR (32) NOT NULL,\n\tvargroup VARCHAR (16) NOT NULL,\n\tvarkey VARCHAR (64) NOT NULL,\n\tvalue TEXT,\n\ttime TIMESTAMPTZ NOT NULL,\n\tUNIQUE (device, vargroup, varkey, time)\n);\n",
+        "output": "str",
+        "x": 590,
+        "y": 420,
+        "wires": [
+            [
+                "f254aed03cba0db0",
+                "71264aa8018eeb24"
+            ]
+        ]
+    },
+    {
+        "id": "9d7fe1be24692eaf",
+        "type": "link call",
+        "z": "ddbe7c6ad82f7957",
+        "name": "",
+        "links": [
+            "4adb08f72234a91e"
+        ],
+        "linkType": "static",
+        "timeout": "30",
+        "x": 945,
+        "y": 420,
+        "wires": [
+            [
+                "6dfbcf534e3fc473",
+                "c4753bb98fa5a239",
+                "50387c392dcf62a3"
+            ]
+        ],
+        "l": false
+    },
+    {
+        "id": "f3f18b34e1c50427",
+        "type": "trigger",
+        "z": "ddbe7c6ad82f7957",
+        "name": "",
+        "op1": "",
+        "op2": "",
+        "op1type": "pay",
+        "op2type": "nul",
+        "duration": "2",
+        "extend": false,
+        "overrideDelay": false,
+        "units": "s",
+        "reset": "",
+        "bytopic": "all",
+        "topic": "topic",
+        "outputs": 1,
+        "x": 320,
+        "y": 420,
+        "wires": [
+            [
+                "a2fc5d7d4fdba36e",
+                "f0d780a4f1f4f971"
+            ]
+        ]
+    },
+    {
+        "id": "6dfbcf534e3fc473",
+        "type": "debug",
+        "z": "ddbe7c6ad82f7957",
+        "name": "debug 320",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1150,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "f254aed03cba0db0",
+        "type": "debug",
+        "z": "ddbe7c6ad82f7957",
+        "name": "debug 321",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 810,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "a83673285ffaafda",
+        "type": "link in",
+        "z": "ddbe7c6ad82f7957",
+        "name": "link in 3",
+        "links": [
+            "524917ae84428eda"
+        ],
+        "x": 265,
+        "y": 680,
+        "wires": [
+            [
+                "259646af48683c71"
+            ]
+        ]
+    },
+    {
+        "id": "524917ae84428eda",
+        "type": "link out",
+        "z": "ddbe7c6ad82f7957",
+        "name": "link out 19",
+        "mode": "link",
+        "links": [
+            "a83673285ffaafda"
+        ],
+        "x": 1295,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "c4753bb98fa5a239",
+        "type": "trigger",
+        "z": "ddbe7c6ad82f7957",
+        "name": "",
+        "op1": "",
+        "op2": "",
+        "op1type": "nul",
+        "op2type": "payl",
+        "duration": "1",
+        "extend": true,
+        "overrideDelay": false,
+        "units": "min",
+        "reset": "",
+        "bytopic": "all",
+        "topic": "topic",
+        "outputs": 1,
+        "x": 1170,
+        "y": 500,
+        "wires": [
+            [
+                "524917ae84428eda"
+            ]
+        ]
+    },
+    {
+        "id": "3337800f50a601ed",
+        "type": "link call",
+        "z": "ddbe7c6ad82f7957",
+        "name": "",
+        "links": [
+            "4adb08f72234a91e"
+        ],
+        "linkType": "static",
+        "timeout": "30",
+        "x": 595,
+        "y": 360,
+        "wires": [
+            [
+                "af2b8cd4202a8f62"
+            ]
+        ],
+        "l": false
+    },
+    {
+        "id": "af2b8cd4202a8f62",
+        "type": "debug",
+        "z": "ddbe7c6ad82f7957",
+        "name": "debug 322",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 730,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "f386dc7bca9cdd4e",
+        "type": "template",
+        "z": "ddbe7c6ad82f7957",
+        "name": "INSERT",
+        "field": "query",
+        "fieldType": "msg",
+        "format": "sql",
+        "syntax": "mustache",
+        "template": "\nINSERT INTO {{{tablename}}} (device,vargroup,varkey,time,value)\nVALUES ('{{{device}}}','{{{vargroup}}}','{{{varkey}}}',now(),'{{{payload}}}')\n",
+        "output": "str",
+        "x": 460,
+        "y": 340,
+        "wires": [
+            [
+                "9a4135abe804f0fa",
+                "3337800f50a601ed"
+            ]
+        ]
+    },
+    {
+        "id": "9a4135abe804f0fa",
+        "type": "debug",
+        "z": "ddbe7c6ad82f7957",
+        "name": "debug 323",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "query",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 650,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "71264aa8018eeb24",
+        "type": "function",
+        "z": "ddbe7c6ad82f7957",
+        "name": "save to flow",
+        "func": "//for (var t in msg.payload) {\n\n    flow.set(\"tables.\" + msg.tablename, { \"tablename\": msg.tablename });\n//}\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 830,
+        "y": 420,
+        "wires": [
+            [
+                "9d7fe1be24692eaf"
+            ]
+        ]
+    },
+    {
+        "id": "50387c392dcf62a3",
+        "type": "template",
+        "z": "ddbe7c6ad82f7957",
+        "name": "create_hypertable",
+        "field": "query",
+        "fieldType": "msg",
+        "format": "sql",
+        "syntax": "mustache",
+        "template": "SELECT create_hypertable('{{{tablename}}}', by_range('time'));",
+        "output": "str",
+        "x": 1150,
+        "y": 420,
+        "wires": [
+            [
+                "355d1b0dfadf2aab"
+            ]
+        ]
+    },
+    {
+        "id": "355d1b0dfadf2aab",
+        "type": "link call",
+        "z": "ddbe7c6ad82f7957",
+        "name": "",
+        "links": [
+            "4adb08f72234a91e"
+        ],
+        "linkType": "static",
+        "timeout": "30",
+        "x": 1355,
+        "y": 420,
+        "wires": [
+            [
+                "05ce1ba54c61670b"
+            ]
+        ],
+        "l": false
+    },
+    {
+        "id": "05ce1ba54c61670b",
+        "type": "debug",
+        "z": "ddbe7c6ad82f7957",
+        "name": "debug 324",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1490,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "9749a2c966b924f3",
+        "type": "template",
+        "z": "ddbe7c6ad82f7957",
+        "name": "CREATE TABLE nodes",
+        "field": "query",
+        "fieldType": "msg",
+        "format": "sql",
+        "syntax": "mustache",
+        "template": "DROP TABLE IF EXISTS nodes;\nCREATE TABLE nodes (\n\tid SERIAL PRIMARY KEY,\n\tnetwork VARCHAR (64) NOT NULL,\n\tnode VARCHAR (32) NOT NULL,\n\tnotes TEXT,\n\ttimestamp TIMESTAMP,\n\tUNIQUE (network, node)\n);\n",
+        "output": "str",
+        "x": 390,
+        "y": 1180,
+        "wires": [
+            [
+                "ea593d2522620874"
+            ]
+        ]
+    },
+    {
+        "id": "93e2536c7f5d5dce",
+        "type": "inject",
+        "z": "ddbe7c6ad82f7957",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 180,
+        "y": 1180,
+        "wires": [
+            [
+                "9749a2c966b924f3"
+            ]
+        ]
+    },
+    {
+        "id": "c3037213df469410",
+        "type": "inject",
+        "z": "ddbe7c6ad82f7957",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 180,
+        "y": 1220,
+        "wires": [
+            [
+                "3adbe59ae911fc99"
+            ]
+        ]
+    },
+    {
+        "id": "ea593d2522620874",
+        "type": "link call",
+        "z": "ddbe7c6ad82f7957",
+        "name": "",
+        "links": [
+            "4adb08f72234a91e"
+        ],
+        "linkType": "static",
+        "timeout": "30",
+        "x": 595,
+        "y": 1200,
+        "wires": [
+            [
+                "8e016b07bc224c09"
+            ]
+        ],
+        "l": false
+    },
+    {
+        "id": "8e016b07bc224c09",
+        "type": "debug",
+        "z": "ddbe7c6ad82f7957",
+        "name": "debug 325",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 910,
+        "y": 1200,
+        "wires": []
+    },
+    {
+        "id": "3adbe59ae911fc99",
+        "type": "template",
+        "z": "ddbe7c6ad82f7957",
+        "name": "CREATE TABLE devices",
+        "field": "query",
+        "fieldType": "msg",
+        "format": "sql",
+        "syntax": "mustache",
+        "template": "DROP TABLE IF EXISTS devices;\nCREATE TABLE devices (\n\tid SERIAL PRIMARY KEY,\n\tnetwork VARCHAR (64) NOT NULL,\n\tnode VARCHAR (32) NOT NULL,\n\tdevice VARCHAR (32) NOT NULL,\n\tnotes TEXT,\n\ttimestamp TIMESTAMP,\n\tUNIQUE (network, node, device)\n);\n",
+        "output": "str",
+        "x": 390,
+        "y": 1220,
+        "wires": [
+            [
+                "ea593d2522620874"
+            ]
+        ]
+    },
+    {
+        "id": "38234943b6bdb852",
+        "type": "template",
+        "z": "ddbe7c6ad82f7957",
+        "name": "CREATE TABLE datapolicies",
+        "field": "query",
+        "fieldType": "msg",
+        "format": "sql",
+        "syntax": "mustache",
+        "template": "DROP TABLE IF EXISTS datapolicies;\nCREATE TABLE datapolicies (\n\tdatapolicy VARCHAR (16) PRIMARY KEY,\n\tretain BOOLEAN,\n\tretain_for VARCHAR (16),\n\tnotes TEXT\n);\n",
+        "output": "str",
+        "x": 400,
+        "y": 1280,
+        "wires": [
+            [
+                "b8bd4d74b0b56582"
+            ]
+        ]
+    },
+    {
+        "id": "36fc2fa71717ff54",
+        "type": "inject",
+        "z": "ddbe7c6ad82f7957",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 180,
+        "y": 1280,
+        "wires": [
+            [
+                "38234943b6bdb852"
+            ]
+        ]
+    },
+    {
+        "id": "b8bd4d74b0b56582",
+        "type": "link call",
+        "z": "ddbe7c6ad82f7957",
+        "name": "",
+        "links": [
+            "4adb08f72234a91e"
+        ],
+        "linkType": "static",
+        "timeout": "30",
+        "x": 595,
+        "y": 1280,
+        "wires": [
+            [
+                "2ec6b12ff17ad81e"
+            ]
+        ],
+        "l": false
+    },
+    {
+        "id": "2ec6b12ff17ad81e",
+        "type": "debug",
+        "z": "ddbe7c6ad82f7957",
+        "name": "debug 326",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 910,
+        "y": 1280,
+        "wires": []
+    },
+    {
+        "id": "5da7180fdbdfde98",
+        "type": "template",
+        "z": "ddbe7c6ad82f7957",
+        "name": "SELECT * FROM fields",
+        "field": "query",
+        "fieldType": "msg",
+        "format": "sql",
+        "syntax": "mustache",
+        "template": "SELECT * FROM fields\n",
+        "output": "str",
+        "x": 430,
+        "y": 1460,
+        "wires": [
+            [
+                "08c260f63587da6d"
+            ]
+        ]
+    },
+    {
+        "id": "08c260f63587da6d",
+        "type": "link call",
+        "z": "ddbe7c6ad82f7957",
+        "name": "",
+        "links": [
+            "4adb08f72234a91e"
+        ],
+        "linkType": "static",
+        "timeout": "30",
+        "x": 585,
+        "y": 1460,
+        "wires": [
+            [
+                "b5371aaee2cfb939",
+                "ef7d43bc29c4eb95"
+            ]
+        ],
+        "l": false
+    },
+    {
+        "id": "b5371aaee2cfb939",
+        "type": "debug",
+        "z": "ddbe7c6ad82f7957",
+        "name": "debug 327",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload.rows",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 710,
+        "y": 1400,
+        "wires": []
+    },
+    {
+        "id": "5b3c8aeb54414f41",
+        "type": "http in",
+        "z": "ddbe7c6ad82f7957",
+        "name": "",
+        "url": "/editfields1",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 200,
+        "y": 1460,
+        "wires": [
+            [
+                "5da7180fdbdfde98"
+            ]
+        ]
+    },
+    {
+        "id": "f5876f4d074acc57",
+        "type": "http response",
+        "z": "ddbe7c6ad82f7957",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 1050,
+        "y": 1460,
+        "wires": []
+    },
+    {
+        "id": "776dc12bad4c1342",
+        "type": "template",
+        "z": "ddbe7c6ad82f7957",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<html>\n<head>\n<link href=\"https://unpkg.com/tabulator-tables@6.2.1/dist/css/tabulator.min.css\" rel=\"stylesheet\">\n <script type=\"text/javascript\" src=\"https://unpkg.com/tabulator-tables@6.2.1/dist/js/tabulator.min.js\"></script>\n </head>\n <body>\n  \n<div id=\"example-table\"></div>\n\n<script>\n//define some sample data\n var tabledata = {{{payload}}};\n\n//create Tabulator on DOM element with id \"example-table\"\nvar table = new Tabulator(\"#example-table\", {\n \theight:800, // set height of table (in CSS or here), this enables the Virtual DOM and improves render speed dramatically (can be any valid css height value)\n \tdata:tabledata, //assign data to table\n \tlayout:\"fitColumns\", //fit columns to width of table (optional)\n \tcolumns:[ //Define Table Columns\n\t \t{title:\"Group\", field:\"vargroup\", width:150},\n\t \t{title:\"Key\", field:\"varkey\", hozAlign:\"left\", width:250},\n\t \t{title:\"Title\", field:\"title\", hozAlign:\"left\", width:400, editor:\"input\"},\n\t \t{title:\"Units\", field:\"units\", hozAlign:\"left\", width:100, editor:\"input\"},\n\t \t{title:\"Color\", field:\"colour\", editor:\"input\"},\n \t],\n});\n\n//trigger an alert message when the row is clicked\ntable.on(\"rowClick\", function(e, row){ \n\t//alert(\"Row \" + row.getData().id + \" Clicked!!!!\");\n});\n\n</script>\n  </body>\n\n </html>",
+        "output": "str",
+        "x": 880,
+        "y": 1460,
+        "wires": [
+            [
+                "f5876f4d074acc57"
+            ]
+        ]
+    },
+    {
+        "id": "762809dddab91c6d",
+        "type": "json",
+        "z": "ddbe7c6ad82f7957",
+        "name": "",
+        "property": "payload",
+        "action": "str",
+        "pretty": false,
+        "x": 745,
+        "y": 1460,
+        "wires": [
+            [
+                "776dc12bad4c1342",
+                "5ada3eae40699118"
+            ]
+        ],
+        "l": false
+    },
+    {
+        "id": "ef7d43bc29c4eb95",
+        "type": "change",
+        "z": "ddbe7c6ad82f7957",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.rows",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 675,
+        "y": 1460,
+        "wires": [
+            [
+                "762809dddab91c6d"
+            ]
+        ],
+        "l": false
+    },
+    {
+        "id": "5ada3eae40699118",
+        "type": "debug",
+        "z": "ddbe7c6ad82f7957",
+        "name": "debug 328",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 870,
+        "y": 1520,
+        "wires": []
+    },
+    {
+        "id": "6c0316dccfa796ae",
+        "type": "http in",
+        "z": "ddbe7c6ad82f7957",
+        "name": "",
+        "url": "/fields",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 240,
+        "y": 1620,
+        "wires": [
+            [
+                "6b7b6fc95e71cbf4"
+            ]
+        ]
+    },
+    {
+        "id": "6b7b6fc95e71cbf4",
+        "type": "template",
+        "z": "ddbe7c6ad82f7957",
+        "name": "SELECT * FROM fields",
+        "field": "query",
+        "fieldType": "msg",
+        "format": "sql",
+        "syntax": "mustache",
+        "template": "SELECT * FROM fields\n",
+        "output": "str",
+        "x": 490,
+        "y": 1620,
+        "wires": [
+            [
+                "853d2739719db58b"
+            ]
+        ]
+    },
+    {
+        "id": "853d2739719db58b",
+        "type": "link call",
+        "z": "ddbe7c6ad82f7957",
+        "name": "",
+        "links": [
+            "4adb08f72234a91e"
+        ],
+        "linkType": "static",
+        "timeout": "30",
+        "x": 675,
+        "y": 1620,
+        "wires": [
+            [
+                "f7b93fb9616085d8"
+            ]
+        ],
+        "l": false
+    },
+    {
+        "id": "0bde3238c36f96e9",
+        "type": "http response",
+        "z": "ddbe7c6ad82f7957",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 990,
+        "y": 1620,
+        "wires": []
+    },
+    {
+        "id": "11410c14e30fe88a",
+        "type": "http in",
+        "z": "ddbe7c6ad82f7957",
+        "name": "",
+        "url": "/editfields",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 270,
+        "y": 1700,
+        "wires": [
+            [
+                "b57609312c9796e9"
+            ]
+        ]
+    },
+    {
+        "id": "197fc228dedcbc0e",
+        "type": "http response",
+        "z": "ddbe7c6ad82f7957",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 610,
+        "y": 1700,
+        "wires": []
+    },
+    {
+        "id": "b57609312c9796e9",
+        "type": "template",
+        "z": "ddbe7c6ad82f7957",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<html>\n<head>\n\n </head>\n <body>\n \n   \n\n\n<link rel=\"stylesheet\" href=\"https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css\" />\n<style>\n.dataTables_length, .dataTables_paginate {\n  margin: 5px;\n  margin-bottom: 25px;\n  margin-top: 25px;\n}\n\n.dataTables_filter {\n  margin-bottom: 25px;\n  margin-top: 25px;\n}\n\ntable.dataTable thead > tr > th.sorting, table.dataTable thead > tr > th.sorting_asc, table.dataTable thead > tr > th.sorting_desc, table.dataTable thead > tr > th.sorting_asc_disabled, table.dataTable thead > tr > th.sorting_desc_disabled, table.dataTable thead > tr > td.sorting, table.dataTable thead > tr > td.sorting_asc, table.dataTable thead > tr > td.sorting_desc, table.dataTable thead > tr > td.sorting_asc_disabled, table.dataTable thead > tr > td.sorting_desc_disabled {\n  background-color: transparent;\n}\ntable.dataTable tbody td {\n  padding: 16px 10px;\n}\n\n</style>\n<script src=\"https://code.jquery.com/jquery-3.5.1.js\"></script>\n<script src=\"https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js\"></script>\n\n\n\t<script type=\"text/javascript\" language=\"javascript\" src=\"https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js\"></script>\n\t<script type=\"text/javascript\" language=\"javascript\" src=\"https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js\"></script>\n\t<script type=\"text/javascript\" language=\"javascript\" src=\"https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js\"></script>\n\t<script type=\"text/javascript\" language=\"javascript\" src=\"https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js\"></script>\n\t<script type=\"text/javascript\" language=\"javascript\" src=\"https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js\"></script>\n\t<script type=\"text/javascript\" language=\"javascript\" src=\"https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js\"></script>\n\n\n\n<style>\ntable.dataTable tbody td {\n  padding: 10px 10px;\n}\n</style>\n\n<div style=\"font-size: 14px;\">\n<table id=\"form-entries\" class=\"row-border hover\" style=\"width:100%; font-size: 14px;\">\n        <thead>\n            <tr>\n                <th>Group</th>\n                <th>Key</th>\n                <th>Title</th>\n                <th>Units</th>\n                <th>Colour</th>\n            </tr>\n        </thead>\n    </table>\n</div>\n    <script>\n        $(document).ready(function () {\n\n            $('#form-entries').DataTable({\n                ajax: '/fields',\n                columns: [\n                    { data: 'vargroup' },\n                    { data: 'varkey' },\n                    { data: 'title' },\n                    { data: 'units' },\n                    { data: 'colour' }\n                ],\n                searching: true,\n                order: [[0, 'asc']]\n            });\n        });\n</script>\n\n\n\n\n      </div>\n\n\n  </body>\n\n </html>",
+        "output": "str",
+        "x": 440,
+        "y": 1700,
+        "wires": [
+            [
+                "197fc228dedcbc0e"
+            ]
+        ]
+    },
+    {
+        "id": "f7b93fb9616085d8",
+        "type": "function",
+        "z": "ddbe7c6ad82f7957",
+        "name": "function 14",
+        "func": "msg.payload = {\"data\":msg.payload.rows};\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 810,
+        "y": 1620,
+        "wires": [
+            [
+                "0bde3238c36f96e9"
+            ]
+        ]
+    },
+    {
+        "id": "100564e47f14dbea",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "mqtt.heatweb.cloud",
+        "port": "1883",
+        "tls": "07fba9bb596baeec",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "5",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "d0e99faa9453a604",
+        "type": "digitaloak-postgresql-connection-manager",
+        "name": "countryside",
+        "host": "pg-3323bc66-heatweb-0001.f.aivencloud.com",
+        "port": "16890",
+        "database": "defaultdb",
+        "tls": "28f7dc91461653ab",
+        "use_tls": true,
+        "pool_max_clients": "10",
+        "pool_client_max_idle": "10000",
+        "client_query_timeout": "",
+        "client_statement_timeout": "",
+        "client_connection_timeout_millis": "",
+        "is_client_enabled": "0"
+    },
+    {
+        "id": "07fba9bb596baeec",
+        "type": "tls-config",
+        "name": "",
+        "cert": "",
+        "key": "",
+        "ca": "",
+        "certname": "",
+        "keyname": "",
+        "caname": "emqxsl-ca.crt",
+        "servername": "",
+        "verifyservercert": true,
+        "alpnprotocol": ""
+    },
+    {
+        "id": "28f7dc91461653ab",
+        "type": "tls-config",
+        "name": "",
+        "cert": "",
+        "key": "",
+        "ca": "",
+        "certname": "",
+        "keyname": "",
+        "caname": "ca.pem",
+        "servername": "",
+        "verifyservercert": true,
+        "alpnprotocol": ""
+    }
+]
