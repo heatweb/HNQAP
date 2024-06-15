@@ -43,10 +43,10 @@ CREATE TABLE mynetwork_mynode (
 SELECT create_hypertable('mynetwork_mynode', by_range('time'));
 
 
-CREATE USER example_user WITH PASSWORD 'example_password';
-REVOKE ALL ON DATABASE defaultdb FROM example_user;
-GRANT CONNECT ON DATABASE defaultdb TO example_user;
-GRANT SELECT ON ALL TABLES IN SCHEMA public TO example_user;
-ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO example_user;
+CREATE USER grafana WITH PASSWORD 'example_password';
+REVOKE ALL ON DATABASE defaultdb FROM grafana;
+GRANT CONNECT ON DATABASE defaultdb TO grafana;
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO grafana;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO grafana;
 
 
