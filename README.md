@@ -1,5 +1,5 @@
 # HNQAP
-Heat Network Quality Assurance Procedures
+Heat Network Quality Assurance Publications
 
 This project contains documents, tools and data used in quality assurance procedures relating to heat networks and zero-carbon building services technologies.
 
