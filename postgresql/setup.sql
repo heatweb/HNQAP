@@ -1,3 +1,5 @@
+CREATE EXTENSION timescaledb CASCADE;
+
 -- DROP TABLE IF EXISTS readings;
 CREATE TABLE readings (
 	id SERIAL PRIMARY KEY,
