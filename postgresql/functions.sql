@@ -205,3 +205,42 @@ $$ LANGUAGE plpgsql;
 
 
 -- SELECT fn_weighted_average('heatweb_network1','3016031af27a0c25','dat','tHoDHW','fHDHW')
+
+
+CREATE OR REPLACE FUNCTION fn_m3h_to_m3(networknode varchar, device varchar, vargroup varchar, varkey varchar, time1 timestamp with time zone, time2 timestamp with time zone)
+RETURNS FLOAT AS $$
+DECLARE
+    avg_cnt INTEGER := 0;
+    avg_record RECORD;
+	tot_wv FLOAT := 0;
+	last_v FLOAT := 0;
+	last_time FLOAT := 0;
+	period FLOAT := 0;
+BEGIN
+    FOR avg_record IN
+	   	EXECUTE 'SELECT varkey, value, EXTRACT(EPOCH FROM time) AS time FROM '
+    	|| quote_ident(networknode)
+    	|| ' WHERE device = $1 AND vargroup = $2 AND varkey = $3 AND time >= $4 AND time <= $5'
+		|| ' ORDER BY time ASC'
+   		USING device, vargroup, varkey, time1, time2
+	LOOP
+		
+		IF avg_cnt > 0 THEN
+			period := avg_record.time - last_time;
+			tot_wv := tot_wv + (last_v * period / (60 * 60));
+		END IF;
+	
+		last_v := avg_record.value::numeric;
+			
+		last_time = avg_record.time;
+		avg_cnt := avg_cnt + 1;
+	
+    END LOOP;
+
+    IF avg_cnt > 0 THEN
+		RETURN tot_wv;
+    ELSE
+        RETURN 0;
+    END IF;
+END;
+$$ LANGUAGE plpgsql;
