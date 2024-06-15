@@ -31,6 +31,10 @@ Quality control is divided into three catagories:
 * Installation and handover of equipment and systems
 * Optimisation of operational systems
 
+## Operational KPIs
+
+![image](https://github.com/heatweb/HNQAP/assets/7034068/70228675-7ffe-4fab-bc68-9c11c51434b5)
+
 
 ## HIU Acceptance Testing
 
