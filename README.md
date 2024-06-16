@@ -28,7 +28,7 @@ It is the aim to avoid duplication of KPIs between objects.  In this way, object
 Quality control is divided into three catagories:
 
 * System design
-* Installation and handover of equipment and systems
+* Installation and acceptance testing of equipment and systems
 * Optimisation of operational systems
 
 ## Operational KPIs
