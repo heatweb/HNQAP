@@ -31,15 +31,23 @@ Quality control (for each object) is divided into three catagories:
 * Installation and acceptance testing of systems
 * Optimisation of operational systems
 
-## Operational KPIs
+### System Design
 
-![image](https://github.com/heatweb/HNQAP/assets/7034068/70228675-7ffe-4fab-bc68-9c11c51434b5)
+System design is handled through the use of standard design details (schematics) for objects.  These details are drawn from CP1 standards as well as industry standards for equipment such as HIUs.
 
+A database of standard details is maintained in this project.
 
-## HIU Acceptance Testing
+Design details include references for acceptance testing procedures and operational KPIs.
+
+### HIU Acceptance Testing
 
 * [HIU Acceptance Test](https://heatweb.b-cdn.net/browserware/hwforms5.html?loadCID=bafkreibb3h2appcsvztmvfz4eiybfudqlf3bfaobrsjcly63pp6i5vgygi)
   
 ![qa-hiu-acceptance](https://github.com/heatweb/HNQAP/assets/7034068/532226b9-1e73-4eb1-b0bd-0a37d4f339c8)
+
+
+### Operational KPIs
+
+![image](https://github.com/heatweb/HNQAP/assets/7034068/70228675-7ffe-4fab-bc68-9c11c51434b5)
 
 
