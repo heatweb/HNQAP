@@ -39,7 +39,9 @@ A database of standard details is maintained in this project.
 
 Design details include references for acceptance testing procedures and operational KPIs.
 
-### HIU Acceptance Testing
+### Acceptance Testing
+
+The quality of installations is maintained through the use of standard processes, driven through logic-driven forms and operational KPIs.
 
 * [HIU Acceptance Test](https://heatweb.b-cdn.net/browserware/hwforms5.html?loadCID=bafkreibb3h2appcsvztmvfz4eiybfudqlf3bfaobrsjcly63pp6i5vgygi)
   
