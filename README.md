@@ -25,7 +25,7 @@ It is the aim to avoid duplication of KPIs between objects.  In this way, object
   
 ## Design, Installation & Optimisation
 
-Quality control is divided into three catagories:
+Quality control (for each object) is divided into three catagories:
 
 * System design
 * Installation and acceptance testing of systems
