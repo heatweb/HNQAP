@@ -35,7 +35,7 @@ As such, all HNQAP functions can be replicated without barriers, licences or cop
 
 Through the use of MQTT, HNQAP is designed to be fully compatible with existing B(E)MS systems, and is layered on top of existing hardware without a need for any additional licences.
 
-HNQAP is authored by individuals who have contributed directly to existing technical guidance for heat networks and related systems, including CIPHE Building Engineering Services Design Guide, CIBSE CP1 Codes of Practice, HNTAS Heat Network Technical Assurance Scheme, and MEHNA/BESA Training Modules.
+HNQAP is authored by individuals who have contributed directly to existing technical guidance for heat networks and related systems, including CIPHE Building Engineering Services Design Guide, CIBSE CP1 Codes of Practice, SAP10, HNTAS Heat Network Technical Assurance Scheme, and MEHNA/BESA Training Modules.
   
 ## Design, Installation & Optimisation
 
