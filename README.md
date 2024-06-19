@@ -33,6 +33,8 @@ In addition, Node-RED or Python is used to ingest data into databases, from MQTT
 
 As such, all HNQAP functions can be replicated without barriers, licences or copyright, and where needed run using freemium services.
 
+Through the use of MQTT, HNQAP is designed to be fully compatible with existing B(E)MS systems, and is layered on top of existing hardware without a need for any additional licences.
+
 HNQAP is authored by individuals who have contributed directly to existing technical guidance for heat networks and related systems, including CIBSE CP1 Codes of Practice, and HNTAS Heat Network Technical Assurance Scheme.
   
 ## Design, Installation & Optimisation
