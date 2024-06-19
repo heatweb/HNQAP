@@ -3,7 +3,7 @@ Heat Network Quality Assurance Publications
 
 This project contains documents, tools and data used in quality assurance procedures relating to heat networks and zero-carbon building services technologies.
 
-As well as guidance documents, the project provides open-source JSON data files that describe procedures and records outcomes. A calculations engine and conditional branching are built into the data structure to allow complex conditional procedures to be followed and recorded.    
+As well as guidance documents, the project provides JSON and SQL data that describe objects, fields and procedures. HTML browserware is provided to allow procedures to be followed and recorded using a web browser on any device.    
 
 Quality assurance procedures are grouped by objects (object oriented), by which a set of procedures apply to a specific item in a heat network, often with a heat or water meter at entry and/or exit.  The object list is as follows.
 
