@@ -45,6 +45,8 @@ Quality control (for each object) is divided into three catagories:
 * Installation and acceptance testing of systems
 * Optimisation of operational systems
 
+Catagories represent footwear - shoes, boots or socks.
+
 ### System Design
 
 System design is handled through the use of standard design details (schematics) for objects.  These details are drawn from CP1 standards as well as industry standards for equipment such as HIUs.
