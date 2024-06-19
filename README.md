@@ -49,7 +49,7 @@ Quality control (for each object) is divided into three catagories:
 
 System design is handled through the use of standard design details (schematics) for objects.  These details are drawn from CP1 standards as well as industry standards for equipment such as HIUs.
 
-A database of standard details is maintained in this project.
+A database of standard details will be maintained in this project.
 
 Design details include references for acceptance testing procedures and operational KPIs.
 
