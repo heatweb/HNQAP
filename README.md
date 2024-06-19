@@ -29,7 +29,7 @@ The HNQAP project builds on three key open-source technologies:
 * PostgreSQL databases for storing data, including time-series data (using timescaleDB plugin), and for defining stastistical functions on data
 * Grafana for visualising data and generating alarms
 
-In addition, Node-RED or Python is used to ingest data into databases, from MQTT into PostgreSQL.
+In addition, Node-RED or Python is used to ingest data into databases, from MQTT into PostgreSQL, and JavaScript is used for software tools (browserware).
 
 As such, all HNQAP functions can be replicated without barriers, licences or copyright, and where needed run using freemium services.
 
