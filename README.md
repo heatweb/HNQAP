@@ -22,6 +22,18 @@ Quality assurance procedures are grouped by objects (object oriented), by which 
 * Compliance System
   
 It is the aim to avoid duplication of KPIs between objects.  In this way, objects can be assembled, and a complete list of indexed KPIs obtained.
+
+The HNQAP project builds on three key open-source technologies:
+
+* MQTT for transporting data between devices and to subscribers
+* PostgreSQL databases for storing data, including time-series data (using timescaleDB plugin), and for defining stastistical functions on data
+* Grafana for visualising data and generating alarms
+
+In addition, Node-RED or Python is used to ingest data into databases, from MQTT into PostgreSQL.
+
+As such, all HNQAP functions can be replicated without barriers, licences or copyright, and where needed run using freemium services.
+
+HNQAP is authored by individuals who have contributed directly to existing technical guidance for heat networks and related systems, including CIBSE CP1 Codes of Practice, and HNTAS Heat Network Technical Assurance Scheme.
   
 ## Design, Installation & Optimisation
 
