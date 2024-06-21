@@ -244,3 +244,36 @@ BEGIN
     END IF;
 END;
 $$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION fn_difference(networknode varchar, device varchar, vargroup varchar, varkey varchar, time1 timestamp with time zone, time2 timestamp with time zone)
+RETURNS FLOAT AS $$
+DECLARE
+    avg_record RECORD;
+	first_v FLOAT := 0;
+	last_v FLOAT := 0;
+BEGIN
+    FOR avg_record IN
+	   	EXECUTE 'SELECT varkey, value, EXTRACT(EPOCH FROM time) AS time FROM '
+    	|| quote_ident(networknode)
+    	|| ' WHERE device = $1 AND vargroup = $2 AND varkey = $3 AND time >= $4 AND time <= $5'
+		|| ' ORDER BY time ASC LIMIT 1'
+   		USING device, vargroup, varkey, time1, time2
+	LOOP		
+		first_v := avg_record.value::numeric;	
+    END LOOP;
+	
+    FOR avg_record IN
+	   	EXECUTE 'SELECT varkey, value, EXTRACT(EPOCH FROM time) AS time FROM '
+    	|| quote_ident(networknode)
+    	|| ' WHERE device = $1 AND vargroup = $2 AND varkey = $3 AND time >= $4 AND time <= $5'
+		|| ' ORDER BY time DESC LIMIT 1'
+   		USING device, vargroup, varkey, time1, time2
+	LOOP		
+		last_v := avg_record.value::numeric;	
+    END LOOP;
+
+    RETURN (last_v - first_v);
+    
+END;
+$$ LANGUAGE plpgsql;
