@@ -278,16 +278,17 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+-- -------------------------------------------------------------------------------------------------
 
 CREATE OR REPLACE FUNCTION fn_get_nodes(network varchar)
 RETURNS table
 (
 	"node" character varying(32),
-	"age" interval
+    	"age" numeric
 )
 AS $$
 DECLARE
-	avg_record RECORD;
+    	avg_record RECORD;
 	info_record RECORD;
 BEGIN
 
@@ -299,7 +300,7 @@ BEGIN
 		node := avg_record.node;	
 
 		FOR info_record IN
-		   	EXECUTE 'SELECT AGE(timestamp) AS age FROM readings WHERE network = $1 AND node = $2 ORDER BY age ASC LIMIT 1'
+		   	EXECUTE 'SELECT (EXTRACT(EPOCH FROM NOW()) - EXTRACT(EPOCH FROM timestamp)) AS age FROM readings WHERE network = $1 AND node = $2 ORDER BY age ASC LIMIT 1'
 	   		USING network, node
 		LOOP		
 			age := info_record.age;	
