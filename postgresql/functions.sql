@@ -293,8 +293,7 @@ DECLARE
 BEGIN
 
 	FOR avg_record IN
-	   	EXECUTE 'SELECT DISTINCT node FROM readings'
-    		|| ' WHERE network = $1'
+	   	EXECUTE 'SELECT DISTINCT node FROM readings WHERE network = $1'
    		USING network
 	LOOP		
 		node := avg_record.node;	
