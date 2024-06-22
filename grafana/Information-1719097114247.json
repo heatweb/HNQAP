@@ -60,231 +60,6 @@
   "liveNow": false,
   "panels": [
     {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 0
-      },
-      "id": 174,
-      "panels": [],
-      "title": "Nodes",
-      "type": "row"
-    },
-    {
-      "datasource": {
-        "type": "postgres",
-        "uid": "${DS_POSTGRESQL}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "continuous-GrYlRd"
-          },
-          "mappings": [],
-          "max": 300,
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 2
-              },
-              {
-                "color": "#EAB839",
-                "value": 60
-              },
-              {
-                "color": "#6ED0E0",
-                "value": 70
-              }
-            ]
-          },
-          "unit": "s"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 5,
-        "w": 24,
-        "x": 0,
-        "y": 1
-      },
-      "id": 132,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "/.*/",
-          "values": false
-        },
-        "textMode": "value_and_name"
-      },
-      "pluginVersion": "10.0.3",
-      "targets": [
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "${DS_POSTGRESQL}"
-          },
-          "editorMode": "code",
-          "format": "table",
-          "rawQuery": true,
-          "rawSql": "SELECT node,age FROM fn_get_nodes('brunelstreet') ORDER BY node",
-          "refId": "A",
-          "sql": {
-            "columns": [
-              {
-                "parameters": [
-                  {
-                    "name": "network",
-                    "type": "functionParameter"
-                  }
-                ],
-                "type": "function"
-              },
-              {
-                "parameters": [
-                  {
-                    "name": "node",
-                    "type": "functionParameter"
-                  }
-                ],
-                "type": "function"
-              },
-              {
-                "parameters": [
-                  {
-                    "name": "device",
-                    "type": "functionParameter"
-                  }
-                ],
-                "type": "function"
-              },
-              {
-                "parameters": [
-                  {
-                    "name": "vargroup",
-                    "type": "functionParameter"
-                  }
-                ],
-                "type": "function"
-              },
-              {
-                "parameters": [
-                  {
-                    "name": "varkey",
-                    "type": "functionParameter"
-                  }
-                ],
-                "type": "function"
-              },
-              {
-                "parameters": [
-                  {
-                    "name": "value",
-                    "type": "functionParameter"
-                  }
-                ],
-                "type": "function"
-              }
-            ],
-            "groupBy": [
-              {
-                "property": {
-                  "type": "string"
-                },
-                "type": "groupBy"
-              }
-            ],
-            "limit": 50,
-            "whereJsonTree": {
-              "children1": [
-                {
-                  "id": "9a99aaa8-89ab-4cde-b012-3190407e34d7",
-                  "properties": {
-                    "field": "network",
-                    "operator": "equal",
-                    "value": [
-                      "$network"
-                    ],
-                    "valueSrc": [
-                      "value"
-                    ],
-                    "valueType": [
-                      "text"
-                    ]
-                  },
-                  "type": "rule"
-                },
-                {
-                  "id": "9ab899b9-4567-489a-bcde-f190407e5f8a",
-                  "properties": {
-                    "field": "node",
-                    "operator": "equal",
-                    "value": [
-                      "$node"
-                    ],
-                    "valueSrc": [
-                      "value"
-                    ],
-                    "valueType": [
-                      "text"
-                    ]
-                  },
-                  "type": "rule"
-                },
-                {
-                  "id": "8aaa8aab-0123-4456-b89a-b190407f1176",
-                  "properties": {
-                    "field": "device",
-                    "operator": "equal",
-                    "value": [
-                      "$device"
-                    ],
-                    "valueSrc": [
-                      "value"
-                    ],
-                    "valueType": [
-                      "text"
-                    ]
-                  },
-                  "type": "rule"
-                }
-              ],
-              "id": "bbaab9ab-89ab-4cde-b012-3190402853ed",
-              "type": "group"
-            },
-            "whereString": "(network = '$network' AND node = '$node' AND device = '$device')"
-          },
-          "table": "readings"
-        }
-      ],
-      "title": "Nodes",
-      "transformations": [
-        {
-          "id": "partitionByValues",
-          "options": {
-            "fields": [
-              "node"
-            ]
-          }
-        }
-      ],
-      "type": "stat"
-    },
-    {
       "datasource": {
         "type": "postgres",
         "uid": "${DS_POSTGRESQL}"
@@ -355,10 +130,10 @@
         ]
       },
       "gridPos": {
-        "h": 9,
-        "w": 24,
+        "h": 7,
+        "w": 20,
         "x": 0,
-        "y": 6
+        "y": 0
       },
       "id": 133,
       "options": {
@@ -384,7 +159,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT * FROM fn_get_nodes('brunelstreet') ORDER BY node",
+          "rawSql": "SELECT * FROM fn_get_nodes('$network') ORDER BY node",
           "refId": "A",
           "sql": {
             "columns": [
@@ -541,12 +316,480 @@
       "type": "table"
     },
     {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_POSTGRESQL}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "mappings": [],
+          "max": 300,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 2
+              },
+              {
+                "color": "#EAB839",
+                "value": 60
+              },
+              {
+                "color": "#6ED0E0",
+                "value": 70
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "age oxbcliveb"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Clive Booth"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "age zccainie7wi"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Harcourt Hill"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 4,
+        "x": 20,
+        "y": 0
+      },
+      "id": 132,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/.*/",
+          "values": false
+        },
+        "textMode": "value_and_name"
+      },
+      "pluginVersion": "10.0.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_POSTGRESQL}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT node,age FROM fn_get_nodes('$network') ORDER BY node",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [
+                  {
+                    "name": "network",
+                    "type": "functionParameter"
+                  }
+                ],
+                "type": "function"
+              },
+              {
+                "parameters": [
+                  {
+                    "name": "node",
+                    "type": "functionParameter"
+                  }
+                ],
+                "type": "function"
+              },
+              {
+                "parameters": [
+                  {
+                    "name": "device",
+                    "type": "functionParameter"
+                  }
+                ],
+                "type": "function"
+              },
+              {
+                "parameters": [
+                  {
+                    "name": "vargroup",
+                    "type": "functionParameter"
+                  }
+                ],
+                "type": "function"
+              },
+              {
+                "parameters": [
+                  {
+                    "name": "varkey",
+                    "type": "functionParameter"
+                  }
+                ],
+                "type": "function"
+              },
+              {
+                "parameters": [
+                  {
+                    "name": "value",
+                    "type": "functionParameter"
+                  }
+                ],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50,
+            "whereJsonTree": {
+              "children1": [
+                {
+                  "id": "9a99aaa8-89ab-4cde-b012-3190407e34d7",
+                  "properties": {
+                    "field": "network",
+                    "operator": "equal",
+                    "value": [
+                      "$network"
+                    ],
+                    "valueSrc": [
+                      "value"
+                    ],
+                    "valueType": [
+                      "text"
+                    ]
+                  },
+                  "type": "rule"
+                },
+                {
+                  "id": "9ab899b9-4567-489a-bcde-f190407e5f8a",
+                  "properties": {
+                    "field": "node",
+                    "operator": "equal",
+                    "value": [
+                      "$node"
+                    ],
+                    "valueSrc": [
+                      "value"
+                    ],
+                    "valueType": [
+                      "text"
+                    ]
+                  },
+                  "type": "rule"
+                },
+                {
+                  "id": "8aaa8aab-0123-4456-b89a-b190407f1176",
+                  "properties": {
+                    "field": "device",
+                    "operator": "equal",
+                    "value": [
+                      "$device"
+                    ],
+                    "valueSrc": [
+                      "value"
+                    ],
+                    "valueType": [
+                      "text"
+                    ]
+                  },
+                  "type": "rule"
+                }
+              ],
+              "id": "bbaab9ab-89ab-4cde-b012-3190402853ed",
+              "type": "group"
+            },
+            "whereString": "(network = '$network' AND node = '$node' AND device = '$device')"
+          },
+          "table": "readings"
+        }
+      ],
+      "title": "Nodes",
+      "transformations": [
+        {
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "node"
+            ]
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 7
+      },
+      "id": 174,
+      "panels": [],
+      "title": "Nodes",
+      "type": "row"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 8
+      },
+      "id": 44,
+      "panels": [],
+      "title": "Heat Meters",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_POSTGRESQL}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 75,
+          "min": 25,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 15
+              },
+              {
+                "color": "#EAB839",
+                "value": 45
+              },
+              {
+                "color": "orange",
+                "value": 50
+              },
+              {
+                "color": "red",
+                "value": 55
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "volume"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "m3"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "super-light-green",
+                  "mode": "continuous-greens"
+                }
+              },
+              {
+                "id": "min",
+                "value": 0
+              },
+              {
+                "id": "max",
+                "value": 3
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "energy"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "kwatth"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "super-light-green",
+                  "mode": "continuous-greens"
+                }
+              },
+              {
+                "id": "min",
+                "value": 0
+              },
+              {
+                "id": "max",
+                "value": 24
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/vwaft/"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "continuous-RdYlGr"
+                }
+              },
+              {
+                "id": "min",
+                "value": 50
+              },
+              {
+                "id": "max",
+                "value": 65
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "vwart"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "continuous-GrYlRd"
+                }
+              },
+              {
+                "id": "min",
+                "value": 35
+              },
+              {
+                "id": "max",
+                "value": 60
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 12,
+        "x": 0,
+        "y": 9
+      },
+      "id": 3,
+      "maxPerRow": 4,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "vertical",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "titleSize": 22
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.0.3",
+      "repeat": "meter",
+      "repeatDirection": "h",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_POSTGRESQL}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "hide": false,
+          "rawQuery": true,
+          "rawSql": "SELECT fn_weighted_average(lower(split_part($meter, '-', 1)),split_part($meter, '-', 2),'dat','tF','m3h',$__timeFrom(), $__timeTo()) AS vwaft, \r\nfn_weighted_average(lower(split_part($meter, '-', 1)),split_part($meter, '-', 2),'dat','tR','m3h',$__timeFrom(), $__timeTo()) AS vwart,\r\nfn_m3h_to_m3(lower(split_part($meter, '-', 1)),split_part($meter, '-', 2),'dat','m3h',$__timeFrom(), $__timeTo()) AS volume,\r\nfn_m3h_to_m3(lower(split_part($meter, '-', 1)),split_part($meter, '-', 2),'dat','kw',$__timeFrom(), $__timeTo()) AS Energy",
+          "refId": "B",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Heat Meter $meter",
+      "transformations": [],
+      "type": "stat"
+    },
+    {
       "collapsed": true,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 15
+        "y": 13
       },
       "id": 90,
       "panels": [
@@ -588,7 +831,7 @@
             "h": 18,
             "w": 3,
             "x": 0,
-            "y": 16
+            "y": 2
           },
           "id": 47,
           "options": {
@@ -798,7 +1041,7 @@
             "h": 18,
             "w": 6,
             "x": 3,
-            "y": 16
+            "y": 2
           },
           "id": 49,
           "options": {
@@ -1022,7 +1265,7 @@
             "h": 18,
             "w": 15,
             "x": 9,
-            "y": 16
+            "y": 2
           },
           "id": 45,
           "options": {
@@ -1142,225 +1385,6 @@
       ],
       "title": "Readings",
       "type": "row"
-    },
-    {
-      "collapsed": true,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 16
-      },
-      "id": 44,
-      "panels": [
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "${DS_POSTGRESQL}"
-          },
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "mappings": [],
-              "max": 75,
-              "min": 25,
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "blue",
-                    "value": null
-                  },
-                  {
-                    "color": "green",
-                    "value": 15
-                  },
-                  {
-                    "color": "#EAB839",
-                    "value": 45
-                  },
-                  {
-                    "color": "orange",
-                    "value": 50
-                  },
-                  {
-                    "color": "red",
-                    "value": 55
-                  }
-                ]
-              },
-              "unit": "celsius"
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "volume"
-                },
-                "properties": [
-                  {
-                    "id": "unit",
-                    "value": "m3"
-                  },
-                  {
-                    "id": "color",
-                    "value": {
-                      "fixedColor": "super-light-green",
-                      "mode": "continuous-greens"
-                    }
-                  },
-                  {
-                    "id": "min",
-                    "value": 0
-                  },
-                  {
-                    "id": "max",
-                    "value": 3
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "energy"
-                },
-                "properties": [
-                  {
-                    "id": "unit",
-                    "value": "kwatth"
-                  },
-                  {
-                    "id": "color",
-                    "value": {
-                      "fixedColor": "super-light-green",
-                      "mode": "continuous-greens"
-                    }
-                  },
-                  {
-                    "id": "min",
-                    "value": 0
-                  },
-                  {
-                    "id": "max",
-                    "value": 24
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byRegexp",
-                  "options": "/vwaft/"
-                },
-                "properties": [
-                  {
-                    "id": "color",
-                    "value": {
-                      "mode": "continuous-RdYlGr"
-                    }
-                  },
-                  {
-                    "id": "min",
-                    "value": 50
-                  },
-                  {
-                    "id": "max",
-                    "value": 65
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "vwart"
-                },
-                "properties": [
-                  {
-                    "id": "color",
-                    "value": {
-                      "mode": "continuous-GrYlRd"
-                    }
-                  },
-                  {
-                    "id": "min",
-                    "value": 35
-                  },
-                  {
-                    "id": "max",
-                    "value": 60
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 4,
-            "w": 6,
-            "x": 0,
-            "y": 17
-          },
-          "id": 3,
-          "maxPerRow": 4,
-          "options": {
-            "colorMode": "background",
-            "graphMode": "area",
-            "justifyMode": "auto",
-            "orientation": "vertical",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "text": {
-              "titleSize": 22
-            },
-            "textMode": "auto"
-          },
-          "pluginVersion": "10.0.3",
-          "repeat": "meter",
-          "repeatDirection": "h",
-          "targets": [
-            {
-              "datasource": {
-                "type": "postgres",
-                "uid": "${DS_POSTGRESQL}"
-              },
-              "editorMode": "code",
-              "format": "table",
-              "hide": false,
-              "rawQuery": true,
-              "rawSql": "SELECT fn_weighted_average(lower(split_part($meter, '-', 1)),split_part($meter, '-', 2),'meter','tF','m3h',$__timeFrom(), $__timeTo()) AS vwaft, \r\nfn_weighted_average(lower(split_part($meter, '-', 1)),split_part($meter, '-', 2),'meter','tR','m3h',$__timeFrom(), $__timeTo()) AS vwart,\r\nfn_m3h_to_m3(lower(split_part($meter, '-', 1)),split_part($meter, '-', 2),'meter','m3h',$__timeFrom(), $__timeTo()) AS volume,\r\nfn_m3h_to_m3(lower(split_part($meter, '-', 1)),split_part($meter, '-', 2),'meter','kw',$__timeFrom(), $__timeTo()) AS Energy",
-              "refId": "B",
-              "sql": {
-                "columns": [
-                  {
-                    "parameters": [],
-                    "type": "function"
-                  }
-                ],
-                "groupBy": [
-                  {
-                    "property": {
-                      "type": "string"
-                    },
-                    "type": "groupBy"
-                  }
-                ],
-                "limit": 50
-              }
-            }
-          ],
-          "title": "Heat Meter $meter",
-          "transformations": [],
-          "type": "stat"
-        }
-      ],
-      "title": "Heat Meters",
-      "type": "row"
     }
   ],
   "refresh": "1m",
@@ -1417,6 +1441,6 @@
   "timezone": "",
   "title": "Information",
   "uid": "fd8bb8b9-ff03-4017-9a1d-8b0ccfe4904i",
-  "version": 20,
+  "version": 8,
   "weekStart": ""
 }
