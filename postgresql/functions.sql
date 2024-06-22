@@ -284,16 +284,19 @@ CREATE OR REPLACE FUNCTION fn_get_nodes(network varchar)
 RETURNS table
 (
 	"node" character varying(32),
-    	"age" numeric
+    "age" numeric,
+	"devices" text
 )
 AS $$
 DECLARE
-    	avg_record RECORD;
+    avg_record RECORD;
 	info_record RECORD;
+	devlist TEXT := '';
 BEGIN
 
 	FOR avg_record IN
-	   	EXECUTE 'SELECT DISTINCT node FROM readings WHERE network = $1'
+	   	EXECUTE 'SELECT DISTINCT node FROM readings'
+    	|| ' WHERE network = $1'
    		USING network
 	LOOP		
 		node := avg_record.node;	
@@ -303,10 +306,19 @@ BEGIN
 	   		USING network, node
 		LOOP		
 			age := info_record.age;	
-	    	END LOOP;
+	    END LOOP;
+
+		devlist := '';
+		FOR info_record IN
+		   	EXECUTE 'SELECT DISTINCT device FROM readings WHERE network = $1 AND node = $2 ORDER BY device ASC'
+	   		USING network, node
+		LOOP		
+			devlist := devlist||info_record.device||', ';	
+	    END LOOP;
+		devices := devlist;
 	
 		RETURN NEXT;
-    	END LOOP;
+    END LOOP;
 	
 	
 END;
