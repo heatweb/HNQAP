@@ -1,5 +1,13 @@
 CREATE EXTENSION timescaledb CASCADE;
 
+-- CHANGE PASSWORD !!!!!!!!!!!!
+
+CREATE USER grafana WITH PASSWORD 'example_password';
+REVOKE ALL ON DATABASE defaultdb FROM grafana;
+GRANT CONNECT ON DATABASE defaultdb TO grafana;
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO grafana;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO grafana;
+
 -- DROP TABLE IF EXISTS readings;
 CREATE TABLE readings (
 	id SERIAL PRIMARY KEY,
@@ -31,22 +39,18 @@ CREATE TABLE fields (
 
 -- This is run for each new controller, mynetwork_mynode, to create time series tables
 
-CREATE TABLE mynetwork_mynode (
-	device VARCHAR (32) NOT NULL,
-	vargroup VARCHAR (16) NOT NULL,
-	varkey VARCHAR (64) NOT NULL,
-	value TEXT,
-	time TIMESTAMPTZ NOT NULL,
-	UNIQUE (device, vargroup, varkey, time)
-);
+-- CREATE TABLE mynetwork_mynode (
+-- 	device VARCHAR (32) NOT NULL,
+-- 	vargroup VARCHAR (16) NOT NULL,
+-- 	varkey VARCHAR (64) NOT NULL,
+-- 	value TEXT,
+-- 	time TIMESTAMPTZ NOT NULL,
+-- 	UNIQUE (device, vargroup, varkey, time)
+-- );
 
-SELECT create_hypertable('mynetwork_mynode', by_range('time'));
+-- SELECT create_hypertable('mynetwork_mynode', by_range('time'));
 
 
-CREATE USER grafana WITH PASSWORD 'example_password';
-REVOKE ALL ON DATABASE defaultdb FROM grafana;
-GRANT CONNECT ON DATABASE defaultdb TO grafana;
-GRANT SELECT ON ALL TABLES IN SCHEMA public TO grafana;
-ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO grafana;
+
 
 
