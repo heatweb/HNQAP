@@ -333,3 +333,26 @@ BEGIN
 	
 END;
 $$ LANGUAGE plpgsql;
+
+
+-- -------------------------------------------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION fn_kpi_point_count(networkin varchar)
+RETURNS INTEGER AS $$
+DECLARE
+	avg_record RECORD;
+	oot INTEGER := 0;
+BEGIN
+	FOR avg_record IN
+	   	EXECUTE 'SELECT COUNT(t1.timestamp) as value FROM readings t1'
+		|| ' INNER JOIN fields t2 ON t1.varkey = t2.varkey AND t1.vargroup = t2.vargroup'
+		|| ' WHERE t2.kpi = true AND network = $1' 
+   		USING networkin
+	LOOP		
+		oot := avg_record.value;	
+    	END LOOP;
+	
+    	RETURN (oot);
+    
+END;
+$$ LANGUAGE plpgsql;
