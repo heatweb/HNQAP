@@ -417,7 +417,7 @@
         ]
       },
       "gridPos": {
-        "h": 4,
+        "h": 5,
         "w": 4,
         "x": 20,
         "y": 1
@@ -629,10 +629,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 3,
+        "h": 2,
         "w": 4,
         "x": 20,
-        "y": 5
+        "y": 6
       },
       "id": 133,
       "options": {
@@ -647,7 +647,7 @@
           "fields": "/.*/",
           "values": false
         },
-        "textMode": "value"
+        "textMode": "value_and_name"
       },
       "pluginVersion": "10.0.3",
       "targets": [
@@ -789,7 +789,6 @@
           "table": "readings"
         }
       ],
-      "title": "Database Size",
       "transformations": [
         {
           "id": "organize",
@@ -835,8 +834,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "blue",
-                    "value": null
+                    "color": "blue"
                   },
                   {
                     "color": "green",
@@ -963,7 +961,7 @@
             "h": 4,
             "w": 12,
             "x": 0,
-            "y": 9
+            "y": 17
           },
           "id": 3,
           "maxPerRow": 4,
@@ -1051,414 +1049,6 @@
                 "cellOptions": {
                   "type": "auto"
                 },
-                "inspect": false
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 18,
-            "w": 3,
-            "x": 0,
-            "y": 2
-          },
-          "id": 47,
-          "options": {
-            "cellHeight": "sm",
-            "footer": {
-              "countRows": false,
-              "fields": "",
-              "reducer": [
-                "sum"
-              ],
-              "show": false
-            },
-            "showHeader": true
-          },
-          "pluginVersion": "10.0.3",
-          "targets": [
-            {
-              "datasource": {
-                "type": "postgres",
-                "uid": "${DS_POSTGRESQL}"
-              },
-              "editorMode": "code",
-              "format": "table",
-              "rawQuery": true,
-              "rawSql": "SELECT DISTINCT node AS node FROM readings WHERE network='$network' ORDER BY node ASC",
-              "refId": "A",
-              "sql": {
-                "columns": [
-                  {
-                    "parameters": [
-                      {
-                        "name": "network",
-                        "type": "functionParameter"
-                      }
-                    ],
-                    "type": "function"
-                  },
-                  {
-                    "parameters": [
-                      {
-                        "name": "node",
-                        "type": "functionParameter"
-                      }
-                    ],
-                    "type": "function"
-                  },
-                  {
-                    "parameters": [
-                      {
-                        "name": "device",
-                        "type": "functionParameter"
-                      }
-                    ],
-                    "type": "function"
-                  },
-                  {
-                    "parameters": [
-                      {
-                        "name": "vargroup",
-                        "type": "functionParameter"
-                      }
-                    ],
-                    "type": "function"
-                  },
-                  {
-                    "parameters": [
-                      {
-                        "name": "varkey",
-                        "type": "functionParameter"
-                      }
-                    ],
-                    "type": "function"
-                  },
-                  {
-                    "parameters": [
-                      {
-                        "name": "value",
-                        "type": "functionParameter"
-                      }
-                    ],
-                    "type": "function"
-                  }
-                ],
-                "groupBy": [
-                  {
-                    "property": {
-                      "type": "string"
-                    },
-                    "type": "groupBy"
-                  }
-                ],
-                "limit": 50,
-                "whereJsonTree": {
-                  "children1": [
-                    {
-                      "id": "9a99aaa8-89ab-4cde-b012-3190407e34d7",
-                      "properties": {
-                        "field": "network",
-                        "operator": "equal",
-                        "value": [
-                          "$network"
-                        ],
-                        "valueSrc": [
-                          "value"
-                        ],
-                        "valueType": [
-                          "text"
-                        ]
-                      },
-                      "type": "rule"
-                    },
-                    {
-                      "id": "9ab899b9-4567-489a-bcde-f190407e5f8a",
-                      "properties": {
-                        "field": "node",
-                        "operator": "equal",
-                        "value": [
-                          "$node"
-                        ],
-                        "valueSrc": [
-                          "value"
-                        ],
-                        "valueType": [
-                          "text"
-                        ]
-                      },
-                      "type": "rule"
-                    },
-                    {
-                      "id": "8aaa8aab-0123-4456-b89a-b190407f1176",
-                      "properties": {
-                        "field": "device",
-                        "operator": "equal",
-                        "value": [
-                          "$device"
-                        ],
-                        "valueSrc": [
-                          "value"
-                        ],
-                        "valueType": [
-                          "text"
-                        ]
-                      },
-                      "type": "rule"
-                    }
-                  ],
-                  "id": "bbaab9ab-89ab-4cde-b012-3190402853ed",
-                  "type": "group"
-                },
-                "whereString": "(network = '$network' AND node = '$node' AND device = '$device')"
-              },
-              "table": "readings"
-            }
-          ],
-          "title": "Nodes",
-          "type": "table"
-        },
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "${DS_POSTGRESQL}"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "custom": {
-                "align": "auto",
-                "cellOptions": {
-                  "type": "auto"
-                },
-                "filterable": true,
-                "inspect": false
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              }
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "node"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 166
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 18,
-            "w": 6,
-            "x": 3,
-            "y": 2
-          },
-          "id": 49,
-          "options": {
-            "cellHeight": "sm",
-            "footer": {
-              "countRows": false,
-              "enablePagination": true,
-              "fields": "",
-              "reducer": [
-                "sum"
-              ],
-              "show": false
-            },
-            "showHeader": true,
-            "sortBy": []
-          },
-          "pluginVersion": "10.0.3",
-          "targets": [
-            {
-              "datasource": {
-                "type": "postgres",
-                "uid": "${DS_POSTGRESQL}"
-              },
-              "editorMode": "code",
-              "format": "table",
-              "rawQuery": true,
-              "rawSql": "SELECT DISTINCT node,device FROM readings WHERE network='$network' ORDER BY device ASC",
-              "refId": "A",
-              "sql": {
-                "columns": [
-                  {
-                    "parameters": [
-                      {
-                        "name": "network",
-                        "type": "functionParameter"
-                      }
-                    ],
-                    "type": "function"
-                  },
-                  {
-                    "parameters": [
-                      {
-                        "name": "node",
-                        "type": "functionParameter"
-                      }
-                    ],
-                    "type": "function"
-                  },
-                  {
-                    "parameters": [
-                      {
-                        "name": "device",
-                        "type": "functionParameter"
-                      }
-                    ],
-                    "type": "function"
-                  },
-                  {
-                    "parameters": [
-                      {
-                        "name": "vargroup",
-                        "type": "functionParameter"
-                      }
-                    ],
-                    "type": "function"
-                  },
-                  {
-                    "parameters": [
-                      {
-                        "name": "varkey",
-                        "type": "functionParameter"
-                      }
-                    ],
-                    "type": "function"
-                  },
-                  {
-                    "parameters": [
-                      {
-                        "name": "value",
-                        "type": "functionParameter"
-                      }
-                    ],
-                    "type": "function"
-                  }
-                ],
-                "groupBy": [
-                  {
-                    "property": {
-                      "type": "string"
-                    },
-                    "type": "groupBy"
-                  }
-                ],
-                "limit": 50,
-                "whereJsonTree": {
-                  "children1": [
-                    {
-                      "id": "9a99aaa8-89ab-4cde-b012-3190407e34d7",
-                      "properties": {
-                        "field": "network",
-                        "operator": "equal",
-                        "value": [
-                          "$network"
-                        ],
-                        "valueSrc": [
-                          "value"
-                        ],
-                        "valueType": [
-                          "text"
-                        ]
-                      },
-                      "type": "rule"
-                    },
-                    {
-                      "id": "9ab899b9-4567-489a-bcde-f190407e5f8a",
-                      "properties": {
-                        "field": "node",
-                        "operator": "equal",
-                        "value": [
-                          "$node"
-                        ],
-                        "valueSrc": [
-                          "value"
-                        ],
-                        "valueType": [
-                          "text"
-                        ]
-                      },
-                      "type": "rule"
-                    },
-                    {
-                      "id": "8aaa8aab-0123-4456-b89a-b190407f1176",
-                      "properties": {
-                        "field": "device",
-                        "operator": "equal",
-                        "value": [
-                          "$device"
-                        ],
-                        "valueSrc": [
-                          "value"
-                        ],
-                        "valueType": [
-                          "text"
-                        ]
-                      },
-                      "type": "rule"
-                    }
-                  ],
-                  "id": "bbaab9ab-89ab-4cde-b012-3190402853ed",
-                  "type": "group"
-                },
-                "whereString": "(network = '$network' AND node = '$node' AND device = '$device')"
-              },
-              "table": "readings"
-            }
-          ],
-          "title": "Devices",
-          "type": "table"
-        },
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "${DS_POSTGRESQL}"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "custom": {
-                "align": "auto",
-                "cellOptions": {
-                  "type": "auto"
-                },
                 "filterable": true,
                 "inspect": false
               },
@@ -1501,14 +1091,50 @@
                     "value": 118
                   }
                 ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "title"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 394
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "units"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 87
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "network"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 157
+                  }
+                ]
               }
             ]
           },
           "gridPos": {
             "h": 18,
-            "w": 15,
-            "x": 9,
-            "y": 2
+            "w": 24,
+            "x": 0,
+            "y": 10
           },
           "id": 45,
           "options": {
@@ -1535,7 +1161,7 @@
               "editorMode": "code",
               "format": "table",
               "rawQuery": true,
-              "rawSql": "SELECT node, device, vargroup, varkey, value FROM readings WHERE network = '$network'",
+              "rawSql": "SELECT t1.network, t1.node, t1.device, t1.vargroup, t1.varkey, t2.title, t1.value, t2.units, AGE(t1.timestamp) as age FROM readings t1\r\nINNER JOIN fields t2 ON t1.varkey = t2.varkey AND t1.vargroup = t2.vargroup\r\nWHERE t1.network = '$network'",
               "refId": "A",
               "sql": {
                 "columns": [
@@ -1684,6 +1310,6 @@
   "timezone": "",
   "title": "Information",
   "uid": "fd8bb8b9-ff03-4017-9a1d-8b0ccfe4904i",
-  "version": 11,
+  "version": 13,
   "weekStart": ""
 }
