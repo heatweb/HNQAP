@@ -33,6 +33,7 @@ CREATE TABLE fields (
 	decimals INTEGER,
 	colour VARCHAR (12),
 	timestamp TIMESTAMP,
+    	kpi boolean DEFAULT false,
 	UNIQUE (vargroup,varkey)
 );
 
