@@ -285,7 +285,8 @@ RETURNS table
 (
 	"node" character varying(32),
     "age" numeric,
-	"devices" text
+	"devices" text,
+	"tablesize" text
 )
 AS $$
 DECLARE
@@ -316,6 +317,15 @@ BEGIN
 			devlist := devlist||info_record.device||', ';	
 	    END LOOP;
 		devices := devlist;
+
+		FOR info_record IN
+		   	EXECUTE 'SELECT pg_size_pretty(pg_total_relation_size('''
+			|| quote_ident(LOWER(network||'_'||node))
+			|| '''))'
+		LOOP		
+			tablesize := info_record.pg_size_pretty;	
+	    END LOOP;
+
 	
 		RETURN NEXT;
     END LOOP;
