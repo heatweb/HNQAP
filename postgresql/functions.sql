@@ -420,3 +420,26 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+
+CREATE OR REPLACE FUNCTION fn_kpi_connectivity(networkin varchar, intervalin interval, time1 timestamp with time zone, time2 timestamp with time zone)
+RETURNS FLOAT AS $$
+DECLARE
+	avg_record RECORD;
+	oot FLOAT := 0;
+	loopcnt INTEGER := 0;
+BEGIN
+	FOR avg_record IN
+	   	EXECUTE 'SELECT t1.network,t1.node,t1.device,t1.vargroup,t1.varkey FROM readings t1'
+		|| ' INNER JOIN fields t2 ON t1.varkey = t2.varkey AND t1.vargroup = t2.vargroup'
+		|| ' WHERE t2.kpi = true AND network = $1' 
+   		USING networkin
+	LOOP		
+		loopcnt := loopcnt + 1;
+		oot := oot + fn_kpi_connectivity(LOWER(avg_record.network||'_'||avg_record.node), avg_record.device, avg_record.vargroup, avg_record.varkey, intervalin, time1, time2);	
+	
+    END LOOP;
+	
+    RETURN (oot / loopcnt);
+    
+END;
+$$ LANGUAGE plpgsql;
