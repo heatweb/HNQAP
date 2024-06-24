@@ -443,3 +443,61 @@ BEGIN
     
 END;
 $$ LANGUAGE plpgsql;
+
+
+
+CREATE OR REPLACE FUNCTION fn_kpi_operational(networknode varchar, devicein varchar, vargroupin varchar, varkeyin varchar, intervalin interval, time1 timestamp with time zone, time2 timestamp with time zone)
+RETURNS FLOAT
+AS $$
+DECLARE
+    avg_record RECORD;
+	info_record RECORD;
+	devlist TEXT := '';
+	runtime1 timestamp with time zone;
+	runtime2 timestamp with time zone;
+	total_days_in_period INTEGER;
+	lcnt INTEGER := 1;
+BEGIN
+
+	
+	FOR avg_record IN
+		EXECUTE 'SELECT COUNT(time) AS value FROM '
+		|| quote_ident(networknode)
+		|| ' WHERE device = $1 AND vargroup = $2 AND varkey = $3 AND time>=$4 AND time<$5 AND value::numeric<0'
+		USING devicein, vargroupin, varkeyin, runtime1, runtime2
+	LOOP		
+
+		IF avg_record.value > 0 THEN
+			lcnt := 0;
+		END IF;
+
+	END LOOP;
+
+	
+	RETURN (100 * lcnt);
+	
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION fn_kpi_operational(networkin varchar, intervalin interval, time1 timestamp with time zone, time2 timestamp with time zone)
+RETURNS FLOAT AS $$
+DECLARE
+	avg_record RECORD;
+	oot FLOAT := 0;
+	loopcnt INTEGER := 0;
+BEGIN
+	FOR avg_record IN
+	   	EXECUTE 'SELECT t1.network,t1.node,t1.device,t1.vargroup,t1.varkey FROM readings t1'
+		|| ' INNER JOIN fields t2 ON t1.varkey = t2.varkey AND t1.vargroup = t2.vargroup'
+		|| ' WHERE t2.kpi = true AND network = $1' 
+   		USING networkin
+	LOOP		
+		loopcnt := loopcnt + 1;
+		oot := oot + fn_kpi_operational(LOWER(avg_record.network||'_'||avg_record.node), avg_record.device, avg_record.vargroup, avg_record.varkey, intervalin, time1, time2);	
+	
+    END LOOP;
+	
+    RETURN (oot / loopcnt);
+    
+END;
+$$ LANGUAGE plpgsql;
