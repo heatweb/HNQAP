@@ -376,3 +376,47 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+
+
+CREATE OR REPLACE FUNCTION fn_kpi_connectivity(networknode varchar, devicein varchar, vargroupin varchar, varkeyin varchar, intervalin interval, time1 timestamp with time zone, time2 timestamp with time zone)
+RETURNS FLOAT
+AS $$
+DECLARE
+    avg_record RECORD;
+	info_record RECORD;
+	devlist TEXT := '';
+	runtime1 timestamp with time zone;
+	runtime2 timestamp with time zone;
+	total_days_in_period INTEGER;
+	lcnt INTEGER := 0;
+BEGIN
+
+	runtime1 := time1;
+	runtime2 := runtime1 + intervalin;
+	
+	total_days_in_period := fn_total_days_in_period(time1,time2)::integer;
+	FOR cnt IN 1..total_days_in_period LOOP		
+	
+		FOR avg_record IN
+			EXECUTE 'SELECT COUNT(time) AS value FROM '
+			|| quote_ident(networknode)
+			|| ' WHERE device = $1 AND vargroup = $2 AND varkey = $3 AND time>=$4 AND time<$5'
+			USING devicein, vargroupin, varkeyin, runtime1, runtime2
+		LOOP		
+
+			IF avg_record.value > 0 THEN
+				lcnt := lcnt + 1;
+			END IF;
+	
+	    END LOOP;
+
+		runtime1 := runtime1 + intervalin;
+		runtime2 := runtime1 + intervalin;
+	
+	END LOOP;
+	
+	RETURN (100 * lcnt/total_days_in_period);
+	
+END;
+$$ LANGUAGE plpgsql;
+
