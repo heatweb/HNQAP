@@ -1,1 +1,1 @@
-Browserware is software that runs in a browser.
+Browserware is JavaScript software that runs in a browser without any installation required.
