@@ -1,0 +1,1966 @@
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+
+    <link rel="stylesheet" id="wp-block-library-css"  href="css/style.min.css?ver=5.5.1" type="text/css" media="all" />
+    <link rel="stylesheet" id="site-stylesheet-css"  href="css/style.css?ver=5.5.1" type="text/css" media="all" />
+ 
+    <script src="https://kit.fontawesome.com/c6b21b7a8f.js" crossorigin="anonymous"></script>
+
+    <meta name="google-site-verification" content="hj2qOyoKaIdPuK84-9vWhVzM28AxHB1eH9ywcNPtfPM" /> 
+    
+	<title>Thermal Integration Heatweb Node</title>
+
+
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css">
+
+    
+    <style>
+
+    table.dataTable thead .sorting:after,
+    table.dataTable thead .sorting:before,
+    table.dataTable thead .sorting_asc:after,
+    table.dataTable thead .sorting_asc:before,
+    table.dataTable thead .sorting_asc_disabled:after,
+    table.dataTable thead .sorting_asc_disabled:before,
+    table.dataTable thead .sorting_desc:after,
+    table.dataTable thead .sorting_desc:before,
+    table.dataTable thead .sorting_desc_disabled:after,
+    table.dataTable thead .sorting_desc_disabled:before {
+    bottom: .5em;
+    }
+    </style>
+  
+  
+  <link rel="stylesheet" id="scrolling-css"  href="css/sections.css" type="text/css" media="all" />
+
+    <style>
+        .maxsiz {
+
+        width: 100%; 
+        height: 100vh;
+
+        }
+
+        .maxsiz2 {
+
+        width: 100%; 
+        height: calc(100vh - 70px);
+
+        }
+
+        .dot {
+            height: 13px;
+            width: 13px;
+            background-color: rgb(52, 58, 52);
+            border-radius: 20%;
+            border: 2px;
+            border-color: rgb(5, 5, 20);
+            display: inline-block;
+        }
+
+        .thindot {
+            height: 13px;
+            width: 6px;
+            background-color: rgb(52, 58, 52);
+            border-radius: 20%;
+            border: 2px;
+            border-color: rgb(5, 5, 20);
+            display: inline-block;
+        }
+
+        .dotspacer {
+            height: 13px;
+            width: 2px;
+            display: inline-block;
+        }
+
+        .navReadings  {
+            /* border-bottom: 1px solid rgb(32, 28, 28); */
+            padding: 20px 50px 0px 50px;
+            /* background: #6d6d70; */
+            font-size: 80%;   
+            /* font-weight: bold; */
+            text-align: left;
+            color: #212529;   
+        }
+
+        .navReadings a {
+            color: #212529;         
+        }
+
+        
+
+           
+    </style>
+      
+    <script>
+      function runAlarms()  {
+
+            
+            $.ajax({url: "api/feed", success: function(result){
+
+              var today = new Date(); 
+              var thetime = "<small>" + today.toLocaleTimeString() + ":</small> "; // .getHours() + ":" + today.getMinutes(); 
+
+              var feed = JSON.parse(result);
+              var states = feed["states"] || [];
+              var mm="";
+              var ac = 0;
+              var alist = "";
+              for (var alm in states) {
+
+                  mm += '<a href="#"><span class="dot" style="background-color: ' + states[alm]["colour"] + '" title="' + states[alm]["title"] + '"></span></a><span class="dotspacer"></span>';
+                  if (states[alm]["state"]!=="ok" && states[alm]["state"]!=="off" && states[alm]["state"]!=="on") { 
+                    ac++; 
+                    alist+= (alist==""?"":"<br />") + states[alm]["title"]; 
+                  }
+              }
+              
+              $("#myalarms").html(mm); 
+
+              if (ac>alarmcount && alarmcount>(-1)) {  
+                
+                playAudio(); 
+
+                
+                var aalert = '<div class="alert alert-danger alert-dismissible fade show" role="alert">';
+                  aalert += thetime ;
+                  if (ac==1) { aalert += '<b>New Alarm &nbsp;&nbsp;</b> ' + alist; } else { aalert += '<b>New Alarms</b><br />' + alist; }
+                  //aalert += '<br />For more information, visit our store at <a class="alert-link" href="https://store.heatweb.co.uk" target="_blank">https://store.heatweb.co.uk</a>';
+                    aalert += '<button type="button" class="close" data-dismiss="alert" aria-label="Close">';
+                    aalert += '  <span aria-hidden="true">&times;</span>';
+                    aalert += '</button>';
+                    aalert += '</div>';
+
+                    
+                    $("#inner-message").html(aalert + $("#inner-message").html()); 
+                    $("#message").fadeIn();
+              }
+
+              alarmcount = ac;
+
+            }});
+            
+        }
+
+
+
+
+
+       
+
+      var alarmcount=-1;
+     
+      
+      var urlParams = new URLSearchParams(window.location.search);
+
+      if (!urlParams.get('basic')) {
+      //if (!parent.checkStatesTimer) {
+        const checkStatesTimer = setInterval(() => {
+
+          // runAlarms();  
+          
+        }, 60000);
+
+      }
+
+      const checkStatesStart = setTimeout(() => {
+
+          // runAlarms();  
+          
+      }, 3000);
+
+    </script>
+
+  
+
+<script src="includes/gauge.js"></script>
+<style>
+    
+
+
+/* ------ Default Style ---------- */
+.gauge-container {
+  width: 168px;
+  height: 170px;
+  display: block;
+  float: left;
+  padding: 10px;
+  background-color: #222;
+  margin: 7px;
+  border-radius: 3px;
+  position: relative;
+  color: #dddddd;
+}
+.gauge-container > .label {
+  position: absolute;
+  right: 0;
+  top: 0;
+  display: inline-block;
+  background: rgba(0,0,0,0.5);
+  font-family: monospace;
+  font-size: 0.8em;
+  padding: 5px 10px;
+  width: 100%;
+  min-height: 40px;
+  color: #ffffff;
+  line-height: 100%;
+}
+
+
+.devlabel {
+
+  line-height: 100%;
+  padding: 5px 0px;
+}
+
+.gauge-container a {
+  color: #ffffff;
+}
+.gauge-container > .gauge .dial {
+  stroke: #334455;
+  stroke-width: 10;
+  stroke-dasharray: 11.7 1;
+}
+.gauge-container > .gauge .value {
+  stroke: orange;
+  stroke-dasharray: none;
+  stroke-width: 13;
+}
+.gauge-container > .gauge .value-text {
+  fill: #ccc;
+  font-family: sans-serif;
+  font-weight: bold;
+  font-size: 0.8em;
+}
+
+.gauge-container > .units {
+  position: absolute;
+  left: 15px;
+  top: 45px;
+  fill: #ccc;
+  font-size: 1em;
+}
+
+
+
+/* ------- Alternate Style ------- */
+.wrapper {
+  height: 160px;
+  float: left;
+  margin: 0px;
+  overflow: hidden;
+}
+
+.dpanel {
+  height: 250px;
+  float: left;
+  margin: 2px;
+  width: 25px;
+  /*overflow: hidden;*/
+}
+
+.wrapper > .gauge-container {
+  margin: 0;
+}
+
+
+
+</style>
+
+
+
+      
+   
+
+
+  </head>
+  <body class="page-template page-template-templates page-template-flexable-content page-template-templatesflexable-content-php page page-id-36">
+    <script type="text/javascript">
+      var base = document.createElement('base');
+    base.href = window.location.protocol + '//' + window.location.hostname + (window.location.port ? ':' + window.location.port : '');
+    document.getElementsByTagName('head')[0].appendChild(base);
+      </script>
+
+
+
+<style>
+svg * {
+    transition: all 2s;    
+}
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js" type="text/javascript"></script>
+
+<script src="https://unpkg.com/panzoom@9.4.0/dist/panzoom.min.js"></script>
+
+<script>
+
+
+
+
+
+var urlParamsM = new URLSearchParams(window.location.search);
+
+var mqttServer = urlParamsM.get('server') || "zc62a82b.ala.us-east-1.emqxsl.com" || "mqtt.heatweb.cloud";
+var mqttPort = urlParamsM.get('port') || "8084" || "8081";
+var mqttUser = urlParamsM.get('user') || "testo";
+var mqttPassword = urlParamsM.get('password') || "t3st0";
+var mqttSSL = urlParamsM.get('ssl') || "true";
+if (mqttSSL=="true") { mqttSSL = true; } else { mqttSSL=false; }
+
+
+
+var readings = {};
+var mygauges = {};
+
+
+function hexdec (hexv) {
+    
+    var hexString = (hexv + '').replace(/[^a-f0-9]/gi, '')
+    return parseInt(hexString, 16);
+    
+  }
+  
+  function dechex (number) {
+    
+    if (number < 0) {
+      number = 0xFFFFFFFF + number + 1
+    }
+    var hx =  parseInt(number, 10).toString(16);
+    
+    if (hx.length==1) { hx = "0" + hx; }
+    return hx;
+  }
+  
+  function color_avg(color1,color2,factor) {
+  
+          // extract RGB values for color1.
+          
+          var r1 = color1.substr(1,2);
+          var g1 = color1.substr(3,2);
+          var b1 = color1.substr(5,2);
+          
+          var r2 = color2.substr(1,2);
+          var g2 = color2.substr(3,2);
+          var b2 = color2.substr(5,2);
+  
+          // get the average RGB values.
+          var r_avg = (hexdec(r1)*(1-factor)+hexdec(r2)*factor);
+          var g_avg = (hexdec(g1)*(1-factor)+hexdec(g2)*factor);
+          var b_avg = (hexdec(b1)*(1-factor)+hexdec(b2)*factor);
+  
+          // construct the result color.    
+          var color_avg = '#' + dechex(r_avg) + dechex(g_avg)+ dechex(b_avg);
+  
+          // return it.
+          return color_avg;
+  }
+  
+  
+  function tempColour(temp) {
+      
+      
+      
+      var values = parseFloat(temp);
+      
+      if(values==0) { return("#ffffff"); }
+
+      var tempcolour = "#ff6c6c";
+  
+      var tv = Math.ceil(values / 10);
+  
+      var factr = 1 - (tv - (values / 10));
+  
+  
+      //if ($tv<1) { $tempcolour = '#57007f'; }
+      //elseif ($tv==1) { $tempcolour = color_avg("#57007f","#140af7",$factr); }
+      //elseif ($tv==2) { $tempcolour = color_avg("#140af7","#008ef9",$factr); }
+      
+      if (tv<1) { tempcolour = '#ffffff'; }
+      else if (tv==1) { tempcolour = color_avg("#ffffff","#ffffff",factr); }
+      else if (tv==2) { tempcolour = color_avg("#ffffff","#008ef9",factr); }
+      else if (tv==3) { tempcolour = color_avg("#008ef9","#14fffb",factr); }
+      else if (tv==4) { tempcolour = color_avg("#14fffb","#66fe00",factr); }
+      else if (tv==5) { tempcolour = color_avg("#66fe00","#f7fe02",factr); }
+      else if (tv==6) { tempcolour = color_avg("#f7fe02","#fdbe10",factr); }
+      else if (tv==7) { tempcolour = color_avg("#fdbe10","#f08e12",factr); }
+      else if (tv==8) { tempcolour = color_avg("#f08e12","#ff4f19",factr); }
+      else if (tv==9) { tempcolour = color_avg("#ff4f19","#c90504",factr); }
+      else if (tv>9) { tempcolour = "#c90504";  }
+  
+              
+      return(tempcolour);
+      
+  }
+  
+
+
+
+</script>
+
+<style>
+
+
+/*body {*/
+/*  background-color: rgba(0,0,0,0.8);*/
+/*  color: #999;*/
+/*}*/
+
+/*section {*/
+/*  background-color: rgba(0,0,0,0);*/
+/*  color: #999;*/
+/*}*/
+
+.tt {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.tt td, #customers th {
+  border: 1px solid #ddd;
+  padding: 2px 2px 2px 2px;
+}
+
+.tt tr:nth-child(even){background-color: #f2f2f2;}
+
+.tt tr:hover {background-color: #ddd;}
+
+.tt th {
+  padding: 2px;
+  text-align: left;
+  background-color: #303c43;;
+  color: white;
+}
+</style>
+
+
+
+<style>
+    
+/*    body {*/
+/*  background-color: rgba(0,0,0,0.8);*/
+/*  color: #999;*/
+/*}*/
+
+
+/* ------ Default Style ---------- */
+.devlabel {
+  height: 70px;
+  display: inline-block;
+  width: calc(100% - 30px);
+  padding-top: 20px;
+}
+
+.netlabel {
+  font-size: 0.6em;
+  padding-top: 20px;
+}
+
+.labeltable {
+  width: calc(100% - 30px);
+}
+
+.gauge-container {
+  width: 168px;
+  height: 175px;
+  display: block;
+  float: left;
+  padding: 10px;
+  background-color: #f4f2f2;
+  margin: 7px;
+  border-radius: 3px;
+  position: relative;
+  color: #111111;
+}
+.gauge-container > .label {
+  position: absolute;
+  right: 0;
+  top: 0;
+  display: inline-block;
+  background: rgba(0,0,0,0.5);
+  font-family: monospace;
+  font-size: 0.8em;
+  padding: 5px 10px;
+  width: 100%;
+  color: #ffffff;
+  line-height: 100%;
+  min-height: 30px;
+  text-align: left;
+}
+.gauge-container a {
+  color: #ffffff;
+}
+.gauge-container > .gauge .dial {
+  stroke: #9bacbd;
+  stroke-width: 10;
+  stroke-dasharray: 11.7 1;
+}
+.gauge-container > .gauge .value {
+  stroke: orange;
+  stroke-dasharray: none;
+  stroke-width: 13;
+}
+.gauge-container > .gauge .value-text {
+  fill: #111111;
+  font-family: sans-serif;
+  font-weight: bold;
+  font-size: 0.8em;
+}
+
+.gauge-container > .units {
+  position: absolute;
+  left: 15px;
+  top: 45px;
+  fill: #ccc;
+  font-size: 1em;
+}
+
+
+
+/* ------- Alternate Style ------- */
+.wrapper {
+  height: 165px;
+  float: left;
+  margin: 0px;
+  overflow: hidden;
+  box-shadow: -2px 4px 2px rgb(168, 167, 167);
+  text-align: center;
+}
+
+.dpanel {
+  height: 230px;
+  float: left;
+  margin: 2px;
+  width: 345px;
+  /*overflow: hidden;*/
+}
+
+.wrapper > .gauge-container {
+  margin: 0;
+}
+
+
+
+</style>
+
+
+
+<script type="text/javascript">
+
+var a = new Date();
+ 		
+var subscriptions = "";
+var svgtopics = "";
+// Create a client instance
+//client = new Paho.MQTT.Client("hw3.ddns.net", Number(8083), "cl"+a.getTime());
+
+var serverdes ="";
+
+function changeserver() {
+    
+    
+    var n = parseInt(document.getElementById("serverserver").value);
+    
+    if (userdata.networks[n].server) { mqttServer = userdata.networks[n].server; }
+    if (userdata.networks[n].port) { mqttPort = userdata.networks[n].port; }
+    if (userdata.networks[n].user) { mqttUser = userdata.networks[n].user; }
+    if (userdata.networks[n].password) { mqttPassword = userdata.networks[n].password; }
+    
+    connectMQTT();
+}
+
+function connectMQTT() {
+    
+    
+                    client = new Paho.MQTT.Client(mqttServer, Number(mqttPort), "cl"+a.getTime());
+                
+                    client.onConnectionLost = onConnectionLost;
+                    client.onMessageArrived = onMessageArrived;
+                    
+                    if (mqttSSL==true || mqttSSL=="true") { mqttSSL = true; } else { mqttSSL=false; }
+                    
+                    serverdes = mqttUser + "@" + mqttServer + ":" + mqttPort;
+                    document.getElementById("infodiv").innerHTML = " connecting to " + serverdes;
+                    
+                    client.connect({onSuccess:onConnect, userName:mqttUser, password:mqttPassword, useSSL:mqttSSL });
+    
+    
+}
+	
+var userdata = {};	
+	
+	$(document).ready(function(e) {
+    
+        // $("form[ajax=true]").submit(function(e) {
+            
+        //     //alert("submit");
+            
+        //     e.preventDefault();
+            
+			connectMQTT();
+            
+   
+        
+      
+        
+    });
+	
+
+
+
+function onConnect() {
+  // Once a connection has been made, make a subscription and send a message.
+  console.log("onConnect");
+  
+  document.getElementById("infodiv").innerHTML = "Connected";
+  
+//   var urlParams = new URLSearchParams(window.location.search);
+//   if (urlParams.get('show')) {
+      
+//       var shows = urlParams.get('show').split(",");
+//       for (var sh in shows) {
+          
+//           shows[sh] = shows[sh].replace("//","/+/");
+//           shows[sh] = shows[sh].replace("//","/+/");
+//           shows[sh] = shows[sh].replace("//","/+/");
+//           shows[sh] = shows[sh].replace("//","/+/");
+          
+          
+//           if(shows[sh].substr(shows[sh].length-1,1)=="/") {  shows[sh]=shows[sh]+"#"; }
+//           if(shows[sh].substr(0,1)=="/") { shows[sh] = "+" + shows[sh]; }
+//           console.log(shows[sh]);
+//           client.subscribe(shows[sh]);
+//           subscriptions += " " + shows[sh];
+//       }
+//   }
+  
+  
+  
+
+    if (urlParams.get('show').length>3) {
+
+        var shs = urlParams.get('show').split(",");
+        for (var sssh in shs) {
+            
+          var subtop = shs[sssh];
+          var tops = shs[sssh].split("/");
+          for (var t in tops) {
+              if (tops[t]=="") { tops[t]="+"; }
+          }
+          if (tops[tops.length-1]=="+") { tops[tops.length-1] = "#"; }
+          subtop="";
+          for (var t in tops) {
+              subtop += (subtop==""?"":"/") + tops[t];
+          }     
+          console.log("Subscribing to " + subtop) ;
+          client.subscribe(subtop); 
+          
+          subscriptions += " " + subtop;
+       
+        }   
+    } else {
+        
+        
+        client.subscribe("+/+/+/stat/state"); 
+        client.subscribe("+/+/+/+/plot");
+        client.subscribe("+/+/+/+/property");
+        client.subscribe("+/+/+/settings/title");
+    }
+  
+  
+//   client.subscribe("+/+/weatherControl/#");
+  
+//   client.subscribe("+/+/+/alarm/#");
+//   client.subscribe("+/+/+/dat/#"); 
+//   client.subscribe("+/+/+/system/property"); 
+  //client.subscribe("ihiu/+/+/dat/tR"); // hw/diversitydemo/+/+/fC    //  ihiu/oop7zooR/#
+  //client.subscribe("+/+/+/settings/title"); // hw/diversitydemo/+/+/fC    //  ihiu/oop7zooR/#
+  //client.subscribe("+/+/+/settings/customer"); // hw/diversitydemo/+/+/fC    //  ihiu/oop7zooR/#
+  //client.subscribe("#");
+ 
+}
+
+// called when the client loses its connection
+function onConnectionLost(responseObject) {
+  if (responseObject.errorCode !== 0) {
+    console.log("onConnectionLost:"+responseObject.errorMessage);
+}
+}
+
+
+var peakTot = 0;
+var peakTotNo = 0;
+var peakInd = 0;
+var panelwidths = {};
+var devcounts = {};
+var devcount=0;
+
+// called when a message arrives
+function onMessageArrived(message) {
+  console.log(message.destinationName + ":"+message.payloadString);
+  try { 
+      
+      var ttt = new Date().getTime();
+      
+      var topics = message.destinationName.split("/");
+      var mynet = topics[0];
+      var devid = topics[2];
+      var dkey = topics[4];
+      
+      var fullid = mynet+"_"+devid;
+      
+      var myid = 'gauge_'+fullid+'.'+topics[3]+'.'+topics[4];
+      
+      if(!readings[fullid]) {  // if new system add to plot
+    
+        readings[fullid] = {};
+        
+        var node = document.createElement("div");                 // Create a <li> node
+                // Create a text node
+        node.setAttribute("id", "dpanel_"+fullid); 
+        node.setAttribute("class", "dpanel"); 
+        
+        //panelwidths[devid]= (panelwidths[devid]||25) + 160;
+        //node.setAttribute("style", "width:"+panelwidths[devid]+"px");
+        node.setAttribute("style", "width:190px");
+        
+        var mybutts = "";
+        //mybutts=mybutts;
+        
+        //var gg = '<b><div class="devlabel" id="dlabel_'+fullid+'"><span class="netlabel">'+ mynet+"</span><br />"+devid+'</div></b>\n';
+        var gg = '<table class="labeltable"><tr><td><b><div class="devlabel" id="dlabel_'+fullid+'"><span class="netlabel">'+ mynet+"</span><br />"+devid+'</div></b>\n</td><td align="right"><span class="dbuttons">'+ mybutts+'</span></td></tr></table>';
+        
+        node.innerHTML = gg; 
+        node.setAttribute("style", "display:none;");
+        // Append the text to <li>
+        document.getElementById("mqpanels").appendChild(node);     // Append <li> to <ul> with id="myList" 
+        
+        devcount++;
+ 
+      } 
+      
+    if(!readings[fullid][topics[3]]) {  // if new system add to plot
+        
+        readings[fullid][topics[3]] = {};
+            
+     } 
+    
+    var gvalue = message.payloadString;
+    
+    if (isNaN(gvalue)) {
+        gvalue = gvalue.replace(/\#d/g,topics[2]);
+        gvalue = gvalue.replace(/\#n/g,topics[0]);
+        gvalue = gvalue.replace(/\#topic/g,topics[0]+"_"+topics[2]+"_"+topics[3]+"_"+topics[4]);
+    }
+    
+    if(!readings[fullid][topics[3]][topics[4]]) { 
+        
+        readings[fullid][topics[3]][topics[4]] =  { "id": readings.length - 1, "topic": message.destinationName, "value": message.payloadString, "timestamp":ttt};
+    
+        //if (!isNaN(message.payloadString)) {
+        
+        
+        // dont create panel square for variables already loaded into an active svg element
+        if  (topics[4]!="title" &&  (urlParams.get('show').indexOf("/"+topics[4])>0 || svgtopics.indexOf(topics[0]+"/+/"+topics[2]+"/"+topics[3]+"/"+topics[4])<1)) {
+            
+          
+            var node = document.createElement("div");                 // Create a <li> node
+                    // Create a text node
+            node.setAttribute("id", "gpanel_"+fullid + "_" + topics[3] + "_" + topics[4]); 
+            
+            //node.setAttribute("style", "display:none;");
+            
+            var units = "";
+            var max=100;
+            var gtype = "";
+            var dstyle = "";
+            var wadd = 170;
+            
+           
+            
+            //if (topics[3]=="alarm") { units = ''; gtype="led"; }
+            //else 
+            if (topics[4]=="tCo") { units = '&deg;C'; max=100; } // 60 for limit
+            else if (topics[4].substr(0,1)=="t") { units = '&deg;C'; max=100; }
+            else if (topics[3]=="dat" && topics[4].substr(0,1)=="p") { units = 'bar'; max=10; }
+            else if (topics[3]=="dat" && topics[4]=="Head") { units = 'bar'; max=6; gtype="green"; }
+            else if (topics[3]=="dat" && topics[4].substr(0,2)=="dp") { units = 'bar'; max=3;  gtype="dp";  }
+            else if (topics[3]=="dat" && topics[4].substr(0,1)=="f") { units = 'ltr/min'; max=30; gtype="green"; }
+            else if (topics[3]=="dat" && topics[4]=="run") { units = ''; max=1; gtype="led"; dstyle=" onoff"; }
+            else if (topics[3]=="dat" && topics[4].substr(0,1)=="a") { units = '/1023'; max=1023; }
+            else if (topics[3]=="dat" && topics[4].substr(0,1)=="A") { units = 'volts'; max=24; }
+            else if (topics[3]=="stat" && topics[4].substr(0,2)=="al") { units = ''; max=10; }
+            else if (topics[3]=="stat" && topics[4]=="state") { 
+                
+                units = ''; max=1; gtype="led"; dstyle=" onoff"; 
+                if (gvalue=="ok") { gvalue=1; } else  { gvalue=0; }
+                
+            }
+            else if (topics[4].substr(0,4)=="vwat") { units = '&deg;C'; max=100; }
+            else if (topics[4].substr(0,2)=="xp") { units = '%'; max=100; }
+            
+            
+            
+            
+            
+             if (gtype=="led") {
+                
+                var newdes = devid +' / '+topics[3]+' / '+topics[4];
+                var newdes = topics[3]+' / '+topics[4];
+                var gshow = topics[0] + '.' + topics[2] + '.' + topics[3] + '.' + topics[4] ;
+                
+                
+                var glink = '<a href="/graph?show=' + gshow + '" target="f2">';
+                var gg = '<div class="wrapper">\n';
+                gg += '<div id="'+myid+'" class="gauge-container' + dstyle + '"><br />' + '\n';
+                
+                
+                var ledsvg = document.getElementById("panelled").innerHTML; 
+                 ledsvg = ledsvg.replace(/\#topic/g,topics[0]+"_"+topics[2]+"_"+topics[3]+"_"+topics[4]);
+                gg += ledsvg;  //'    <img src="/files/svg/panelled.svg">\n';
+                //gg += '    <img src="/files/svg/panelled.svg">\n';
+                
+                gg += '\n    <span class="label">';
+                gg += '<input type="checkbox" class="panelcheck" id="check_' + myid + '" onclick="runchecks()"> '
+                
+                var gtag = glink + newdes+'</a>';
+                
+                gg +=  gtag + '</span>';
+                 
+                 
+                gg += '  <span class="value-text units">' + units + '</span></div>\n';
+                
+                
+                node.innerHTML = gg; 
+                var subtext = node.getElementsByTagName("svg");
+    			for (var j = 0; j < subtext.length; j++) {
+    			    //alert(subtext[j].style.fill);
+    			     subtext[j].setAttribute("height","80%");
+    			     subtext[j].setAttribute("width","90%");
+    			}
+                 
+                // Append the text to <li>
+                document.getElementById("dpanel_"+fullid).appendChild(node);     // Append <li> to <ul> with id="myList" 
+                
+                panelwidths[fullid]= (panelwidths[fullid]||25) + wadd;
+                devcounts[fullid] = (devcounts[fullid]||0) +1;
+                document.getElementById("dpanel_"+fullid).setAttribute("style", "width:"+panelwidths[fullid]+"px");
+                //document.getElementById("dlabel_"+fullid).setAttribute("style", "display:inline;");
+                
+              
+            }
+              
+        
+            
+            
+             else if (isNaN(gvalue) || parseFloat(gvalue)>max) {
+                
+                var thiswadd = 0 + wadd;
+                var newdes = devid +' / '+topics[3]+' / '+topics[4];
+                var newdes = topics[3]+' / '+topics[4];
+                
+                var gg = '<div class="wrapper">\n';
+                gg += '<div id="'+myid+'" class="gauge-container' + dstyle + '"><br />' + '\n';
+                
+                
+                var prefix = "<b>"; var postfix = "</b>";
+                if (!isNaN(gvalue)) { prefix = "<b><big>"; postfix =  "</big></b>"; }
+                
+                if (units!=="") { postfix+="<br>"+units; }
+                //if (topics[4]=="title") { prefix = '<b><span style="font-size:22px;">'; postfix = "</span></b>"; }
+                    
+                //gg += '<br /><p align="center"><b><span class="key text_' + topics[0]+"_"+topics[2]+"_"+topics[3]+"_"+topics[4] + '"></span></b></p>';
+               
+                if (topics[3]=="svg") {
+                    
+                    //get aspect ratio
+                    var svgHeight = parseInt(gvalue.split('height="')[1].split('"')[0]);
+                    var svgWidth = parseInt(gvalue.split('width="')[1].split('"')[0]);
+                    
+                    
+                    thiswadd = parseInt((wadd-50) * svgWidth / svgHeight);
+                    gg += '<table width="95%" align="center"><tr><td class="paneltd" width="100%" height="'+(wadd-50)+'" valign="middle" align="center">' + '<span class="key svg_' + topics[0]+"_"+topics[2]+"_"+topics[3]+"_"+topics[4] + '"></span>'  + '</td></tr></table>';
+                     
+                } else {
+                    
+                    gg += '<table width="95%" align="center"><tr><td class="paneltd" width="100%" height="'+(wadd-50)+'" valign="middle" align="center">' + prefix + '<span class="key text_' + topics[0]+"_"+topics[2]+"_"+topics[3]+"_"+topics[4] + '"></span>' + postfix + '</td></tr></table>';
+                
+                }
+               
+                
+                gg += '\n';
+                
+                gg += '<span class="label">'; //+'</span>';
+                
+                gg += ' <input type="checkbox" class="panelcheck" id="check_' + myid + '" onclick="runchecks()">'
+                gg += ' ' + newdes + '</span>';
+                
+                node.innerHTML = gg; 
+                
+                 
+                // Append the text to <li>
+                document.getElementById("dpanel_"+fullid).appendChild(node);     // Append <li> to <ul> with id="myList" 
+                
+                //svg
+                document.getElementById(myid).setAttribute("style", "width:"+thiswadd+"px");
+                
+                panelwidths[fullid]= (panelwidths[fullid]||25) + thiswadd; //wadd;
+                devcounts[fullid] = (devcounts[fullid]||0) +1;
+                document.getElementById("dpanel_"+fullid).setAttribute("style", "width:"+panelwidths[fullid]+"px");
+                //document.getElementById("dlabel_"+fullid).setAttribute("style", "display:inline;");
+                
+              
+            }
+              
+            
+            else if (!isNaN(gvalue)) {
+                
+                var newdes = devid +' / '+topics[3]+' / '+topics[4];
+                var newdes = topics[3]+' / '+topics[4];
+                var gshow = topics[0] + '.' + topics[2] + '.' + topics[3] + '.' + topics[4] ;
+                
+                if (topics[4]=="tF") {  gshow = topics[0] + '.' + topics[2] + '.' + topics[3] + '.tR,' + gshow;}
+                else if (topics[4]=="tR") {  gshow += "," + topics[0] + '.' + topics[2] + '.' + topics[3] + '.tF'  ;}
+                
+                var glink = '<a href="/graph?show=' + gshow + '" target="f2">';
+                //var glink = '<a href="/graph?show=' + topics[0] + '.' + topics[2] + '.' + topics[3] + '.' + topics[4] + '" target="f2">';
+                
+                
+                var gg = '<div class="wrapper">\n';
+                gg += '<div id="'+myid+'" class="gauge-container' + dstyle + '"><br />' + (gtype=="onoff"?"":"<br />") + '\n';
+                gg += '    <span class="label">';
+                
+                gg += '<input type="checkbox" class="panelcheck" id="check_' + myid + '" onclick="runchecks()">'
+                
+                var gtag = glink + newdes+'</a>';
+                
+                //gtag=gtag;   // tag to inject code for custom gauge labels
+                
+                gg +=  gtag + '</span>';
+                
+                //gg += ' '+glink + newdes+'</a>' ; //</span>';
+                //gg += '</span>';
+                
+                gg += '\n  <span class="value-text units">' + units + '</span></div>\n';
+                
+
+                node.innerHTML = gg; 
+                
+                 
+                // Append the text to <li>
+                document.getElementById("dpanel_"+fullid).appendChild(node);     // Append <li> to <ul> with id="myList" 
+                
+                panelwidths[fullid]= (panelwidths[fullid]||25) + wadd;
+                devcounts[fullid] = (devcounts[fullid]||0) +1;
+                
+                document.getElementById("dpanel_"+fullid).setAttribute("style", "width:"+panelwidths[fullid]+"px");
+                //document.getElementById("dlabel_"+fullid).setAttribute("style", "display:inline;");
+                
+                if (gtype=="green") { 
+                
+                   
+                    mygauges[myid] = Gauge(
+                        document.getElementById(myid), {
+                        max: max,
+                        dialStartAngle: 180,
+                        dialEndAngle: 0,
+                        value: parseFloat(message.payloadString),
+                        label: function(value) {
+                          return (Math.round(value * 10) / 10);
+                        },
+                        color: function(value) {
+                            
+                              return "#33ff33";
+                            
+                          }
+                      }
+                    );
+                    
+                } else if (gtype=="onoff") { 
+                
+                   
+                    mygauges[myid] = Gauge(
+                        document.getElementById(myid), {
+                        max: max,
+                        dialStartAngle: 90.01,
+                        dialEndAngle: 89.99,
+                        dialRadius: 6,
+                        showValue: false,
+                        value: parseFloat(gvalue),
+                        label: function(value) {
+                          return (Math.round(value * 10) / 10);
+                        },
+                        color: function(value) {
+                            
+                              return "#33ff33";
+                            
+                          }
+                      }
+                    );
+                    
+                }
+                else  if (gtype=="dp") { 
+                
+                   
+                    mygauges[myid] = Gauge(
+                        document.getElementById(myid), {
+                        max: max,
+                        dialStartAngle: 180,
+                        dialEndAngle: 0,
+                        value: parseFloat(message.payloadString),
+                        label: function(value) {
+                          return (Math.round(value * 100) / 100);
+                        },
+                        color: function(value) {
+                            if(value < 0.2) {
+                              return "#0059b3";
+                            }else if(value < 0.3) {
+                              return "#3399ff";
+                            }else if(value < 0.4) {
+                              return "#fffa50";
+                            }else if(value < 2.5) {
+                              return "#33ff33";
+                            }else {
+                              return "#ef4655";
+                            }
+                          }
+                      }
+                    );
+                    
+                } 
+                else { 
+                
+                   
+                    mygauges[myid] = Gauge(
+                        document.getElementById(myid), {
+                        max: max,
+                        dialStartAngle: 180,
+                        dialEndAngle: 0,
+                        value: parseFloat(message.payloadString),
+                        label: function(value) {
+                          return (Math.round(value * 10) / 10);
+                        },
+                        color: function(value) {
+                            if(value < 30) {
+                              return "#0059b3";
+                            }else if(value < 40) {
+                              return "#3399ff";
+                            }else if(value < 50) {
+                              return "#fffa50";
+                            }else if(value < 60) {
+                              return "#f7aa38";
+                            }else {
+                              return "#ef4655";
+                            }
+                          }
+                      }
+                    );
+                    
+                }
+            }
+            document.getElementById("infodiv").innerHTML = devcount + " connected devices.<br />"
+            
+        }   
+        
+        //document.getElementById("gpanel_"+devid).fadeIn();
+        
+    }
+        
+     
+     
+     
+      
+    readings[fullid][topics[3]][topics[4]]["value"] =  message.payloadString;
+    readings[fullid][topics[3]][topics[4]]["timestamp"] =  ttt;
+        
+     
+     
+     
+     // colours
+    if (!isNaN(message.payloadString)) { 
+        
+        var mycolour =  tempColour(message.payloadString); 
+    } 
+     
+     
+    var fillc = "rgb(71, 249, 71)";  
+    if ((topics[3]=="alarm") || (topics[3]=="stat" && topics[4]=="state") || (topics[3]=="dat" && topics[4]=="run")) {
+	
+	    if (message.payloadString=="off" || message.payloadString=="0") {
+				    
+				    fillc = "#446644"; 
+				    
+		} else if (message.payloadString!=="ok" &&  message.payloadString!=="on" &&  message.payloadString!=="run" &&  message.payloadString!=="1") {
+				    
+				    if (message.payloadString.indexOf("arning")>0) { fillc = "#f0e537"; } else { fillc = "rgb(230, 61, 61)"; }
+		}
+	    //if (message.payloadString!=="ok") { fillc = "#ff2222"; }
+	    var mycolour = fillc;    
+		
+    }
+    
+    if (mycolour) {
+        var testexist3 =  document.getElementsByClassName("col_"+topics[0]+"_"+topics[2]+"_"+topics[3]+"_"+topics[4]);
+    	var i;
+    	for (i = 0; i < testexist3.length; i++) {
+    	
+    		testexist3[i].style.fill = mycolour;
+    
+    	}
+    }
+    
+    var testexist =  document.getElementsByClassName("text_"+topics[0]+"_"+topics[2]+"_"+topics[3]+"_"+topics[4]);
+		for (var i = 0; i < testexist.length; i++) {
+			
+			var	styleplus = " " + testexist[i].getAttribute('styleplus') || "";	
+			if (styleplus.indexOf("integer")>0) {
+				
+				testexist[i].innerHTML = Math.round(parseFloat(message.payloadString));
+				
+			} else  if (styleplus.indexOf("shortstate")>0) {
+				
+				var ss = message.payloadString;
+				if (ss=="1") { ss = "on"; }
+				else if (ss=="0") { ss = ""; }
+				else if (ss!=="ok" && ss!=="off" && ss!=="on" && ss!=="run") {
+				    
+				    if (ss.indexOf("arning")>0) { ss = "warn"; } else { ss = "alarm"; }
+				}
+				testexist[i].innerHTML = ss;
+				
+			} else  if (styleplus.indexOf("hidenormal")>0) {
+				
+				var ss = message.payloadString;
+				if (ss=="ok" || ss=="off" || ss=="on" || ss=="run") { ss = ""; }
+				
+				testexist[i].innerHTML = ss;
+				
+			} else {
+			
+				testexist[i].innerHTML = message.payloadString.replace(/_/g, ' ');;
+			}
+	}
+	
+	
+	var testexist6 = document.getElementsByClassName("needle_"+topics[0]+"_"+topics[2]+"_"+topics[3]+"_"+topics[4]);
+
+	for (var i = 0; i < testexist6.length; i++) {
+		
+		var trans = testexist6[i].getAttribute("transform");
+		//alert(trans);
+		
+		var nang = parseFloat(testexist6[i].getAttribute("angle")) || 90.0;
+		//var res = trans.replace("-45", "45"); 
+		var n = trans.indexOf("(") +1; 
+		var m = trans.indexOf(","); 
+		
+		var nangle = ((nang / 100) * parseFloat(message.payloadString)) - (nang / 2);
+		
+		var res =  trans.substr(0, n) + nangle.toString() + trans.substr(m);
+		//alert(res);
+		testexist6[i].setAttribute("transform", res);
+
+	}
+					
+	var testexist6 = document.getElementsByClassName("bar_"+topics[0]+"_"+topics[2]+"_"+topics[3]+"_"+topics[4]);
+	for (var i = 0; i < testexist6.length; i++) {
+
+		//testexist6[i].width = 999; //parseFloat(testexist6[i].width) * item[1] / 100;
+		var newW = parseFloat(message.payloadString);
+		var barmax = parseFloat(testexist6[i].getAttribute("bmax") || 100);
+		newW = newW * (barmax / 100);
+		
+		if (newW < -55555) { testexist6[i].setAttribute("x", newW - 5); newW = 5; }
+		else { testexist6[i].setAttribute("x", 0); }
+		testexist6[i].setAttribute("width", newW);
+
+	}
+					
+	 var testexist =  document.getElementsByClassName("svg_"+topics[0]+"_"+topics[2]+"_"+topics[3]+"_"+topics[4]);
+		for (var i = 0; i < testexist.length; i++) {
+			
+			// create svg dashboard
+			
+			testexist[i].innerHTML =  gvalue;
+			
+			// set svg width and height
+			var subtext = testexist[i].getElementsByTagName("svg");
+			for (var j = 0; j < subtext.length; j++) {
+			    //alert(subtext[j].style.fill);
+			     subtext[j].setAttribute("height","100%");
+			     subtext[j].setAttribute("width","100%");
+			}
+			
+			// need to change black text to white.
+			var subtext = testexist[i].getElementsByTagName("tspan");
+			for (var j = 0; j < subtext.length; j++) {
+			    //alert(subtext[j].style.fill);
+			    if (subtext[j].style.fill=="#000000" || subtext[j].style.fill== "rgb(0, 0, 0)") { 
+			        //subtext[j].style.fill="#dddddd"; 
+			        subtext[j].setAttribute("class","bgtext "+(subtext[j].getAttribute("class")||""));
+			    }
+			}
+			var subtext = testexist[i].getElementsByTagName("text");
+			for (var j = 0; j < subtext.length; j++) {
+			    if (""+subtext[j].style.fill=="#000000" || subtext[j].style.fill== "rgb(0, 0, 0)") { 
+			        //subtext[j].style.fill="#dddddd"; 
+			        subtext[j].setAttribute("class","bgtext "+(subtext[j].getAttribute("class")||""));
+			        
+			    }
+			}
+			
+			var subkeys = testexist[i].getElementsByClassName("key");
+			for (var j = 0; j < subkeys.length; j++) {
+			    var cls = subkeys[j].getAttribute("class");
+			    cls = cls.split("key ")[1].split(" ")[0];
+			    cls = cls.substr(cls.indexOf("_")+1);
+			    cls=cls.replace("_","/+/");
+			    cls=cls.replace("_","/");
+			    cls=cls.replace("_","/");
+			    
+			    if (("  "+subscriptions+"  ").indexOf(" "+cls+" ")<1) {
+			    //if (subscriptions.indexOf(cls)<1) {
+    			    //alert(cls);
+    			    client.subscribe(cls);
+    			    subscriptions += " " + cls;
+    			    svgtopics += " " + cls;
+			    }
+			    
+			    subkeys[j].oncontextmenu = rightClick; 
+			}
+			
+			
+			
+	}
+    
+    
+    
+    if (!isNaN(message.payloadString)) {
+        
+        mygauges[myid].setValueAnimated(parseFloat(message.payloadString), 1);
+    }
+    
+    
+    
+    var ttit = topics[0] + "/+/" + topics[2] + "/settings/title";
+    if (subscriptions.indexOf(ttit)<1) {
+        
+        console.log("adding subscription " + ttit)
+        client.subscribe(ttit); 
+        subscriptions += " " + ttit;
+    }
+    
+     if (topics[4]=="title") {
+        
+            document.getElementById("dlabel_"+fullid).innerHTML = '<span class="netlabel">'+ topics[0] + "//" + topics[2] + "</span><br>" + message.payloadString;
+     }
+     if (topics[4]=="property") {
+        
+        //    document.getElementById("dlabel_"+fullid).innerHTML = "<small>" + topics[0] + "</small><br>" + message.payloadString;
+     }
+    
+
+	
+// 	document.getElementById("mqlist").innerHTML = mql;
+    document.getElementById("mqlist").innerHTML = "";
+    
+  } catch {}
+  
+}
+
+
+
+
+
+
+
+
+
+
+
+function resize(newsize) {
+    
+    
+    var rootsize=170;
+    
+    if (newsize=="S") {  rootsize=170; }
+    else if (newsize=="M") {  rootsize=225; }
+    else if (newsize=="L") {  rootsize=300; }
+    else if (newsize=="+") {  rootsize=1.2; }
+    else if (newsize=="-") {  rootsize=0.8; }
+    
+    var testexist3 =  document.getElementsByClassName("gauge-container");
+	for (var i = 0; i < testexist3.length; i++) {
+	    //alert(testexist3[i].style.width);
+	    
+	    if (rootsize<10) { 
+	        
+	        testexist3[i].style.width = parseInt(((parseInt(testexist3[i].style.width||(170-2))-2 +2)*rootsize)-2) + "px";
+    		testexist3[i].style.height = parseInt(((parseInt(testexist3[i].style.height||(170+5)) -5)*rootsize)+5) + "px";
+    		
+	    } else {
+    	    
+    		testexist3[i].style.width = (rootsize -2) + "px";
+    		testexist3[i].style.height = (rootsize +5) + "px";
+	    }
+	}
+	var testexist3 =  document.getElementsByClassName("wrapper");
+	for (var i = 0; i < testexist3.length; i++) {
+	
+	
+	    if (rootsize<10) { 
+	        
+	        testexist3[i].style.height = parseInt(((parseInt(testexist3[i].style.height||(170-5)) +5)*rootsize)-5) + "px";
+    		
+	    } else {
+    	    
+    		testexist3[i].style.height = (rootsize -5) + "px";
+	    }
+	
+		
+
+	}
+	var testexist3 =  document.getElementsByClassName("paneltd");
+	for (var i = 0; i < testexist3.length; i++) {
+    	
+    	if (rootsize<10) { 
+	        
+	        testexist3[i].style.height = parseInt(((parseInt(testexist3[i].style.height||(170-40)) +40)*rootsize)-40) + "px";
+    		
+	    } else {
+    	    
+    		testexist3[i].style.height = (rootsize -40) + "px";
+	    }
+		
+
+	}
+	var testexist3 =  document.getElementsByClassName("dpanel");
+	for (var i = 0; i < testexist3.length; i++) {
+	
+	    if (rootsize<10) { 
+	        
+	        testexist3[i].style.height = parseInt(((parseInt(testexist3[i].style.height||(170+60)) -60)*rootsize)+60) + "px";
+	        var myid = testexist3[i].getAttribute("id").substr(testexist3[i].getAttribute("id").indexOf("_")+1);
+    		panelwidths[myid] = parseInt(((parseInt(panelwidths[myid]) -25)*rootsize)+25);
+    	    testexist3[i].style.width = panelwidths[myid] + "px";
+    		
+	    } else {
+    	    
+    		testexist3[i].style.height = (rootsize +60) + "px";
+		
+    		//alert(testexist3[i].getAttribute("id"));
+    		var myid = testexist3[i].getAttribute("id").substr(testexist3[i].getAttribute("id").indexOf("_")+1);
+    		panelwidths[myid] = 25 + ((devcounts[myid]||1) * rootsize);
+    	    testexist3[i].style.width = panelwidths[myid] + "px";
+
+	    }
+		
+	
+		
+	}
+    
+     
+                
+                
+    console.log(panelwidths);
+    
+    // .gauge-container {
+    //  width: 168px;
+    //  height: 175px;
+    
+    //   .wrapper {
+    //   height: 165px;
+    
+    
+    //   .dpanel {
+    //   height: 230px;
+      
+}
+
+
+
+function retheme(newtheme) {
+    
+    
+    var bg = "#202020";
+    var txt = "#eeeeee";
+    
+    if (newtheme=="L") {  bg = "#f4f2f2"; txt = "#111111"; }
+    else if (newtheme=="D") { bg = "#202020"; txt = "#eeeeee"; }
+    
+    var testexist3 =  document.getElementsByClassName("gauge-container");
+	for (var i = 0; i < testexist3.length; i++) {
+	    
+		testexist3[i].style["background-color"] = bg;
+		testexist3[i].style["color"] = txt;
+
+	}
+	var testexist3 =  document.getElementsByClassName("value-text");
+	for (var i = 0; i < testexist3.length; i++) {
+	    
+		testexist3[i].style.fill = txt;
+
+	}
+	var testexist3 =  document.getElementsByClassName("bgtext");
+	for (var i = 0; i < testexist3.length; i++) {
+	    
+		testexist3[i].style.fill = txt;
+
+	}
+	
+}
+//background-color: #f4f2f2;
+//.gauge-container > .gauge .value-text
+
+function panz(mode) {
+    
+    if (mode==1) {
+    
+        var area = document.getElementById("zoomable");
+        window.pz = panzoom(area, {autocenter: false, bounds: false});
+        
+    } else if  (mode=="W") {
+        
+        var cw =  document.getElementById("mqttsec").style.width || "1500px";
+        if (cw.indexOf("px")>0) { cw = parseFloat(cw.replace("px","")); } else {cw = 1500; }
+        cw = cw + 500;
+        document.getElementById("mqttsec").style.width = cw + "px"; 
+    }
+}
+
+var newshow = "";
+
+function runchecks() {
+    
+    
+    var checks = document.getElementsByClassName("panelcheck");
+    var nshow = "";
+    for (var ch in checks) {
+        
+        if (checks[ch].checked == true){
+            nshow += (nshow==""?"":",") + checks[ch].id.replace("check_gauge_","").replace("_","//").replace(/\./g,"/");
+        }
+    }
+    
+    newshow = "" + nshow;
+    
+    if (nshow!=="") { 
+     
+        document.getElementById("checksection").style.display="inline";   
+        
+        
+    } else  { 
+     
+        document.getElementById("checksection").style.display="none";   
+    }
+    
+    //alert(nshow);
+    
+}
+
+function checkselect () {
+    
+    var nurl = "";
+    //alert(document.getElementById("checkact").value);
+    
+    if (document.getElementById("checkact").value == "graph") {
+        window.open("/graph?show=" + newshow);
+    } 
+    else if (document.getElementById("checkact").value == "live") {
+        window.open("/section/livedata?show=" + newshow);
+    } 
+    else if (document.getElementById("checkact").value == "clear") {
+        
+        var checks = document.getElementsByClassName("panelcheck");
+        for (var ch in checks) {
+            
+            checks[ch].checked =false;
+        }
+        document.getElementById("checksection").style.display="none";  
+    }
+    else if (document.getElementById("checkact").value == "all") {
+        
+        var checks = document.getElementsByClassName("panelcheck");
+        for (var ch in checks) {
+            
+            checks[ch].checked =true;
+        }
+    }
+    else if (document.getElementById("checkact").value == "similar") {
+        
+        var checks = document.getElementsByClassName("panelcheck");
+        for (var ch in checks) {
+            
+            // console.log(ch);
+            // console.log(checks[ch]);
+            // console.log(checks[ch]["id"]);
+            
+            var chkid = "" + checks[ch]["id"];
+            var sb = chkid.split(".")[1] + "/" + chkid.split(".")[2];
+            //var sb = ch.id.split(".")[0] + "/" + checks[ch].id.split(".")[1];
+            //console.log(newshow);
+            //console.log(sb);
+            if (newshow.indexOf(sb)>0) {    checks[ch].checked =true;  }
+        }
+    }
+    runchecks();
+    document.getElementById("checkact").value = "";
+}
+
+// =========================================================================================================================
+
+</script>
+
+
+
+<section id="mqttsec">
+<div id="controller" class="controller">   
+<table width="100%"><tr><td>
+    
+    
+    <span id="sselectdiv"></span> 
+    <span id="statusdiv"></span>&nbsp;&nbsp; 
+    <span id="infodiv"></span> 
+
+    
+</td><td align="right">
+     <div id="mqttform">
+    <form method="GET">
+        <!--<small>Server:  </small><input style="width:200px;" id="mqttServer" name="server" value=""> : <input style="width:100px;" id="mqttPort" name="port" value="8081">-->
+        <!--<input style="width:150px;" id="mqttUser" name="user" value="">-->
+        <!--<input type="password" style="width:150px;" id="mqttPassword" name="password" value="">-->
+        <!--<input  type="submit" value="Connect">-->
+        <input  id="show" name="show" type="hidden" value="">
+    </form>
+    </div> 
+    </td><td align="right">
+        
+        <span id="checksection" style="display:none">
+            <select name="checkact" id="checkact" onchange="checkselect()">
+              <option value="" selected>With Selected</option>
+              <option value="graph">Graph</option>
+              <option value="live">Open in New</option>
+              <option value="all">Select All</option>
+              <option value="similar">Select Similar</option>
+              <option value="clear">Clear Selection</option>
+            </select>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+        </span>
+        
+        
+     <input  type="button" onclick="resize('S')" value="S">
+     <input  type="button" onclick="resize('M')" value="M">
+     <input  type="button" onclick="resize('L')" value="L">
+     <input  type="button" onclick="resize('+')" value="+">
+     <input  type="button" onclick="resize('-')" value="-">
+     &nbsp;&nbsp;
+    <!--</td><td align="right">-->
+     <input  type="button" onclick="retheme('L')" value="L">
+     <input  type="button" onclick="retheme('D')" value="D">
+     <!--</td><td align="right">-->
+     &nbsp;&nbsp;
+     <input  type="button" onclick="panz(1)" value="Z">
+     <input  type="button" onclick="panz('W')" value="W">
+</td></tr></table>
+
+<hr>
+</div>
+<script>
+    document.getElementById("show").value = urlParams.get('show'); //
+    // document.getElementById("mqttServer").value = mqttServer;
+    // document.getElementById("mqttPort").value = mqttPort;
+    // document.getElementById("mqttUser").value = mqttUser;
+    // document.getElementById("mqttPassword").value = mqttPassword;
+    
+
+    //
+</script>
+
+<div id="iframediv">
+    <!--<iframe id="f2" name="f2"  frameborder="0" src="/graph?show=///dat/tF&amp;basic=1" width="100%" height="600"></iframe>-->
+
+</div>
+
+<div name="panelled" id="panelled" style="display:none;">
+<svg
+   width="145"
+   height="130"
+   viewBox="0 0 38.364581 34.395831"
+   version="1.1"
+   id="svg1470"
+   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   sodipodi:docname="panelledt.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs1464">
+    <radialGradient
+       cx="70.596664"
+       cy="76.948669"
+       r="52.895233"
+       id="radialGradient12424-7-9-4"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.02732782,-1.0657846,0.99967129,0.02563805,-10.431775,150.39216)"
+       xlink:href="#linearGradient12443" />
+    <linearGradient
+       id="linearGradient12443">
+      <stop
+         id="stop12445"
+         style="stop-color:#ffffff;stop-opacity:0.80000001"
+         offset="0" />
+      <stop
+         id="stop12449"
+         style="stop-color:#ffffff;stop-opacity:0.69999999"
+         offset="0.4093" />
+      <stop
+         id="stop12447"
+         style="stop-color:#ffffff;stop-opacity:0.322"
+         offset="1" />
+    </linearGradient>
+    <radialGradient
+       cx="70.596664"
+       cy="76.948669"
+       r="52.895233"
+       id="radialGradient12424-7-9-4-9"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.02276055,-0.8876612,0.83259734,0.02135319,-0.48466574,120.51038)"
+       xlink:href="#linearGradient12443" />
+    <radialGradient
+       cx="70.596664"
+       cy="76.948669"
+       r="52.895233"
+       id="radialGradient12424-7-9-4-1"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.02732782,-1.0657846,0.99967129,0.02563805,-10.431775,150.39216)"
+       xlink:href="#linearGradient12443" />
+    <radialGradient
+       cx="70.596664"
+       cy="76.948669"
+       r="52.895233"
+       id="radialGradient12424-7-9-4-9-8"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.02276055,-0.88766123,0.83259738,0.02135319,22.627268,164.75721)"
+       xlink:href="#linearGradient12443" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.979899"
+     inkscape:cx="105.3084"
+     inkscape:cy="2.2728432"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1-2-6-7-4"
+     showgrid="false"
+     fit-margin-top="1"
+     fit-margin-left="1"
+     fit-margin-bottom="1"
+     fit-margin-right="1"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:snap-global="false"
+     units="px"
+     inkscape:pagecheckerboard="0" />
+  <metadata
+     id="metadata1467">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-3.7262049,1.5276281)">
+    <g
+       transform="matrix(0.19611124,0,0,0.19611124,8.591894,0.39831686)"
+       id="layer1-2-6-7-4"
+       class="topic topic_#topic">
+      <path
+         inkscape:connector-curvature="0"
+         d="m 126.33127,66.702664 a 52.376933,52.376933 0 1 1 -104.753855,0 52.376933,52.376933 0 1 1 104.753855,0 z"
+         id="path11874-2-4-1-8-4-9"
+         style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;stroke:#ffffff;stroke-width:0.72932351;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate" />
+      <path
+         inkscape:connector-curvature="0"
+         d="m 124.17418,50.176119 c -0.11876,0.651306 -1.41111,35.023274 -1.5535,35.665448 C 116.7304,112.40804 90.845259,130.99033 63.859707,127.6229 36.221861,124.17407 23.052235,98.518194 22.927028,71.412001 c -0.01047,-2.246483 2.264338,-19.56265 2.956493,-21.716776 l 47.086251,27.961402 z"
+         id="path11874-2-8-6-7-4-8"
+         style="color:#000000;display:inline;overflow:visible;visibility:visible;opacity:0.30493272;fill:#000000;fill-opacity:1;stroke:none;stroke-width:7.19547272;marker:none;enable-background:accumulate"
+         sodipodi:nodetypes="ccssccc" />
+      <path
+         inkscape:connector-curvature="0"
+         d="m 124.44716,81.01736 c -0.44094,0.487653 -4.60781,12.978552 -18.56237,29.75682 -18.863259,19.33911 -50.318885,21.38028 -71.195853,4.29423 C 13.307334,97.569335 14.576815,65.004305 28.675751,42.03468 29.844229,40.131028 37.28855,32.478066 38.998073,31.023185 l 29.517389,46.633442 z"
+         id="path11874-2-8-4-0-7"
+         style="color:#000000;display:inline;overflow:visible;visibility:visible;opacity:0.30493272;fill:#000000;fill-opacity:1;stroke:none;stroke-width:7.14300489;marker:none;enable-background:accumulate"
+         sodipodi:nodetypes="ccssccc" />
+      <path
+         inkscape:connector-curvature="0"
+         d="m 123.27575,66.949539 a 49.566707,49.566707 0 1 1 -99.133412,0 49.566707,49.566707 0 1 1 99.133412,0 z"
+         id="path11874-3-8-1"
+         style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:#666666;fill-opacity:1;stroke:#1a1a1a;stroke-width:0.70782298;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
+         class=" key col_#topic" />
+      <path
+         inkscape:connector-curvature="0"
+         d="m 123.27573,66.949494 a 49.56671,49.56671 0 1 1 -99.133392,0 49.56671,49.56671 0 1 1 99.133392,0 z"
+         id="path11874-2-1-6-9"
+         style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;fill-opacity:1;stroke:#333333;stroke-width:5.99290133;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate" />
+      <path
+         inkscape:connector-curvature="0"
+         d="m 120.26767,66.716805 a 46.763743,46.763743 0 1 1 -93.527465,0 46.763743,46.763743 0 1 1 93.527465,0 z"
+         id="path11874-2-4-1-8-4"
+         style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;stroke:#1a1a1a;stroke-width:1.39299572;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate" />
+      <path
+         inkscape:connector-curvature="0"
+         d="M 38.998074,31.023184 A 49.566706,49.566706 0 0 1 122.99317,66.24987"
+         id="path11874-2-3-81-2-1"
+         style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;stroke:#333333;stroke-width:3.44473863;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate" />
+      <path
+         inkscape:connector-curvature="0"
+         d="M 60.852632,18.735231 A 49.566706,49.566706 0 0 1 118.16751,45.343177"
+         id="path11874-2-3-8-8-6-5"
+         style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;stroke:#666666;stroke-width:2.12346888;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate" />
+      <path
+         inkscape:connector-curvature="0"
+         d="M 80.243304,17.584128 A 49.566706,49.566706 0 0 1 112.75366,36.507637"
+         id="path11874-2-3-8-5-8-9-1"
+         style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;stroke:#cccccc;stroke-width:0.89657581;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate" />
+      <path
+         inkscape:connector-curvature="0"
+         d="M 84.521662,115.43996 A 49.566705,49.566705 0 0 1 28.16103,86.866247"
+         id="path11874-2-3-8-3-7-4-9"
+         style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;stroke:#4d4d4d;stroke-width:1.36845791;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate" />
+      <text
+         id="text-38"
+         transform="scale(0.93700348,1.0672319)"
+         class="key text_#topic"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:32.3796px;line-height:2.16729px;font-family:Arial;-inkscape-font-specification:Arial;text-anchor:middle;white-space:pre;fill:#010101;fill-opacity:0.769504;stroke-width:0.597599"
+         x="78.109886"
+         y="71.883484"
+         styleplus="shortstate">---</text>
+      <text
+         id="text-38-2"
+         transform="scale(0.93700348,1.0672319)"
+         class="bgtext key text_#topic"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.5921px;line-height:2.16729px;font-family:Arial;-inkscape-font-specification:Arial;text-anchor:middle;white-space:pre;fill:#000000;fill-opacity:1;stroke-width:0.597599"
+         x="76.825813"
+         y="144.37097"
+         styleplus="hidenormal">---</text>
+    </g>
+  </g>
+</svg>
+
+</div>
+
+
+<div id="zoomable"  style="min-height:700px; width:100%">
+    
+    <div id="mqlist">
+     Waiting for data...
+    </div>
+    <div id="mqpanels" style="width:100%;">
+    </div>
+
+</div>
+<br /><br /><br /><br /><br /><br />&nbsp;<br />
+
+
+</section>
+ 
+
+
+    <style type="text/css"> 
+
+    @import url('https://fonts.googleapis.com/css2?family=Lato:wght@700&family=Roboto:wght@300&display=swap');
+
+        .context-menu { 
+            position: absolute; 
+            text-align: left; 
+            background: #f0f0f0; 
+            border: 1px solid rgb(200,200,200); 
+            box-shadow: 2px 2px 2px rgb(151,146,146);
+            font-family: 'Roboto', sans-serif;
+            font-size: 0.8em;
+            border-radius: 3px;
+        } 
+  
+        .context-menu ul { 
+            padding: 0px; 
+            margin: 0px; 
+            min-width: 150px; 
+            list-style: none; 
+        } 
+  
+        .context-menu ul li { 
+            padding: 12px; 
+            border-bottom: 1px solid rgb(215,215,215); 
+        } 
+  
+        .context-menu ul li a { 
+            text-decoration: none; 
+            color: black; 
+        } 
+  
+        .context-menu ul li:hover { 
+            background: darkgray; 
+        } 
+    </style> 
+  
+
+
+  
+    <div id="contextMenu" class="context-menu" 
+        style="display:none"> 
+        <ul> 
+            <li><a href="#">Element-1</a></li> 
+            <li><a href="#">Element-2</a></li> 
+            <li><a href="#">Element-3</a></li> 
+            <li><a href="#">Element-4</a></li> 
+            <li><a href="#">Element-5</a></li> 
+            <li><a href="#">Element-6</a></li> 
+            <li><a href="#">Element-7</a></li> 
+        </ul> 
+    </div> 
+ 
+    <script> 
+        document.onclick = hideMenu; 
+        //document.oncontextmenu = rightClick; 
+
+       // document.getElementById("clicktarg").oncontextmenu = rightClick; 
+
+
+        var x = document.getElementsByClassName("device");
+        var i;
+        for (i = 0; i < x.length; i++) {
+            x[i].oncontextmenu = rightClick; 
+        } 
+  
+        function hideMenu() { 
+            document.getElementById( 
+                "contextMenu").style.display = "none" 
+        } 
+  
+        function rightClick(e) { 
+            e.preventDefault(); 
+
+            console.log(e);
+            console.log(e.path);
+            console.log(e.path[1].classList);
+            console.log(e.path[1].classList.value);
+			console.log(e.path[2].classList.value);
+			console.log(e.path[3].classList.value);
+			
+			var cl = e.path[0].classList.value + " " + e.path[1].classList.value + " " + e.path[2].classList.value + " " + e.path[3].classList.value;
+			console.log(cl);
+			
+            if (document.getElementById( 
+                "contextMenu").style.display == "block") 
+                hideMenu(); 
+				
+            else if (cl.indexOf("_")>0) {   
+			
+                var menu = document.getElementById("contextMenu") 
+                      
+                var mentext = "<ul>";
+
+                //if (cl)    {
+
+                    //var cl = e.target.classList.value;
+                    //if (cl.indexOf("_">0)) {  
+                        var tp =  cl.substr(cl.indexOf("_")+1).split(" ")[0];
+                        
+                        var tp2 = tp.replace(/_/g,"/");
+                        tp = tp.replace(/_/g,".");
+                        tp2 = tp2.replace("/","//");
+                        
+                        
+                        
+                        mentext += "<li><a href='/graph?show=" + tp + "' target='_blank'><img src='/files/images/icon_stat.png'>&nbsp; Graph &nbsp;" + tp + "</a></li>"; 
+						mentext += "<li><a href='/section/livedata?show=" + tp2 + "' target='_blank'><img src='/files/images/icon_dat.png'>&nbsp; Dashboard &nbsp;" + tp + "</a></li>";
+                    //}
+                    
+                //}
+
+
+                
+                mentext += "</ul>";
+                menu.innerHTML = mentext;
+                menu.style.display = 'block'; 
+                menu.style.left = e.pageX + "px"; 
+                menu.style.top = e.pageY + "px"; 
+            } 
+        } 
+    </script> 
+
+
+
+
+ <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script> -->
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+  
+
+
+
+
+<style>
+
+  #message {
+      position: fixed;
+      top: 60px;
+      right: 0;
+      width: 50%;
+  }
+  .alert {
+    box-shadow: 4px 4px 4px rgb(58, 57, 57);
+  }
+  </style>
+  
+  <div id="message" style="display:none;">
+      <div  id="inner-message" style="padding: 10px 10px 10px 10px;">
+     
+      
+          <!-- <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <b>Special Offer! &nbsp;&nbsp;</b> We are offering a full Raspberry Pi computer running Heatweb for £50.  
+            <br />For more information, visit our store at <a class="alert-link" href="https://store.heatweb.co.uk" target="_blank">https://store.heatweb.co.uk</a>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div> -->
+
+
+      </div>
+  </div>
+  <script>
+      //$("#message").fadeIn();
+  </script>
+
+    
+  </body>
+</html>

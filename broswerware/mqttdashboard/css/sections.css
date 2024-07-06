@@ -1,0 +1,53 @@
+
+body, textarea, input, select {
+    font-size: 18px;
+}
+
+section  {
+    border-bottom: 1px solid rgb(255, 255, 255);
+    padding: 20px 50px;
+    /* height: 100vh; */
+    scroll-snap-align: start;
+    /* text-align: center; */
+    position: relative;
+    background: #ffffff;
+    font-size: 18px;
+    }
+
+section .table {
+            font-size: 16px;
+        }
+
+table.dataTable.compact tbody td {
+    
+    padding: 2px;
+}   
+
+section .jstree-node {
+    font-size: 16px;
+}
+
+.nowrap {
+    white-space: nowrap;
+}
+
+@media (max-width: 1480px) {
+
+    section {
+        
+        padding: 20px 20px;
+        
+        }
+
+}
+
+@media (max-width:480px) {
+
+    section {
+        
+        padding: 10px 8px;
+        
+        }
+
+}
+
