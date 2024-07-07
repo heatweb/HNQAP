@@ -49,7 +49,6 @@ Quality control (for each object) is divided into three catagories:
 * Installation and acceptance testing of systems
 * Optimisation of operational systems
 
-Catagories represent footwear - shoes, boots or socks.
 
 ### System Design
 
