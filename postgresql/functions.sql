@@ -417,7 +417,7 @@ BEGIN
 
 		FOR info_record IN
 		   	EXECUTE 'SELECT pg_size_pretty(pg_total_relation_size('''
-			|| quote_ident(LOWER(network||'_'||node))
+			|| quote_ident(REPLACE (LOWER(network||'_'||node), '-', '_'))
 			|| '''))'
 		LOOP		
 			tablesize := info_record.pg_size_pretty;	
