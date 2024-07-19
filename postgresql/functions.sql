@@ -417,7 +417,7 @@ BEGIN
 
 		FOR info_record IN
 		   	EXECUTE 'SELECT pg_size_pretty(pg_total_relation_size('''
-			|| quote_ident(REPLACE (LOWER(network||'_'||node), '-', '_'))
+			|| quote_ident(REPLACE(LOWER(network||'_'||node), '-', '_'))
 			|| '''))'
 		LOOP		
 			tablesize := info_record.pg_size_pretty;	
@@ -550,7 +550,7 @@ BEGIN
    		USING networkin
 	LOOP		
 		loopcnt := loopcnt + 1;
-		oot := oot + fn_kpi_connectivity(LOWER(avg_record.network||'_'||avg_record.node), avg_record.device, avg_record.vargroup, avg_record.varkey, intervalin, time1, time2);	
+		oot := oot + fn_kpi_connectivity(REPLACE(LOWER(avg_record.network||'_'||avg_record.node), '-', '_'), avg_record.device, avg_record.vargroup, avg_record.varkey, intervalin, time1, time2);	
 	
     END LOOP;
 	
@@ -573,7 +573,7 @@ BEGIN
    		USING networkin
 	LOOP		
 		loopcnt := loopcnt + 1;
-		oot := oot + fn_kpi_connectivity(LOWER(avg_record.network||'_'||avg_record.node), avg_record.device, avg_record.vargroup, '*', intervalin, time1, time2);	
+		oot := oot + fn_kpi_connectivity(REPLACE(LOWER(avg_record.network||'_'||avg_record.node), '-', '_'), avg_record.device, avg_record.vargroup, '*', intervalin, time1, time2);	
 	
     END LOOP;
 	
@@ -631,7 +631,7 @@ BEGIN
    		USING networkin
 	LOOP		
 		loopcnt := loopcnt + 1;
-		oot := oot + fn_kpi_operational(LOWER(avg_record.network||'_'||avg_record.node), avg_record.device, avg_record.vargroup, avg_record.varkey, intervalin, time1, time2);	
+		oot := oot + fn_kpi_operational(REPLACE(LOWER(avg_record.network||'_'||avg_record.node), '-', '_'), avg_record.device, avg_record.vargroup, avg_record.varkey, intervalin, time1, time2);	
 	
     END LOOP;
 	
