@@ -16,4 +16,9 @@
 | Network Supply Temperature (Summer 20°C OAT) | 63°C | +/-3°C  |
 | Network Supply Temperature (Winter 0°C OAT) | 73°C | +/-3°C  |
 | Network Supply Temperature (Winter -5°C OAT) | 75°C | +10°C  |
+
+## Performance KPIs
+
+| Setpoint | Value | Acceptance Tolerance |
+| ------ | ------ | ------ |
 | Network Return Temperature | 30°C | +/-10°C  |
