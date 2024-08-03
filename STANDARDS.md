@@ -13,7 +13,7 @@
 | Setpoint | Value | Acceptance Tolerance |
 | ------ | ------ | ------ |
 | DHW Temperature | 52°C | +/-2°C  |
-| Network Supply Temperature (Summer 20°C OAT) | 62°C | +/-2°C  |
-| Network Supply Temperature (Winter 0°C OAT) | 72°C | +/-2°C  |
+| Network Supply Temperature (Summer 20°C OAT) | 62°C | +/-3°C  |
+| Network Supply Temperature (Winter 0°C OAT) | 72°C | +/-3°C  |
 | Network Supply Temperature (Winter -5°C OAT) | 75°C | +10°C  |
 | Network Return Temperature | 30°C | +/-10°C  |
