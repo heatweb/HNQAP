@@ -375,6 +375,145 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+
+-- -Gas Boiler Counters IN TESTING------------------------------------------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION fn_counter_to_rate(networknode varchar, devicein varchar, vargroup varchar, varkey varchar, time1 timestamp with time zone, time2 timestamp with time zone)
+RETURNS table
+(
+	"value" text,
+    "time" timestamp with time zone,
+	"device" character varying(32) 
+)
+AS $$
+DECLARE
+    avg_record RECORD;
+	info_record RECORD;
+	avg_cnt INTEGER := 0;
+	last_time FLOAT := 0;
+	period FLOAT := 0;
+	delta FLOAT := 0;
+	tot_wv FLOAT := 0;
+	last_v FLOAT := 0;
+BEGIN
+
+	FOR avg_record IN
+	   	EXECUTE 'SELECT varkey, value, time as timestamp, EXTRACT(EPOCH FROM time) AS time FROM '
+    	|| quote_ident(networknode)
+    	|| ' WHERE device = $1 AND vargroup = $2 AND varkey = $3 AND time >= $4 AND time <= $5'
+		|| ' ORDER BY time ASC'
+   		USING devicein, vargroup, varkey, time1, time2
+	LOOP		
+		IF avg_cnt > 0 THEN
+	
+			period := avg_record.time - last_time;
+			delta := avg_record.value::numeric - last_v;
+
+			value := 0;
+			IF (period > 0) AND (delta > 0) THEN
+				value := delta / period;
+			END IF;
+	
+			time := avg_record.timestamp;
+			device := devicein;
+
+			RETURN NEXT;
+	
+		END IF;
+	
+		last_v := avg_record.value::numeric;			
+		last_time := avg_record.time;
+		avg_cnt := avg_cnt + 1;		
+	
+		
+    END LOOP;
+	
+	
+END;
+$$ LANGUAGE plpgsql;
+
+-- not quite working
+CREATE OR REPLACE FUNCTION fn_pulses_per_device_per_hour(networknode varchar, vargroup varchar, varkey varchar, time1 timestamp with time zone, time2 timestamp with time zone)
+RETURNS table
+(
+	"value" text,
+    "time" timestamp with time zone,
+	"device" character varying(32) 
+)
+AS $$
+DECLARE
+    avg_record RECORD;
+	info_record RECORD;
+	avg_cnt INTEGER := 0;
+	last_time FLOAT := 0;
+	period FLOAT := 0;
+	delta FLOAT := 0;
+	tot_wv FLOAT := 0;
+	last_v FLOAT := 0;
+	last_dev TEXT := '';
+BEGIN
+
+	
+	FOR avg_record IN
+	   	EXECUTE 'SELECT varkey, device, value, time as timestamp, EXTRACT(EPOCH FROM time) AS time FROM '
+    	|| quote_ident(networknode)
+    	|| ' WHERE vargroup = $1 AND varkey = $2 AND time >= $3 AND time <= $4'
+		|| ' ORDER BY time ASC'
+   		USING vargroup, varkey, time1, time2
+	LOOP		
+
+
+		IF avg_cnt > 0 THEN
+
+			IF (last_dev != avg_record.device) THEN
+
+				last_v := avg_record.value::numeric;
+				last_time := avg_record.time;
+				tot_wv := 0;
+	
+			END IF;
+	
+	
+			period := avg_record.time - last_time;
+			delta := avg_record.value::numeric - last_v;
+
+			
+			IF (delta > 0) THEN
+				tot_wv := tot_wv + delta;
+			END IF;
+	
+			IF (period >= 3600) THEN						
+	
+				time := avg_record.timestamp;
+				device := last_dev;
+				value := tot_wv;
+	
+				RETURN NEXT;
+
+				last_v := avg_record.value::numeric;
+				last_time := avg_record.time;
+				tot_wv := 0;
+	
+			END IF;
+	
+	ELSE
+	
+		last_v := avg_record.value::numeric;
+		last_time := avg_record.time;
+	
+	END IF;
+	
+		last_dev := avg_record.device;		
+		
+		avg_cnt := avg_cnt + 1;		
+	
+		
+    END LOOP;
+	
+	
+END;
+$$ LANGUAGE plpgsql;
+
 -- -------------------------------------------------------------------------------------------------
 
 CREATE OR REPLACE FUNCTION fn_get_nodes(network varchar)
@@ -639,3 +778,6 @@ BEGIN
     
 END;
 $$ LANGUAGE plpgsql;
+
+
+
