@@ -10,12 +10,17 @@
 
 ## Setpoints
 
-| Setpoint | Value | Acceptance Tolerance |
-| ------ | ------ | ------ |
+| Setpoint | Value |
+| ------ | ------ |
 | DHW Temperature | 52°C | +/-2°C  |
-| Network Supply Temperature (Summer 20°C OAT) | 63°C | +/-3°C  |
-| Network Supply Temperature (Winter 0°C OAT) | 73°C | +/-3°C  |
-| Network Supply Temperature (Winter -5°C OAT) | 75°C | +10°C  |
+| Secondary Network Supply Temperature| 62°C +10°C  |
+
+
+## Pipe Sizing
+
+| Location | Methodology |
+| ------ | ------ | 
+|  |  |
 
 ## Performance KPIs
 
