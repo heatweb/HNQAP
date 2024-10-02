@@ -77,7 +77,7 @@ RETURNS table
 	"device" character varying(32),
 	"vargroup" character varying(16),
 	"varkey" character varying(64),
-	"value" numeric,
+	"value" text,
     "time" timestamp with time zone
 )
 AS $$
@@ -95,7 +95,7 @@ BEGIN
 		
 		networknode := REPLACE(LOWER(networkin||'_'||avg_record.node), '-', '_');	
 		FOR info_record IN
-		   	EXECUTE 'SELECT time,device,vargroup,varkey,value::numeric FROM '
+		   	EXECUTE 'SELECT time,device,vargroup,varkey,value FROM '
 	    	|| quote_ident(networknode)
 	    	|| ' WHERE varkey = $1 AND time >= $2 AND time <= $3'
 			USING varkeyin, time1, time2
