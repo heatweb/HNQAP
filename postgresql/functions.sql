@@ -119,6 +119,53 @@ $$ LANGUAGE plpgsql;
 
 
 
+CREATE OR REPLACE FUNCTION fn_get_var_values_before(networkin varchar, varkeyin varchar, time1 timestamp with time zone)
+RETURNS table
+(
+	"node" character varying(32),
+	"device" character varying(32),
+	"vargroup" character varying(16),
+	"varkey" character varying(64),
+	"value" text,
+    "time" timestamp with time zone
+)
+AS $$
+DECLARE
+	networknode TEXT := '';
+	avg_record RECORD;
+	info_record RECORD;
+BEGIN
+
+	FOR avg_record IN
+	   	EXECUTE 'SELECT DISTINCT node,device,vargroup,varkey FROM readings'
+    	|| ' WHERE network = $1 AND varkey = $2'
+   		USING networkin, varkeyin
+	LOOP
+		
+		networknode := REPLACE(LOWER(networkin||'_'||avg_record.node), '-', '_');	
+		FOR info_record IN
+		   	EXECUTE 'SELECT time,device,vargroup,varkey,value FROM '
+	    	|| quote_ident(networknode)
+	    	|| ' WHERE device = $1 AND vargroup = $2 AND varkey = $3 AND time <= $4'
+	    	|| ' ORDER BY time DESC LIMIT 1'
+			USING avg_record.device, avg_record.vargroup, varkeyin, time1
+		LOOP
+			
+		    time := time1;
+			device := info_record.device;
+			node := avg_record.node;
+			vargroup := info_record.vargroup;
+			varkey := info_record.varkey;
+			value := ''||info_record.value;
+			RETURN NEXT;
+		
+	    END LOOP;
+	
+    END LOOP;
+
+	
+END;
+$$ LANGUAGE plpgsql;
 
 
 CREATE OR REPLACE FUNCTION fn_get_values_ext(networknode varchar, device varchar, vargroup varchar, varkey varchar)
