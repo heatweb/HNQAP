@@ -189,6 +189,38 @@ $$ LANGUAGE plpgsql;
 
 
 
+
+CREATE OR REPLACE FUNCTION fn_average_val(v1 float, v2 float)
+RETURNS FLOAT AS $$
+BEGIN
+    
+	RETURN (v1 + v2) / 2;
+    
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+CREATE OR REPLACE FUNCTION fn_average_nzval(v1 float, v2 float)
+RETURNS FLOAT AS $$
+BEGIN
+
+	IF (v1 != 0.0) AND (v2 != 0.0) THEN
+		RETURN (v1 + v2) / 2.0;
+    ELSEIF (v1 != 0.0) THEN
+		RETURN v1;
+    ELSEIF (v2 != 0.0) THEN
+		RETURN v2;
+	ELSE
+		RETURN (0.0);
+	END IF;
+	
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+
 CREATE FUNCTION fn_average(networknode varchar, device varchar, vargroup varchar, varkey varchar) RETURNS FLOAT AS $$
 DECLARE
     avg_value FLOAT := 0;
