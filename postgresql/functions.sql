@@ -553,6 +553,8 @@ END;
 $$ LANGUAGE plpgsql;
 
 
+
+
 -- -Gas Boiler Counters IN TESTING------------------------------------------------------------------------------------------------
 
 CREATE OR REPLACE FUNCTION fn_counter_to_rate(networknode varchar, devicein varchar, vargroup varchar, varkey varchar, time1 timestamp with time zone, time2 timestamp with time zone)
@@ -955,6 +957,34 @@ BEGIN
     
 END;
 $$ LANGUAGE plpgsql;
+
+
+
+CREATE OR REPLACE FUNCTION fn_phe_efficicency(networknode varchar, device varchar, vargroup1 varchar, tfprim varchar, trprim varchar, trsec varchar, vargroup2 varchar, varkey2 varchar, time1 timestamp with time zone, time2 timestamp with time zone)
+RETURNS FLOAT AS $$
+DECLARE
+	oot FLOAT := 0;
+	trsecv FLOAT := 0;
+	trprimv FLOAT := 0;
+	tfprimv FLOAT := 0;
+BEGIN
+
+	trsecv = fn_weighted_average(networknode,device,vargroup1,trsec,vargroup2,varkey2,time1, time2);
+	tfprimv = fn_weighted_average(networknode,device,vargroup1,tfprim,vargroup2,varkey2, time1, time2);
+	trprimv = fn_weighted_average(networknode,device,vargroup1,trprim,vargroup2,varkey2,time1, time2);
+
+	IF (tfprimv - trsecv) > 0.0 THEN
+		oot = 1.0 - ((trprimv - trsecv)/(tfprimv - trsecv));
+	ELSE
+		oot = 0.0;
+	END IF;
+
+	RETURN oot;
+    
+END;
+$$ LANGUAGE plpgsql;
+
+
 
 
 
