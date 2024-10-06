@@ -347,7 +347,7 @@ DECLARE
 	last_w FLOAT := 0;
 	last_time FLOAT := 0;
 	period FLOAT := 0;
-	networknode TEXT:= LOWER(network || '_' || node);
+	networknode TEXT:= REPLACE(LOWER(network||'_'||node), '-', '_');	
 BEGIN
 
 	FOR avg_record IN
