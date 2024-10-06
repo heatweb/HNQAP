@@ -336,7 +336,7 @@ $$ LANGUAGE plpgsql;
 
 -- SELECT fn_weighted_average('heatweb_network1','3016031af27a0c25','dat','tHoDHW','fHDHW')
 
-CREATE OR REPLACE FUNCTION fn_weighted_average(networknode varchar, device varchar, vargroup1 varchar, varkey1 varchar, vargroup2 varchar, varkey2 varchar, time1 timestamp with time zone, time2 timestamp with time zone)
+CREATE OR REPLACE FUNCTION fn_weighted_average(network varchar, node varchar, device varchar, vargroup1 varchar, varkey1 varchar, vargroup2 varchar, varkey2 varchar, time1 timestamp with time zone, time2 timestamp with time zone)
 RETURNS FLOAT AS $$
 DECLARE
     avg_cnt INTEGER := 0;
@@ -347,7 +347,18 @@ DECLARE
 	last_w FLOAT := 0;
 	last_time FLOAT := 0;
 	period FLOAT := 0;
+	networknode TEXT:= LOWER(network || '_' || node);
 BEGIN
+
+	FOR avg_record IN
+	   	EXECUTE 'SELECT value FROM readings'
+    	|| ' WHERE network = $1 AND node = $2 AND device = $3 AND vargroup = $4 AND varkey = $5 AND timestamp <= $6'
+   		USING network, node, device, vargroup2, varkey2, time1
+	LOOP
+		last_w := avg_record.value::numeric;
+	
+	END LOOP;
+	
     FOR avg_record IN
 	   	EXECUTE 'SELECT varkey, value, EXTRACT(EPOCH FROM time) AS time FROM '
     	|| quote_ident(networknode)
@@ -960,7 +971,7 @@ $$ LANGUAGE plpgsql;
 
 
 
-CREATE OR REPLACE FUNCTION fn_phe_efficicency(networknode varchar, device varchar, vargroup1 varchar, tfprim varchar, trprim varchar, trsec varchar, vargroup2 varchar, varkey2 varchar, time1 timestamp with time zone, time2 timestamp with time zone)
+CREATE OR REPLACE FUNCTION fn_phe_efficicency(network varchar, node varchar, device varchar, vargroup1 varchar, tfprim varchar, trprim varchar, trsec varchar, vargroup2 varchar, varkey2 varchar, time1 timestamp with time zone, time2 timestamp with time zone)
 RETURNS FLOAT AS $$
 DECLARE
 	oot FLOAT := 0;
@@ -969,9 +980,9 @@ DECLARE
 	tfprimv FLOAT := 0;
 BEGIN
 
-	trsecv = fn_weighted_average(networknode,device,vargroup1,trsec,vargroup2,varkey2,time1, time2);
-	tfprimv = fn_weighted_average(networknode,device,vargroup1,tfprim,vargroup2,varkey2, time1, time2);
-	trprimv = fn_weighted_average(networknode,device,vargroup1,trprim,vargroup2,varkey2,time1, time2);
+	trsecv = fn_weighted_average(network,node,device,vargroup1,trsec,vargroup2,varkey2,time1, time2);
+	tfprimv = fn_weighted_average(network,node,device,vargroup1,tfprim,vargroup2,varkey2, time1, time2);
+	trprimv = fn_weighted_average(network,node,device,vargroup1,trprim,vargroup2,varkey2,time1, time2);
 
 	IF (tfprimv - trsecv) > 0.0 THEN
 		oot = 1.0 - ((trprimv - trsecv)/(tfprimv - trsecv));
