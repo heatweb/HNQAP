@@ -969,7 +969,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-
+-- ------------------------------------------------------------
 
 CREATE OR REPLACE FUNCTION fn_phe_efficicency(network varchar, node varchar, device varchar, vargroup1 varchar, tfprim varchar, trprim varchar, trsec varchar, vargroup2 varchar, varkey2 varchar, time1 timestamp with time zone, time2 timestamp with time zone)
 RETURNS FLOAT AS $$
@@ -995,6 +995,14 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+-- ------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION fn_ds439(N numeric)
+RETURNS FLOAT AS $$
+BEGIN
+	RETURN ((1.19 * N) + (18.8 * POWER(N,0.5)) + 17.6);
+END;
+$$ LANGUAGE plpgsql;
 
 
 
