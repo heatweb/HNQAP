@@ -1005,5 +1005,11 @@ END;
 $$ LANGUAGE plpgsql;
 
 
+CREATE OR REPLACE FUNCTION fn_htg_diversity(N numeric)
+RETURNS FLOAT AS $$
+BEGIN
+	RETURN ((0.38 / N) + 0.62);
+END;
+$$ LANGUAGE plpgsql;
 
 
