@@ -1012,4 +1012,98 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+-- -------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION fn_first_time_when_not(network varchar, node varchar, device varchar, vargroup varchar, varkey varchar, whenis varchar, time1 timestamp with time zone, time2 timestamp with time zone)
+RETURNS timestamp with time zone AS $$
+DECLARE
+	last_time timestamp with time zone;
+    avg_record RECORD;
+	avg_cnt INTEGER := 0;
+	networknode TEXT:= REPLACE(LOWER(network||'_'||node), '-', '_');	
+BEGIN
+
+    FOR avg_record IN
+	   	EXECUTE 'SELECT time FROM '
+    	|| quote_ident(networknode)
+    	|| ' WHERE device = $1 AND vargroup = $2 AND varkey = $3 AND value != $4 AND time >= $5 AND time <= $6'
+		|| ' ORDER BY time ASC LIMIT 1'
+   		USING device, vargroup, varkey, whenis, time1, time2
+	LOOP
+		
+		last_time := avg_record.time;
+		avg_cnt := avg_cnt + 1;
+    END LOOP;
+
+    IF (avg_cnt > 0) THEN
+		
+		RETURN last_time ;
+    ELSE
+        RETURN null;
+    END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION fn_first_time_when(network varchar, node varchar, device varchar, vargroup varchar, varkey varchar, whenis varchar, time1 timestamp with time zone, time2 timestamp with time zone)
+RETURNS timestamp with time zone AS $$
+DECLARE
+	last_time timestamp with time zone;
+    avg_record RECORD;
+	avg_cnt INTEGER := 0;
+	networknode TEXT:= REPLACE(LOWER(network||'_'||node), '-', '_');	
+BEGIN
+
+    FOR avg_record IN
+	   	EXECUTE 'SELECT time FROM '
+    	|| quote_ident(networknode)
+    	|| ' WHERE device = $1 AND vargroup = $2 AND varkey = $3 AND value = $4 AND time >= $5 AND time <= $6'
+		|| ' ORDER BY time ASC LIMIT 1'
+   		USING device, vargroup, varkey, whenis, time1, time2
+	LOOP
+		
+		last_time := avg_record.time;
+		avg_cnt := avg_cnt + 1;
+    END LOOP;
+
+    IF (avg_cnt > 0) THEN
+		
+		RETURN last_time ;
+    ELSE
+        RETURN null;
+    END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION fn_first_time(network varchar, node varchar, device varchar, vargroup varchar, varkey varchar, time1 timestamp with time zone, time2 timestamp with time zone)
+RETURNS timestamp with time zone AS $$
+DECLARE
+	last_time timestamp with time zone;
+    avg_record RECORD;
+	avg_cnt INTEGER := 0;
+	networknode TEXT:= REPLACE(LOWER(network||'_'||node), '-', '_');	
+BEGIN
+
+    FOR avg_record IN
+	   	EXECUTE 'SELECT time FROM '
+    	|| quote_ident(networknode)
+    	|| ' WHERE device = $1 AND vargroup = $2 AND varkey = $3 AND time >= $4 AND time <= $5'
+		|| ' ORDER BY time ASC LIMIT 1'
+   		USING device, vargroup, varkey, time1, time2
+	LOOP
+		
+		last_time := avg_record.time;
+		avg_cnt := avg_cnt + 1;
+    END LOOP;
+
+    IF (avg_cnt > 0) THEN
+		
+		RETURN last_time ;
+    ELSE
+        RETURN null;
+    END IF;
+END;
+$$ LANGUAGE plpgsql;
+
 
