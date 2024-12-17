@@ -168,6 +168,74 @@ END;
 $$ LANGUAGE plpgsql;
 
 
+CREATE OR REPLACE FUNCTION public.fn_get_var_values_inc_before(
+	networkin character varying,
+	varkeyin character varying,
+	time1 timestamp with time zone,
+	time2 timestamp with time zone)
+    RETURNS TABLE(node character varying, device character varying, vargroup character varying, varkey character varying, value text, "time" timestamp with time zone) 
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+    ROWS 1000
+
+AS $BODY$
+DECLARE
+	networknode TEXT := '';
+	avg_record RECORD;
+	info_record RECORD;
+BEGIN
+
+	FOR avg_record IN
+	   	EXECUTE 'SELECT DISTINCT node,device,vargroup,varkey FROM readings'
+    	|| ' WHERE network = $1 AND varkey = $2'
+   		USING networkin, varkeyin
+	LOOP
+		
+		networknode := REPLACE(LOWER(networkin||'_'||avg_record.node), '-', '_');	
+		FOR info_record IN
+		   	EXECUTE 'SELECT time,device,vargroup,varkey,value FROM '
+	    	|| quote_ident(networknode)
+	    	|| ' WHERE device = $1 AND vargroup = $2 AND varkey = $3 AND time < $4'
+	    	|| ' ORDER BY time DESC LIMIT 1'
+			USING avg_record.device, avg_record.vargroup, varkeyin, time1
+		LOOP
+			
+		    time := time1;
+			device := info_record.device;
+			node := avg_record.node;
+			vargroup := info_record.vargroup;
+			varkey := info_record.varkey;
+			value := ''||info_record.value;
+			RETURN NEXT;
+		
+	    END LOOP;
+
+		FOR info_record IN
+		   	EXECUTE 'SELECT time,device,vargroup,varkey,value FROM '
+	    	|| quote_ident(networknode)
+	    	|| ' WHERE device = $1 AND vargroup = $2 AND varkey = $3 AND time >= $4 AND time <= $5'
+			USING avg_record.device, avg_record.vargroup, varkeyin, time1, time2
+		LOOP
+			
+		    time := info_record.time;
+			device := info_record.device;
+			node := avg_record.node;
+			vargroup := info_record.vargroup;
+			varkey := info_record.varkey;
+			value := info_record.value;
+			RETURN NEXT;
+		
+	    END LOOP;
+	
+    END LOOP;
+
+	
+END;
+$BODY$;
+
+
+
 CREATE OR REPLACE FUNCTION fn_get_values_ext(networknode varchar, device varchar, vargroup varchar, varkey varchar)
 RETURNS table
 (
