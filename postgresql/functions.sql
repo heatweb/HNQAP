@@ -312,6 +312,29 @@ $$ LANGUAGE plpgsql;
 
 -- -------------------------------------------------------------------------------------------------
 
+CREATE OR REPLACE FUNCTION fn_max(networknode varchar, device varchar, vargroup varchar, varkey varchar, time1 timestamp with time zone, time2 timestamp with time zone)
+RETURNS FLOAT AS $$
+DECLARE
+    avg_record RECORD;
+	max_v FLOAT := 0;
+BEGIN
+    FOR avg_record IN
+	   	EXECUTE 'SELECT MAX(value::numeric) AS mvalue FROM '
+    	|| quote_ident(networknode)
+    	|| ' WHERE device = $1 AND vargroup = $2 AND varkey = $3 AND time >= $4 AND time <= $5'
+   		USING device, vargroup, varkey, time1, time2
+	LOOP		
+		max_v := avg_record.mvalue;	
+    END LOOP;
+	
+    
+    RETURN (max_v);
+    
+END;
+$$ LANGUAGE plpgsql;
+
+-- -------------------------------------------------------------------------------------------------
+
 CREATE OR REPLACE FUNCTION fn_weighted_average(networknode varchar, device varchar, vargroup varchar, varkey1 varchar, varkey2 varchar)
 RETURNS FLOAT AS $$
 DECLARE
