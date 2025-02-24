@@ -371,7 +371,7 @@ BEGIN
 	
 	END LOOP;
 	
-    	IF avg_cnt > 0 THEN
+    	IF avg_cnt > 0 AND tot_w > 0 THEN
 		RETURN tot_wv / tot_w;
     	ELSE
 		RETURN 0;
@@ -416,7 +416,7 @@ BEGIN
 	
     END LOOP;
 
-    IF avg_cnt > 0 THEN
+    IF avg_cnt > 0 AND tot_w > 0 THEN
 		RETURN tot_wv / tot_w;
     ELSE
         RETURN 0;
@@ -516,7 +516,7 @@ BEGIN
 	
     END LOOP;
 
-    IF avg_cnt > 0 THEN
+    IF avg_cnt > 0 AND tot_w > 0 THEN
 		RETURN tot_wv / tot_w;
     ELSE
         RETURN 0;
