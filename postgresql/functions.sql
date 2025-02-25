@@ -1198,3 +1198,45 @@ END;
 $$ LANGUAGE plpgsql;
 
 
+CREATE OR REPLACE FUNCTION fn_get_devices_property(networkin varchar, varkeyin varchar)
+RETURNS table
+(
+	"__text" text,
+	"__value" text
+)
+AS $$
+DECLARE
+	networknode TEXT := '';
+	avg_record RECORD;
+	info_record RECORD;
+BEGIN
+
+	FOR avg_record IN
+	   	EXECUTE 'SELECT DISTINCT node,device,vargroup,varkey FROM readings'
+    	|| ' WHERE network = $1 AND varkey = $2'
+   		USING networkin, varkeyin
+	LOOP
+
+		__text := avg_record.device; 
+		__value := avg_record.device;
+		
+		networknode := REPLACE(LOWER(networkin||'_'||avg_record.node), '-', '_');	
+		FOR info_record IN
+		   	EXECUTE 'SELECT DISTINCT value FROM readings'
+    		|| ' WHERE network = $1 AND device = $2 AND varkey = $3'
+			USING networkin, avg_record.device, 'property'
+		LOOP
+			
+		   
+			__text := info_record.value;
+			
+		
+	    END LOOP;
+
+		RETURN NEXT;
+	
+    END LOOP;
+
+	
+END;
+$$ LANGUAGE plpgsql;
