@@ -1240,3 +1240,45 @@ BEGIN
 	
 END;
 $$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION fn_get_named_networks()
+RETURNS table
+(
+	"__text" text,
+	"__value" text
+)
+AS $$
+DECLARE
+	avg_record RECORD;
+	info_record RECORD;
+BEGIN
+
+	FOR avg_record IN
+	   	EXECUTE 'SELECT DISTINCT network FROM readings'
+   		USING ''
+	LOOP
+
+		__text := avg_record.network; 
+		__value := avg_record.network;
+		
+		
+		FOR info_record IN
+		   	EXECUTE 'SELECT DISTINCT value FROM readings'
+    		|| ' WHERE network = $1 AND node = $2 AND device = $3 AND vargroup = $4 AND varkey = $5'
+			USING avg_record.network, 'global', 'network', 'system', 'name'
+		LOOP
+			
+		   
+			__text := info_record.value;
+			
+		
+	    END LOOP;
+
+		RETURN NEXT;
+	
+    END LOOP;
+
+	
+END;
+$$ LANGUAGE plpgsql;
