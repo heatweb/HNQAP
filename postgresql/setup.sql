@@ -37,6 +37,16 @@ CREATE TABLE fields (
 	UNIQUE (vargroup,varkey)
 );
 
+CREATE TABLE constants (
+	id SERIAL PRIMARY KEY,
+	varkey VARCHAR (64) NOT NULL,
+	value TEXT NOT NULL,
+	title TEXT,
+	units VARCHAR (8),
+	timestamp TIMESTAMP DEFAULT now(),
+	UNIQUE (varkey)
+);
+
 
 -- This is run for each new controller, mynetwork_mynode, to create time series tables
 
