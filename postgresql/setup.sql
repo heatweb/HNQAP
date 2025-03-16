@@ -56,6 +56,7 @@ CREATE TABLE public.qcalcs (
 	condition TEXT,
 	question TEXT,
 	units TEXT,
+	options JSON,
 	notes TEXT,
 	default_value TEXT,
 	calculation TEXT,
@@ -64,6 +65,9 @@ CREATE TABLE public.qcalcs (
 	timestamp TIMESTAMP DEFAULT now(),
 	UNIQUE (vargroup, varkey)
 );
+
+
+
 -- This is run for each new controller, mynetwork_mynode, to create time series tables
 
 -- CREATE TABLE mynetwork_mynode (
