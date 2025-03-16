@@ -37,7 +37,7 @@ CREATE TABLE fields (
 	UNIQUE (vargroup,varkey)
 );
 
-CREATE TABLE constants (
+CREATE TABLE public.constants (
 	id SERIAL PRIMARY KEY,
 	varkey VARCHAR (64) NOT NULL,
 	value TEXT NOT NULL,
@@ -47,7 +47,23 @@ CREATE TABLE constants (
 	UNIQUE (varkey)
 );
 
-
+CREATE TABLE public.qcalcs (
+	id SERIAL PRIMARY KEY,
+	vargroup VARCHAR (16) NOT NULL,
+	varkey VARCHAR (64) NOT NULL,
+	title TEXT,
+	section TEXT,
+	condition TEXT,
+	question TEXT,
+	units TEXT,
+	notes TEXT,
+	default_value TEXT,
+	calculation TEXT,
+	xfunction TEXT,
+	type TEXT DEFAULT 'text',
+	timestamp TIMESTAMP DEFAULT now(),
+	UNIQUE (vargroup, varkey)
+);
 -- This is run for each new controller, mynetwork_mynode, to create time series tables
 
 -- CREATE TABLE mynetwork_mynode (
