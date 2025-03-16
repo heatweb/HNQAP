@@ -1282,3 +1282,44 @@ BEGIN
 	
 END;
 $$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION fn_qcalcs_cc(schemain varchar, networkin varchar, nodein varchar, device varchar, vargroup varchar, varkey varchar)
+RETURNS BOOLEAN AS $$
+DECLARE
+    avg_record RECORD;
+	mwhere TEXT;
+	res BOOLEAN := false;
+BEGIN
+    FOR avg_record IN
+	   	EXECUTE 'SELECT * FROM qcalcs WHERE vargroup=$1 AND varkey=$2' 
+   		USING vargroup, varkey
+	LOOP		
+		mwhere := avg_record.condition;	
+    END LOOP;
+
+	FOR avg_record IN
+	   	EXECUTE 'SELECT * FROM ' || schemain || '.readings WHERE '
+		   || 'network=$1 AND node=$2 AND device=$3 AND vargroup=$4' 
+   		USING networkin, nodein, device, vargroup
+	LOOP		
+
+		mwhere = REPLACE(mwhere, '{{'||avg_record.varkey||'}}', avg_record.value);	
+		
+    END LOOP;
+
+	IF POSITION('{{' IN mwhere)=0 THEN
+	
+		FOR avg_record IN
+		   	EXECUTE 'SELECT 1 AS value WHERE ' || mwhere
+	   		USING 1
+		LOOP		
+			res := true;	
+	    END LOOP;
+
+	END IF;
+    
+    RETURN (res);
+    
+END;
+$$ LANGUAGE plpgsql;
