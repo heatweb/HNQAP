@@ -1300,8 +1300,12 @@ BEGIN
 
 	IF POSITION('{{' IN mwhere)=1 AND POSITION('}}' IN mwhere)=(length(mwhere)-1) THEN
 
-		mwhere = CHR(39) || mwhere || CHR(39) || '!=' || CHR(39)|| CHR(39);	
-
+		mwhere = CHR(39) || mwhere || CHR(39) || '!=' || CHR(39) || CHR(39) 
+		|| ' AND ' || CHR(39) || mwhere || CHR(39) || '!=' || CHR(39) || 'false' || CHR(39)
+		|| ' AND ' || CHR(39) || mwhere || CHR(39) || '!=' || CHR(39) || 'No' || CHR(39)
+		|| ' AND ' || CHR(39) || mwhere || CHR(39) || '!=' || CHR(39) || 'no' || CHR(39)
+		|| ' AND ' || CHR(39) || mwhere || CHR(39) || '!=' || CHR(39) || '0' || CHR(39);
+		
 	END IF;
 
 	FOR avg_record IN
