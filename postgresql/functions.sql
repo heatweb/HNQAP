@@ -1298,6 +1298,12 @@ BEGIN
 		mwhere := avg_record.condition;	
     END LOOP;
 
+	IF POSITION('{{' IN mwhere)=1 AND POSITION('}}' IN mwhere)=(length(mwhere)-1) THEN
+
+		mwhere = CHR(39) || mwhere || CHR(39) || '!=' || CHR(39)|| CHR(39);	
+
+	END IF;
+
 	FOR avg_record IN
 	   	EXECUTE 'SELECT * FROM ' || schemain || '.readings WHERE '
 		   || 'network=$1 AND node=$2 AND device=$3 AND vargroup=$4' 
