@@ -1289,14 +1289,31 @@ RETURNS BOOLEAN AS $$
 DECLARE
     avg_record RECORD;
 	mwhere TEXT;
+	devicetype TEXT := 'unknown';
+	devicetypes TEXT;
 	res BOOLEAN := false;
 BEGIN
+
+	FOR avg_record IN
+	   	EXECUTE 'SELECT * FROM ' || schemain || '.readings WHERE '
+		   || 'network=$1 AND node=$2 AND device=$3 AND vargroup=$4 AND varkey=$5' 
+   		USING networkin, nodein, device, 'system', 'deviceType'
+	LOOP
+		devicetype = avg_record.value;			
+    END LOOP;
+
     FOR avg_record IN
 	   	EXECUTE 'SELECT * FROM qcalcs WHERE vargroup=$1 AND varkey=$2' 
    		USING vargroup, varkey
 	LOOP		
-		mwhere := avg_record.condition;	
+		mwhere := avg_record.condition;
+		devicetypes := avg_record.devicetypes;
     END LOOP;
+
+	IF devicetypes!='*' AND POSITION((','||devicetype||',') IN (','||devicetypes||','))=0 THEN 
+		RETURN (false);
+	END IF;
+	 
 
 	IF POSITION('{{' IN mwhere)=1 AND POSITION('}}' IN mwhere)=(length(mwhere)-1) THEN
 
