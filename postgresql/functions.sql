@@ -1350,3 +1350,70 @@ BEGIN
     
 END;
 $$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION fn_qcalcs_cc_from(schemain varchar, networkin varchar, nodein varchar, device varchar, vargroup varchar, varkey varchar, ftable varchar)
+RETURNS BOOLEAN AS $$
+DECLARE
+    avg_record RECORD;
+	mwhere TEXT;
+	devicetype TEXT := 'unknown';
+	devicetypes TEXT;
+	res BOOLEAN := false;
+BEGIN
+
+	FOR avg_record IN
+	   	EXECUTE 'SELECT * FROM ' || schemain || '.readings WHERE '
+		   || 'network=$1 AND node=$2 AND device=$3 AND vargroup=$4 AND varkey=$5' 
+   		USING networkin, nodein, device, 'system', 'deviceType'
+	LOOP
+		devicetype = avg_record.value;			
+    END LOOP;
+
+    FOR avg_record IN
+	   	EXECUTE 'SELECT * FROM public.' || ftable || ' WHERE vargroup=$1 AND varkey=$2' 
+   		USING vargroup, varkey
+	LOOP		
+		mwhere := avg_record.condition;
+		devicetypes := avg_record.devicetypes;
+    END LOOP;
+
+	IF devicetypes!='*' AND POSITION((','||devicetype||',') IN (','||devicetypes||','))=0 THEN 
+		RETURN (false);
+	END IF;
+	 
+
+	IF POSITION('{{' IN mwhere)=1 AND POSITION('}}' IN mwhere)=(length(mwhere)-1) THEN
+
+		mwhere = CHR(39) || mwhere || CHR(39) || '!=' || CHR(39) || CHR(39) 
+		|| ' AND ' || CHR(39) || mwhere || CHR(39) || '!=' || CHR(39) || 'false' || CHR(39)
+		|| ' AND ' || CHR(39) || mwhere || CHR(39) || '!=' || CHR(39) || 'No' || CHR(39)
+		|| ' AND ' || CHR(39) || mwhere || CHR(39) || '!=' || CHR(39) || 'no' || CHR(39)
+		|| ' AND ' || CHR(39) || mwhere || CHR(39) || '!=' || CHR(39) || '0' || CHR(39);
+		
+	END IF;
+
+	FOR avg_record IN
+	   	EXECUTE 'SELECT * FROM ' || schemain || '.readings WHERE '
+		   || 'network=$1 AND node=$2 AND device=$3 AND vargroup=$4' 
+   		USING networkin, nodein, device, vargroup
+	LOOP		
+
+		mwhere = REPLACE(mwhere, '{{'||avg_record.varkey||'}}', avg_record.value);	
+		
+    END LOOP;
+
+	IF POSITION('{{' IN mwhere)=0 THEN
+	
+		FOR avg_record IN
+		   	EXECUTE 'SELECT 1 AS value WHERE ' || mwhere
+	   		USING 1
+		LOOP		
+			res := true;	
+	    END LOOP;
+
+	END IF;
+    
+    RETURN (res);
+    
+END;
+$$ LANGUAGE plpgsql;
