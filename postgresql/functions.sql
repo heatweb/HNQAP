@@ -1351,15 +1351,37 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION fn_qcalcs_cc_from(schemain varchar, networkin varchar, nodein varchar, device varchar, vargroup varchar, varkey varchar, ftable varchar)
-RETURNS BOOLEAN AS $$
+
+
+CREATE OR REPLACE FUNCTION fn_run_calc_from(schemain varchar, networkin varchar, nodein varchar, devicein varchar, vargroupin varchar, ftable varchar)
+RETURNS table
+(
+	network character varying(64),
+	node character varying(32),
+	device character varying(64),
+	vargroup character varying(16),
+	varkey character varying(64),
+	calculation text,
+	"value" text,
+	"title" text,
+	"units" character varying(16)
+)
+AS $$
 DECLARE
     avg_record RECORD;
+	calc_record RECORD;
 	mwhere TEXT;
 	devicetype TEXT := 'unknown';
 	devicetypes TEXT;
 	res BOOLEAN := false;
+	passes BOOLEAN := true;
+	calculations JSONB := '{}'::jsonb;
 BEGIN
+
+	network := networkin;
+	node := nodein;
+	device := devicein;
+	vargroup = vargroupin;
 
 	FOR avg_record IN
 	   	EXECUTE 'SELECT * FROM ' || schemain || '.readings WHERE '
@@ -1369,51 +1391,93 @@ BEGIN
 		devicetype = avg_record.value;			
     END LOOP;
 
-    FOR avg_record IN
-	   	EXECUTE 'SELECT * FROM public.' || ftable || ' WHERE vargroup=$1 AND varkey=$2' 
-   		USING vargroup, varkey
-	LOOP		
-		mwhere := avg_record.condition;
-		devicetypes := avg_record.devicetypes;
-    END LOOP;
-
-	IF devicetypes!='*' AND POSITION((','||devicetype||',') IN (','||devicetypes||','))=0 THEN 
-		RETURN (false);
-	END IF;
-	 
-
-	IF POSITION('{{' IN mwhere)=1 AND POSITION('}}' IN mwhere)=(length(mwhere)-1) THEN
-
-		mwhere = CHR(39) || mwhere || CHR(39) || '!=' || CHR(39) || CHR(39) 
-		|| ' AND ' || CHR(39) || mwhere || CHR(39) || '!=' || CHR(39) || 'false' || CHR(39)
-		|| ' AND ' || CHR(39) || mwhere || CHR(39) || '!=' || CHR(39) || 'No' || CHR(39)
-		|| ' AND ' || CHR(39) || mwhere || CHR(39) || '!=' || CHR(39) || 'no' || CHR(39)
-		|| ' AND ' || CHR(39) || mwhere || CHR(39) || '!=' || CHR(39) || '0' || CHR(39);
-		
-	END IF;
-
-	FOR avg_record IN
-	   	EXECUTE 'SELECT * FROM ' || schemain || '.readings WHERE '
-		   || 'network=$1 AND node=$2 AND device=$3 AND vargroup=$4' 
-   		USING networkin, nodein, device, vargroup
+    FOR calc_record IN
+	   	EXECUTE 'SELECT * FROM public.' || ftable || ' WHERE vargroup=$1 ORDER BY "order"' 
+   		USING vargroupin
 	LOOP		
 
-		mwhere = REPLACE(mwhere, '{{'||avg_record.varkey||'}}', avg_record.value);	
+		varkey = calc_record.varkey;
+		value = calc_record.calculation;
+		units = calc_record.units;
+		title = calc_record.title;
+		calculation = calc_record.calculation;
 		
-    END LOOP;
+		mwhere := calc_record.condition;
+		devicetypes := calc_record.devicetypes;
+		passes = false;
 
-	IF POSITION('{{' IN mwhere)=0 THEN
+		IF devicetypes='*' OR POSITION((','||devicetype||',') IN (','||devicetypes||','))>0 THEN 
+			
+			
+			IF POSITION('{{' IN mwhere)=1 AND POSITION('}}' IN mwhere)=(length(mwhere)-1) THEN
+		
+				mwhere = CHR(39) || mwhere || CHR(39) || '!=' || CHR(39) || CHR(39) 
+				|| ' AND ' || CHR(39) || mwhere || CHR(39) || '!=' || CHR(39) || 'false' || CHR(39)
+				|| ' AND ' || CHR(39) || mwhere || CHR(39) || '!=' || CHR(39) || 'No' || CHR(39)
+				|| ' AND ' || CHR(39) || mwhere || CHR(39) || '!=' || CHR(39) || 'no' || CHR(39)
+				|| ' AND ' || CHR(39) || mwhere || CHR(39) || '!=' || CHR(39) || '0' || CHR(39);
+				
+			END IF;
+		
+			FOR avg_record IN
+			   	EXECUTE 'SELECT * FROM ' || schemain || '.readings WHERE '
+				   || 'network=$1 AND node=$2 AND device=$3 AND vargroup=$4' 
+		   		USING networkin, nodein, device, vargroup
+			LOOP		
+		
+				mwhere = REPLACE(mwhere, '{{'||avg_record.varkey||'}}', avg_record.value);	
+				value = REPLACE(value, '{{'||avg_record.varkey||'}}', avg_record.value);	
+				
+		    END LOOP;
+
+
+			FOR avg_record IN
+			
+			   	EXECUTE 'select * from json_each_text($1)'
+				USING calculations::json
+		
+			LOOP		
+				mwhere = REPLACE(mwhere, '{{'||avg_record.key||'}}', avg_record.value);	
+				value = REPLACE(value, '{{'||avg_record.key||'}}', avg_record.value);	
+				
+		    END LOOP;
+
 	
-		FOR avg_record IN
-		   	EXECUTE 'SELECT 1 AS value WHERE ' || mwhere
-	   		USING 1
-		LOOP		
-			res := true;	
-	    END LOOP;
+			IF POSITION('{{' IN mwhere)=0 THEN
+			
+				FOR avg_record IN
+				   	EXECUTE 'SELECT 1 AS value WHERE ' || mwhere
+			   		USING 1
+				LOOP		
+					passes := true;	
+			    END LOOP;
+		
+			END IF;
 
-	END IF;
-    
-    RETURN (res);
+			--varkey IN ('density','pPP','boilerkWPeak') AND 
+			IF POSITION('{{' IN value)=0 AND POSITION('?' IN value)=0 AND POSITION('parse' IN value)=0  AND POSITION('Math' IN value)=0 THEN
+			
+				FOR avg_record IN
+				   	EXECUTE 'SELECT ROUND((' || value || ')::numeric,1)::text AS value '
+			   		USING 1
+				LOOP		
+					value := avg_record.value;	
+			    END LOOP;					
+
+			END IF;
+
+			
+		    IF passes = true THEN 
+
+				calculations = calculations || ('{"' || varkey || '":"'|| value || '"}')::jsonb;
+				RETURN NEXT;
+			END IF;
+		
+			
+		END IF;
+		
+    END LOOP;
+	
     
 END;
 $$ LANGUAGE plpgsql;
