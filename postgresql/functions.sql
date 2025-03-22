@@ -1,3 +1,26 @@
+CREATE OR REPLACE FUNCTION fn_get_numeric_value(networkref varchar, noderef varchar, deviceref varchar, vargroupref varchar, varkeyref varchar)
+RETURNS numeric
+AS $$
+DECLARE
+	v NUMERIC;
+	avg_record RECORD;
+BEGIN
+	FOR avg_record IN
+	EXECUTE 'SELECT value::numeric FROM readings '
+	|| ' WHERE network = $1 AND node = $2 AND device = $3 AND vargroup = $4 AND varkey = $5'
+	USING networkref, noderef, deviceref, vargroupref, varkeyref
+	LOOP
+		
+		v = avg_record.value;
+	
+	END LOOP;
+
+	RETURN v;
+	
+END;
+$$ LANGUAGE plpgsql;
+
+
 CREATE OR REPLACE FUNCTION fn_get_value(networkref varchar, noderef varchar, deviceref varchar, vargroupref varchar, varkeyref varchar)
 RETURNS table
 (
