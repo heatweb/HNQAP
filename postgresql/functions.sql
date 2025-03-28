@@ -1,3 +1,17 @@
+CREATE OR REPLACE FUNCTION fn_network_node(networkin varchar, nodein varchar)
+RETURNS text
+AS $$
+DECLARE
+	
+BEGIN
+		
+	RETURN REPLACE(LOWER(networkin||'_'||nodein), '-', '_');
+	
+END;
+$$ LANGUAGE plpgsql;
+
+
+
 CREATE OR REPLACE FUNCTION fn_get_numeric_value(networkref varchar, noderef varchar, deviceref varchar, vargroupref varchar, varkeyref varchar)
 RETURNS numeric
 AS $$
