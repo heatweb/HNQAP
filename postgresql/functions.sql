@@ -1256,13 +1256,68 @@ BEGIN
 		
 	    END LOOP;
 
-		RETURN NEXT;
+	RETURN NEXT;
 	
     END LOOP;
 
 	
 END;
 $$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION fn_get_name(schemain varchar, networkin varchar, device varchar)
+RETURNS text
+AS $$
+DECLARE
+	info_record RECORD;
+	oot TEXT := device;
+BEGIN
+		
+		FOR info_record IN
+		   	EXECUTE 'SELECT value FROM ' || schemain || '.readings'
+    		|| ' WHERE network = $1 AND device = $2 AND vargroup = $3 AND varkey = $4'
+			USING networkin, device, 'system', 'name'
+		LOOP
+			
+		   
+			oot = info_record.value;
+		
+	    END LOOP;
+
+	RETURN oot;
+	
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+CREATE OR REPLACE FUNCTION fn_get_name(schemain varchar, networkin varchar, nodein varchar, device varchar)
+RETURNS text
+AS $$
+DECLARE
+	info_record RECORD;
+	oot TEXT := device;
+BEGIN
+		
+		FOR info_record IN
+		   	EXECUTE 'SELECT value FROM ' || schemain || '.readings'
+    		|| ' WHERE network = $1 AND node = $2 AND device = $3 AND vargroup = $4 AND varkey = $5'
+			USING networkin, nodein, device, 'system', 'name'
+		LOOP
+			
+		   
+			oot = info_record.value;
+		
+	    END LOOP;
+
+		RETURN oot;
+	
+  
+
+	
+END;
+$$ LANGUAGE plpgsql;
+
 
 
 CREATE OR REPLACE FUNCTION fn_get_named_networks()
