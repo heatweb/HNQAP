@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION fn_network_node(networkin varchar, nodein varchar)
+CREATE OR REPLACE FUNCTION fn_n_n(networkin varchar, nodein varchar)
 RETURNS text
 AS $$
 DECLARE
