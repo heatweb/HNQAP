@@ -107,6 +107,55 @@ END;
 $$ LANGUAGE plpgsql;
 
 
+CREATE OR REPLACE FUNCTION fn_get_var_values(schemain varchar, networkin varchar, varkeyin varchar, time1 timestamp with time zone, time2 timestamp with time zone)
+RETURNS table
+(
+	"node" character varying(32),
+	"device" character varying(32),
+	"vargroup" character varying(16),
+	"varkey" character varying(64),
+	"value" text,
+    "time" timestamp with time zone
+)
+AS $$
+DECLARE
+	networknode TEXT := '';
+	avg_record RECORD;
+	info_record RECORD;
+BEGIN
+
+	FOR avg_record IN
+	   	EXECUTE 'SELECT DISTINCT node FROM ' || schemain || '.' || 'readings'
+    	|| ' WHERE network = $1 AND varkey = $2'
+   		USING networkin, varkeyin
+	LOOP
+		
+		networknode := REPLACE(LOWER(networkin||'_'||avg_record.node), '-', '_');	
+		FOR info_record IN
+		   	EXECUTE 'SELECT time,device,vargroup,varkey,value FROM '
+	    	|| schemain || '.' || networknode
+	    	|| ' WHERE varkey = $1 AND time >= $2 AND time <= $3'
+			USING varkeyin, time1, time2
+		LOOP
+			
+		    time := info_record.time;
+			device := info_record.device;
+			node := avg_record.node;
+			vargroup := info_record.vargroup;
+			varkey := info_record.varkey;
+			value := info_record.value;
+			RETURN NEXT;
+		
+	    END LOOP;
+	
+    END LOOP;
+
+	
+END;
+$$ LANGUAGE plpgsql;
+
+
+
 CREATE OR REPLACE FUNCTION fn_get_var_values(networkin varchar, varkeyin varchar, time1 timestamp with time zone, time2 timestamp with time zone)
 RETURNS table
 (
