@@ -11,6 +11,20 @@ END;
 $$ LANGUAGE plpgsql;
 
 
+CREATE OR REPLACE FUNCTION isnumeric(text) RETURNS BOOLEAN AS $$
+DECLARE x NUMERIC;
+BEGIN
+    x = $1::NUMERIC;
+    RETURN TRUE;
+EXCEPTION WHEN others THEN
+    RETURN FALSE;
+END;
+$$
+STRICT
+LANGUAGE plpgsql IMMUTABLE;
+
+
+
 
 CREATE OR REPLACE FUNCTION fn_get_numeric_value(networkref varchar, noderef varchar, deviceref varchar, vargroupref varchar, varkeyref varchar)
 RETURNS numeric
