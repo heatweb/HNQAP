@@ -1706,3 +1706,53 @@ BEGIN
     
 END;
 $$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION public.fn_all_faults()
+    RETURNS TABLE(schemaname character varying, network character varying, node character varying, device character varying, vargroup character varying, varkey character varying, value text, "time" timestamp with time zone, response float, date character varying, deadline character varying) 
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+    ROWS 1000
+
+AS $BODY$
+DECLARE
+	networknode TEXT := '';
+	avg_record RECORD;
+	info_record RECORD;
+BEGIN
+
+	FOR avg_record IN
+	   	EXECUTE 'SELECT nspname as schema_name FROM  pg_namespace WHERE nspname NOT LIKE ($1) AND nspname != $2'
+   		USING '%\_%', 'public'
+	LOOP
+		
+		FOR info_record IN
+		   	EXECUTE 'SELECT t1.*, (t1.timestamp + t2.responsetime) AS deadline, '
+			   || '(EXTRACT(epoch FROM t2.responsetime)/(3600 * 24)) AS response, '
+			   || 'TO_CHAR(t1.timestamp :: DATE, $1) AS date FROM ' || avg_record.schema_name ||  '.readings t1 '
+			   || 'LEFT OUTER JOIN faults t2 ON t1.varkey = t2.varkey WHERE t1.vargroup=$2 ANd LOWER(value) NOT LIKE ($3)'
+			USING 'dd/mm/yyyy', 'fault', 'ok%'
+		LOOP
+			
+		    time := info_record.timestamp;
+			network := info_record.network;
+			device := info_record.device;
+			node := info_record.node;
+			vargroup := info_record.vargroup;
+			varkey := info_record.varkey;
+			value := ''||info_record.value;
+			response := ''||info_record.response;
+			date := ''||info_record.date;
+			deadline := ''||info_record.deadline;
+			schemaname := ''||avg_record.schema_name;
+			RETURN NEXT;
+		
+	    END LOOP;
+
+	
+    END LOOP;
+
+	
+END;
+$BODY$;
