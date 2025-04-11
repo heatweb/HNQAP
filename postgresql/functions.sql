@@ -1784,7 +1784,7 @@ BEGIN
 			|| 'SELECT t3.*, t3.node||$12||t3.device AS nodedev, coalesce((t4.json->>$4)::numeric,  '
 			|| 't3.stdresponse) AS response, t4.json->>$5 AS parts_required,  '
 			|| 't4.json->>$6 AS next_action, t4.json->>$7 AS assigned_to, '
-			|| '$8 || coalesce(t4.json->>$9, $10) AS photo '
+			|| '$8 || (t4.json->>$9) AS photo '
 			|| 'FROM t3 LEFT OUTER JOIN ' || avg_record.schema_name ||  '.jsondata t4 ON t3.network = t4.network AND t3.node = t4.node AND t3.device = t4.device '
 			|| 'AND t3.vargroup = t4.vargroup AND t3.varkey = t4.varkey '
 			|| 'ORDER BY timestamp DESC; '
