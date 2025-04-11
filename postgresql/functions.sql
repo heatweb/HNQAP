@@ -1756,3 +1756,63 @@ BEGIN
 	
 END;
 $BODY$;
+
+
+CREATE OR REPLACE FUNCTION public.fn_all_faults_plus()
+    RETURNS TABLE(schemaname character varying, network character varying, node character varying, device character varying, vargroup character varying, varkey character varying, value text, "time" timestamp with time zone, response float, date character varying, parts_required character varying, next_action character varying, assigned_to character varying, photo character varying) 
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+    ROWS 1000
+
+AS $BODY$
+DECLARE
+	networknode TEXT := '';
+	avg_record RECORD;
+	info_record RECORD;
+BEGIN
+
+	FOR avg_record IN
+	   	EXECUTE 'SELECT nspname as schema_name FROM  pg_namespace WHERE nspname NOT LIKE ($1) AND nspname != $2'
+   		USING '%\_%', 'public'
+	LOOP
+		
+		FOR info_record IN
+			EXECUTE 'WITH t3 AS (SELECT t1.*, (EXTRACT(epoch FROM t2.responsetime)/(3600 * 24)) AS stdresponse,  '
+			|| 'TO_CHAR(t1.timestamp :: DATE, $1) AS date FROM ' || avg_record.schema_name ||  '.readings t1  '
+			|| 'LEFT OUTER JOIN faults t2 ON t1.varkey = t2.varkey WHERE t1.vargroup=$2 AND LOWER(t1.value) NOT LIKE ($3) AND LOWER(t1.value)!=$11) '
+			|| 'SELECT t3.*, t3.node||$12||t3.device AS nodedev, coalesce((t4.json->>$4)::numeric,  '
+			|| 't3.stdresponse) AS response, t4.json->>$5 AS parts_required,  '
+			|| 't4.json->>$6 AS next_action, t4.json->>$7 AS assigned_to, '
+			|| '$8 || coalesce(t4.json->>$9, $10) AS photo '
+			|| 'FROM t3 LEFT OUTER JOIN ' || avg_record.schema_name ||  '.jsondata t4 ON t3.network = t4.network AND t3.node = t4.node AND t3.device = t4.device '
+			|| 'AND t3.vargroup = t4.vargroup AND t3.varkey = t4.varkey '
+			|| 'ORDER BY timestamp DESC; '
+			   
+			USING 'dd/mm/yyyy', 'fault', 'ok%', 'response', 'parts_required', 'next_action', 'assigned_to', 'https://heatweb.b-cdn.net/servicedata/uploads/', 'photo', '', 'healthy','.'
+		LOOP
+			
+		    time := info_record.timestamp;
+			network := info_record.network;
+			device := info_record.device;
+			node := info_record.node;
+			vargroup := info_record.vargroup;
+			varkey := info_record.varkey;
+			value := ''||info_record.value;
+			response := ''||info_record.response;
+			date := ''||info_record.date;
+			parts_required := ''||info_record.parts_required;
+			next_action := ''||info_record.next_action;
+			assigned_to := ''||info_record.assigned_to;
+			photo := ''||info_record.photo;
+			schemaname := ''||avg_record.schema_name;
+			RETURN NEXT;
+		
+	    END LOOP;
+
+	
+    END LOOP;
+
+	
+END;
+$BODY$;
