@@ -1801,11 +1801,11 @@ BEGIN
 			value := ''||info_record.value;
 			response := ''||info_record.response;
 			date := ''||info_record.date;
-			parts_required := ''||info_record.parts_required;
-			next_action := ''||info_record.next_action;
-			assigned_to := ''||info_record.assigned_to;
-			photo := ''||info_record.photo;
-			schemaname := ''||avg_record.schema_name;
+			parts_required := coalesce(info_record.parts_required,'');
+			next_action := coalesce(info_record.next_action,'');
+			assigned_to := coalesce(info_record.assigned_to,'');
+			photo := coalesce(info_record.photo,'');
+			schemaname := coalesce(avg_record.schema_name,'');
 			RETURN NEXT;
 		
 	    END LOOP;
