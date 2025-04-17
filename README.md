@@ -62,7 +62,7 @@ Design details include references for acceptance testing procedures and operatio
 
 The quality of installations is maintained through the use of standard processes, driven through logic-driven forms and operational KPIs.
 
-* [HIU Acceptance Test](https://heatweb.b-cdn.net/browserware/hwforms5.html?loadCID=bafkreiaavlvwmshkuib4bh3mlv2hmipw4nnnnwp3kspu2jbayxjdrazhhe)
+* [HIU Acceptance Test](https://heatweb.b-cdn.net/browserware/hwforms7.html?loadCID=bafkreiaavlvwmshkuib4bh3mlv2hmipw4nnnnwp3kspu2jbayxjdrazhhe)
   
 ![qa-hiu-acceptance](https://github.com/heatweb/HNQAP/assets/7034068/532226b9-1e73-4eb1-b0bd-0a37d4f339c8)
 
