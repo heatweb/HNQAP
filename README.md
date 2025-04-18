@@ -64,8 +64,6 @@ The quality of installations is maintained through the use of standard processes
 
 * [HIU Acceptance Test](https://heatweb.b-cdn.net/browserware/hwforms8.html?loadCID=bafkreiaavlvwmshkuib4bh3mlv2hmipw4nnnnwp3kspu2jbayxjdrazhhe)
   
-![qa-hiu-acceptance](https://github.com/heatweb/HNQAP/assets/7034068/532226b9-1e73-4eb1-b0bd-0a37d4f339c8)
-
 
 ### Operational KPIs
 
