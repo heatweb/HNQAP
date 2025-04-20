@@ -1,0 +1,1355 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+
+   
+    <script src="https://kit.fontawesome.com/c6b21b7a8f.js" crossorigin="anonymous"></script>
+
+ 
+    <title>Thermal Integration Heatweb Node</title>
+
+
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css">
+
+
+  
+    <style>
+    
+    body, textarea, input, select {
+    font-size: 18px;
+}
+
+section  {
+    border-bottom: 1px solid rgb(255, 255, 255);
+    padding: 20px 50px;
+    /* height: 100vh; */
+    scroll-snap-align: start;
+    /* text-align: center; */
+    position: relative;
+    background: #ffffff;
+    font-size: 18px;
+    }
+
+section .table {
+            font-size: 16px;
+        }
+
+table.dataTable.compact tbody td {
+    
+    padding: 2px;
+}   
+
+section .jstree-node {
+    font-size: 16px;
+}
+
+.nowrap {
+    white-space: nowrap;
+}
+
+@media (max-width: 1480px) {
+
+    section {
+        
+        padding: 20px 20px;
+        
+        }
+
+}
+
+@media (max-width:480px) {
+
+    section {
+        
+        padding: 10px 8px;
+        
+        }
+
+}
+
+    
+        .maxsiz {
+
+        width: 100%; 
+        height: 100vh;
+
+        }
+
+        .maxsiz2 {
+
+        width: 100%; 
+        height: calc(100vh - 70px);
+
+        }
+
+        .dot {
+            height: 13px;
+            width: 13px;
+            background-color: rgb(52, 58, 52);
+            border-radius: 20%;
+            border: 2px;
+            border-color: rgb(5, 5, 20);
+            display: inline-block;
+        }
+
+        .thindot {
+            height: 13px;
+            width: 6px;
+            background-color: rgb(52, 58, 52);
+            border-radius: 20%;
+            border: 2px;
+            border-color: rgb(5, 5, 20);
+            display: inline-block;
+        }
+
+        .dotspacer {
+            height: 13px;
+            width: 2px;
+            display: inline-block;
+        }
+
+        .navReadings  {
+            /* border-bottom: 1px solid rgb(32, 28, 28); */
+            padding: 20px 50px 0px 50px;
+            /* background: #6d6d70; */
+            font-size: 80%;   
+            /* font-weight: bold; */
+            text-align: left;
+            color: #212529;   
+        }
+
+        .navReadings a {
+            color: #212529;         
+        }
+
+        
+
+           
+    </style>
+<script src="https://bossanova.uk/jspreadsheet/v4/jexcel.js"></script>
+<link rel="stylesheet" href="https://bossanova.uk/jspreadsheet/v4/jexcel.css" type="text/css" />
+ 
+<script src="https://jsuites.net/v4/jsuites.js"></script>
+<link rel="stylesheet" href="https://jsuites.net/v4/jsuites.css" type="text/css" />
+
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Material+Icons" />
+
+    
+<script src="https://unpkg.com/panzoom@9.4.0/dist/panzoom.min.js"></script>
+
+<script src="https://unpkg.com/mustache@latest"></script>       
+
+<style>
+    /*.jexcel_content {*/
+    /*    font-size: 15px;*/
+    /*}*/
+
+.jexcel {
+    white-space: normal;
+}
+
+
+.jexcel > tbody > tr > td {
+    padding: 2px;
+    font-size: 15px;
+}
+.jexcel > thead > tr > td {
+    padding: 2px;
+    font-size: 15px;
+}
+
+
+.mymenu  {
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.mymenu:hover {
+  background-color: #eeeeee;
+}
+
+
+.splitter {
+    width: 100%;
+    height: calc(100vh - 0px);
+    display: flex;
+}
+
+
+#separator {
+    cursor: col-resize;
+    background-color: #ffffff;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='30'><path d='M2 0 v30 M5 0 v30 M8 0 v30' fill='none' stroke='black'/></svg>");
+    background-repeat: no-repeat;
+    background-position: left;
+    width: 20px;
+    height: 100%;
+
+    /* Prevent the browser's built-in drag from interfering */
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+#first {
+    background-color: transparent;
+    width: 0px;
+    height: 100%;
+    min-width: 0px;
+    overflow: auto;
+    padding-right: 0px;
+}
+
+#second {
+    background-color: transparent;
+    width: 100%;
+    height: 100%;
+    min-width: 1px;
+    padding-left: 30px;
+    overflow: hidden;
+}
+
+body {
+    background-color: transparent;
+}
+
+.mysvg  {
+    background-color: transparent;
+}
+
+#buttons  {
+    width: 100%;
+    background-color: #dddddd;
+    padding: 2px;
+    text-align: right;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 2px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #d1d1d1;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #b1b1b1;
+}
+
+</style>
+
+<div class="splitter maxsiz2">
+    
+ 
+    <div id="first">
+        
+        <div id="buttons">
+            
+
+<span class="mymenu" onClick="loadme('')" title="Load">Load</span>
+
+<span id="presets"></span>
+<span class="mymenu" onClick="newpreset('')" title="Save as new preset">+</span>
+
+<span class="mymenu" onClick="saveme('')" title="Link">Link</span>
+&nbsp;&nbsp;&nbsp;
+
+<span class="mymenu" onClick="tosvg('')" title="Download SVG">SVG</span>
+
+<span class="mymenu" onClick="topdf('')" title="Download PDF">PDF</span>
+&nbsp;&nbsp;&nbsp;
+
+
+<span class="mymenu" onClick="help('')" title="Open Wiki">Help</span>
+&nbsp;&nbsp;
+
+
+
+</div>
+
+<section id="mysection" style="background-color: #fafafa;">
+<div id="mytit" name="mytit"><b>SVG Explode</b></div>
+<br>
+
+<div id="metasec">        
+<div id="spreadsheetmeta"></div>
+
+</div>
+
+   
+
+
+ <form id="nextform" name="nextform" method="post" action="/api/print" ajax="true" target="result1">
+    <input type="hidden" id="svgtext" name="svgtext" value="">
+    <input type="hidden" id="svgfile" name="svgfile" value="">
+    <input type="hidden" id="show" name="show" value="">
+    </form>
+ <iframe width="100%" frameborder="0" id="result1" name="result1" style="display:none"></iframe>
+    
+
+</div>
+    <div id="separator" ></div>
+    <div id="second" >
+           
+
+
+
+
+<div id="mysvg" name="mysvg"></div>
+
+
+</div>
+
+
+<script>
+
+var pageTitle;
+
+function help() {
+    window.open("http://heatweb.co.uk/w/index.php?title=Svgexplode");
+}
+
+
+function saveme() {
+    
+    //alert(window.location.href.split(".svg")[0]+".svg&display="+displayed);
+    
+    navigator.clipboard.writeText(window.location.href.split(".svg")[0]+".svg&display="+(displayed.replace(",,","")));
+    alert("Link Copied to Clipboard");
+     
+
+}
+
+
+function looseJsonParse(obj) {
+    return Function('"use strict";return (' + obj + ')')();
+}
+
+function loadme() {
+    
+    var newd = prompt("Please enter display code", displayed);
+    //alert("Display String Copied to Clipboard");
+    if (newd) {
+        loadstring = newd;
+        runsvg();
+    }
+     
+
+}
+
+
+function removeme(rme) {
+    
+    //var newd = prompt("Please enter display code", displayed);
+    //alert(rme);
+    if (rme) {
+        
+        var rmob = document.getElementById(rme);
+        
+        loadstring = displayed.replace(","+rme+",",",");
+        runsvg();
+    }
+     
+
+}
+
+
+function loadpreset(ptl) {
+    
+    //var newd = prompt("Please enter display code", displayed);
+    //alert("Display String Copied to Clipboard");
+    clearTimeout(presettimer);
+    
+    if (ptl) {
+        loadstring = ptl;
+        runsvg();
+    }
+     
+
+}
+
+var presettimer;
+
+function changepreset(ptc) {
+    
+    clearTimeout(presettimer);
+    
+    if (ptc) {
+        //console.log(ptc);
+        //presettimer = setTimeout(function(){ alert(ptc.getAttribute('title')); }, 2000);
+        presettimer = setTimeout(function(){ changepreset2(ptc); }, 2000);
+    }
+     
+
+}
+
+function changepreset2(ptc) {
+    
+    clearTimeout(presettimer);
+    
+    if (ptc) {
+        console.log(ptc);
+        
+        var pctarget = document.getElementById(ptc);
+        //' + "'" + presets[p].getAttribute('preset')  + "'" + '
+        
+        //alert(pctarget.getAttribute('title'));
+        
+        var cch = prompt("Change '" + pctarget.getAttribute('title') + "' to...",pctarget.getAttribute('title'));
+        
+        if (cch) {
+            
+            pctarget.setAttribute('title',cch);
+            pctarget.setAttribute('preset',displayed);
+            
+            fetchpresets();
+        }
+        
+    }
+     
+
+}
+
+function newpreset() {
+    
+    
+    var newdes = prompt("Description","");
+    var svgdiv = document.getElementById('mysvg');
+    
+    var presets = svgdiv.getElementsByClassName("preset");
+    var p;
+    var pbut = "";
+	for (p = 0; p < presets.length; p++) {
+	    
+	    //pbut += '<span class="mymenu" onmousedown="changepreset(this)" onClick="loadpreset(' + "'" + presets[p].getAttribute('preset')  + "'" + ')" title="' + presets[p].getAttribute('title') +'">' + (p+1) +'</span> ' ;
+	    
+	}
+	
+	
+    //let menu = presets[0].parent;  //document.getElementById('menu');
+
+    //pbut += '<span class="mymenu" onmousedown="changepreset(this)" onClick="loadpreset(' + "'" + (displayed.replace(",,",""))  + "'" + ')" title="' + newdes +'">' + (p+1) +'</span> ' ;
+	   
+    
+    var Root = presets[0].parentElement; //mySVG
+    
+	var newPawn=presets[presets.length -1].cloneNode(true)
+     newPawn.id="preset-"+(p);
+     var move="translate("+0+","+(10 * p)+")"
+     newPawn.setAttribute("transform",move);
+     newPawn.setAttribute("title",newdes);
+     newPawn.setAttribute("preset",(displayed.replace(",,","")));
+     
+     Root.appendChild(newPawn)
+     
+     fetchpresets();
+	//document.getElementById('presets').innerHTML = pbut;
+    
+}
+
+    
+function setParentObject() {
+    var nn = svgname.replace(".svg",""); //prompt("Fileame","download.svg");
+    if (nn===null) { return(null); }
+    nn = nn || "mysvg";
+    //if (nn.indexOf(".svg")<0) { nn = nn + ".svg"; }
+    
+    var myob = {};
+    myob.value = document.getElementById('mysvg').innerHTML;
+    myob.id = nn;
+    myob.filename = nn + ".svg";
+    myob.type = "image/svg+xml";
+    myob.page =  pageTitle || nn;
+    
+    
+    try { parent.setObject(nn, myob); } catch {}
+    
+    if (document.getElementById('mysvg').getElementsByClassName("mqttkey").length>0) {    
+        
+        nn = 'tableControlPointsSupply';
+        myob = {};
+        myob.value = pointsTable;
+        myob.id = nn;
+        myob.filename = nn + ".csv";
+        //myob.type = "image/svg+xml";
+        myob.type = "table";
+        myob.page = "Control Points";
+        myob.text = "The following table shows control points for the plantroom supply stage.";
+        myob.tableOptions = {"widths":[25,45,50,50,65,35,200],"align":["left","left","left","left"], "title":"Control Points - Supply", "fontSize":7.5};
+        
+        try { parent.setObject(nn, myob); } catch {}  
+    }
+    
+    if (document.getElementById('mysvg').getElementsByClassName("component").length>0) {    
+        
+        nn = 'tableComponentsSupply';
+        myob = {};
+        myob.value = componentsTable;
+        myob.id = nn;
+        myob.filename = nn + ".csv";
+        //myob.type = "image/svg+xml";
+        myob.type = "table";
+        myob.page = "Plantroom Components";
+        myob.text = "The following table shows components for the plantroom supply stage.";
+        myob.tableOptions = {"widths":[25,90,25,110,220],"align":["left","left","left","left"], "title":"Components - Supply", "fontSize":7.5};
+        
+        try { parent.setObject(nn, myob); } catch {}  
+    }
+    
+    myob = null;
+}
+
+function tosvg() {
+    var nn = prompt("Fileame","download.svg");
+    if (nn===null) { return(null); }
+    nn = nn || "download.svg";
+    if (nn.indexOf(".svg")<0) { nn = nn + ".svg"; }
+    download( document.getElementById('mysvg').innerHTML, nn, "image/svg+xml")
+}
+
+
+function download(content, filename, contentType)
+{
+    if(!contentType) contentType = 'application/octet-stream';
+    
+    content = content.replace(/\&nbsp\;/g," ");
+    
+        var a = document.createElement('a');
+        var blob = new Blob([content], {'type':contentType});
+        a.href = window.URL.createObjectURL(blob);
+        a.download = filename;
+        a.click();
+}
+
+
+// A function is used for dragging and moving
+function dragElement(element, direction)
+{
+    var   md; // remember mouse down info
+    const first  = document.getElementById("first");
+    const second = document.getElementById("second");
+
+    element.onmousedown = onMouseDown;
+
+    function onMouseDown(e)
+    {
+        //console.log("mouse down: " + e.clientX);
+        md = {e,
+              offsetLeft:  element.offsetLeft,
+              offsetTop:   element.offsetTop,
+              firstWidth:  first.offsetWidth,
+              secondWidth: second.offsetWidth
+             };
+
+        document.onmousemove = onMouseMove;
+        document.onmouseup = () => {
+            //console.log("mouse up");
+            document.onmousemove = document.onmouseup = null;
+            //second.style.width = "85%";
+        }
+    }
+
+    function onMouseMove(e)
+    {
+        //console.log("mouse move: " + e.clientX);
+        var delta = {x: e.clientX - md.e.clientX,
+                     y: e.clientY - md.e.clientY};
+
+        if (direction === "H" ) // Horizontal
+        {
+            // Prevent negative-sized elements
+            delta.x = Math.min(Math.max(delta.x, -md.firstWidth),
+                       md.secondWidth);
+
+            element.style.left = md.offsetLeft + delta.x + "px";
+            first.style.width = (md.firstWidth + delta.x) + "px";
+            second.style.width = "calc(100% - "+(md.firstWidth + delta.x)+"px)"; //(md.secondWidth - delta.x) + "px";
+            //second.style.width = "95%";
+            
+            first.style.paddingRight = "0px";
+        }
+    }
+}
+
+
+dragElement( document.getElementById("separator"), "H" );
+
+
+
+// ############################################
+
+
+
+ function camelize(str) {
+      return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function(word, index) {
+        return index === 0 ? word.toLowerCase() : word.toUpperCase();
+      }).replace(/\s+/g, '');
+    }
+  
+    
+    
+var metad = [];
+    
+
+
+var svgname = "";
+var tim;
+
+var selectedColumn = "";
+var selectedColumnName = "";
+var selectionData;
+var selectedRow;
+var selectedRange;
+var displayed;
+
+function runPoints() {
+    
+    var svgdiv = document.getElementById('mysvg');
+    var keys = svgdiv.getElementsByClassName("mqttkey");
+    
+    pointsTable=[["No.","Device","Group","Key","Type","Units","Description"]];
+    pointCount=0;
+    
+    var i;
+	for (i = 0; i < keys.length; i++) {
+	   
+	   var rundis = "inline";
+	   var level = "top";
+	   var runner =  keys[i];
+	   while (runner.id !== "mysvg") {
+	       
+	       if (runner.style["display"]=="none") { rundis = "none";  }   // break;
+	       runner = runner.parentElement;
+	       
+	       if (runner.getAttribute('option')) { level = "sub";  }
+	       if (runner.getAttribute('key') && runner.getAttribute('if')) { level = "sub";  }
+	       
+	       if (!runner) { break; }
+	       //console.log("parent--", runner);
+	       if (runner.id=="mysvg") { break; }
+	       
+	   } 
+	   
+	   
+	    if (rundis=="inline") {
+                    
+                    var cpKey = keys[i].getAttribute('key') || "";
+                    var cpText = keys[i].getAttribute('title') || ""; 
+                    var cpDev = keys[i].getAttribute('device') || ""; 
+                    var cpUnits = keys[i].getAttribute('units') || ""; 
+                    var cpGrp = keys[i].getAttribute('group') || "dat"; 
+                    var cpType = keys[i].getAttribute('type') || "Input"; 
+                    pointCount++;
+                    pointsTable.push([pointCount,cpDev,cpGrp,cpKey,cpType,cpUnits,cpText]);
+	    }
+	  
+	}    
+    
+}
+
+var componentsTable, componentCount;
+
+function runComponents() {
+    
+    var svgdiv = document.getElementById('mysvg');
+    var keys = svgdiv.getElementsByClassName("component");
+    
+    componentsTable=[["Item","Part ID","Qty","Title","Description"]];
+    componentCount=0;
+    
+    var clist = [];
+    
+    var i;
+	for (i = 0; i < keys.length; i++) {
+	   
+	   var rundis = "inline";
+	   var level = "top";
+	   var runner =  keys[i];
+	   while (runner.id !== "mysvg") {
+	       
+	       if (runner.style["display"]=="none") { rundis = "none";  break; }   // break;
+	       runner = runner.parentElement;
+	       
+	       if (!runner) { break; }
+	       if (runner.id=="mysvg") { break; }
+	       
+	   } 
+	   
+	   
+	    if (rundis=="inline") {
+                    
+                    
+                    
+                    var cpKey = keys[i].getAttribute('pid') || "X";
+                    var cpText = keys[i].getAttribute('title') || "Part X"; 
+                    var cpQty = keys[i].getAttribute('quantity') || "1"; 
+                    var cpDes = keys[i].getAttribute('description') || ""; 
+                    
+                    if (keys[i].getAttribute('xlink:href')) {
+                        
+                        var refob = document.getElementById(keys[i].getAttribute('xlink:href').substr(1));
+                        if (refob) {
+                            
+                            cpKey = refob.getAttribute('pid') || cpKey;
+                            cpText = refob.getAttribute('title') || cpText; 
+                            cpQty = parseFloat(cpQty) * parseFloat(refob.getAttribute('quantity') || "1"); 
+                            cpDes = refob.getAttribute('description') || cpDes; 
+                        }
+                    }
+                    
+                    cpKey = cpKey.toUpperCase();
+                    
+                    if (clist.indexOf(cpKey)>-1) {  // existing
+                        
+                        componentsTable[clist.indexOf(cpKey) +1][2] = parseFloat(componentsTable[clist.indexOf(cpKey) +1][2]) +parseFloat(cpQty);
+                        
+                    } else {   //  new component
+                        
+                        componentCount++;
+                        
+                        clist.push(cpKey);
+                        componentsTable.push([componentCount,cpKey,cpQty,cpText,cpDes]);
+                    }
+                    
+                    
+                    
+	    }
+	  
+	}    
+    
+}
+
+
+
+function runaccessories() {
+    
+    var svgdiv = document.getElementById('mysvg');
+    var keys = svgdiv.getElementsByClassName("key");
+    
+    
+    var topop = ",,";
+    displayed = ",,";
+    var i;
+	for (i = 0; i < keys.length; i++) {
+	    
+
+	   
+	   var rundis = "inline";
+	   var level = "top";
+	   var runner =  keys[i];
+	   while (runner.id !== "mysvg") {
+	       
+	       if (runner.style["display"]=="none") { rundis = "none";  }   // break;
+	       runner = runner.parentElement;
+	       
+	       if (runner.getAttribute('option')) { level = "sub";  }
+	       if (runner.getAttribute('key') && runner.getAttribute('if')) { level = "sub";  }
+	       
+	       if (!runner) { break; }
+	       //console.log("parent--", runner);
+	       if (runner.id=="mysvg") { break; }
+	       
+	   } 
+	   
+	   //console.log(keys[i], rundis);
+	   if (rundis=="inline") {  displayed += keys[i].id + ","; } 
+	   if (level=="top") {  topop +=  keys[i].id + ","; } 
+	   
+	   
+	    
+		 // ========
+	   
+	   
+	   
+	}    
+    
+    console.log("displayed-- "+ displayed);  
+    console.log("top level-- "+ topop);  
+    
+    
+    var mydat = [];
+    for (i = 0; i < keys.length; i++) {
+        
+     if (keys[i].getAttribute('option')) {
+	        
+	        // parent elements will have already been run so can be checked in displayed
+	        // !keys[i].parentElement.getAttribute('key')(keys[i].parentElement.getAttribute('class')||"").indexOf("key")>-1
+    		if (topop.indexOf(","+keys[i].id+",")>-1 || keys[i].parentElement.id == "mysvg" || displayed.indexOf(","+keys[i].id+",")>-1 || displayed.indexOf(","+keys[i].parentElement.id+",")>-1) {  //keys[i].parentElement.style["display"]!=="none") {
+    		    
+    		    mydat.push({"id":keys[i].id,"class":keys[i].getAttribute('class'),"option":keys[i].getAttribute('option'),"display":(keys[i].style.display=="none"?false:true)})
+		    }
+	    }
+	
+    }    
+    
+    
+    // clear search box and refresh, or if searching and no additions to list then dont refresh. 
+    var sv = "";
+    var srch = document.getElementsByClassName("jexcel_search");
+    for (i = 0; i < srch.length; i++) {
+        sv += srch[i].value || "";
+        break;
+    }
+    if(sv == "" || mydat.length !== myspreadsheet.getData().length) { 
+        myspreadsheet.setData(mydat);
+        srch[i].value=""; 
+    }
+    
+    
+    
+    //alert(JSON.stringify(displayed)); 
+    var accessories = svgdiv.getElementsByClassName("accessory");
+    var removals = "";
+    
+    var aitem;
+    for (aitem = 0; aitem < accessories.length; aitem++) {
+        
+        var showme = "none";
+        
+        if (accessories[aitem].getAttribute('goeswith')) {
+            var aa = accessories[aitem].getAttribute('goeswith').split(" ");
+            for (var a in aa) {
+                //alert(aa[a]); 
+                
+                if (aa[a].indexOf("+")<0) {  if (displayed.indexOf(","+aa[a]+",")>-1) { showme = "inline"; break; }  }
+                
+                else {
+                    
+                    var aaa = aa[a].split("+");
+                    var showmeme = "inline";
+                    for (var aaaa in aaa) {
+                        if (displayed.indexOf(","+aaa[aaaa]+",")<0) { showmeme = "none"; break; }
+                    }
+                    if (showmeme=="inline") { showme = "inline"; break; }
+                    //if ((displayed.indexOf(","+aa[a].split("+")[0]+",")>-1) && (displayed.indexOf(","+aa[a].split("+")[1]+",")>-1)) { showme = "inline"; } 
+                }
+            }
+        }
+        
+        // if accessory is present and it replaces another item, add the other item to list for removal.
+        if (showme=="inline" && accessories[aitem].getAttribute('replaces')) {
+            removals += accessories[aitem].getAttribute('replaces') + " ";
+        }
+        
+        accessories[aitem].style["display"] = showme;
+        
+    }
+    
+    if (removals!=="") {
+        
+        var rlist = removals.trim().split(" ");
+        for (var rr in rlist) {
+            if (document.getElementById(rlist[rr])) {
+                document.getElementById(rlist[rr]).style["display"] = "none";
+            }
+        }
+    }
+    
+
+}
+
+function fetchpresets() {
+    
+    
+    var svgdiv = document.getElementById('mysvg');
+    var presets = svgdiv.getElementsByClassName("preset");
+    
+    var p;
+    var pbut = "";
+	for (p = 0; p < presets.length; p++) {
+	    
+	    pbut += '<span class="mymenu" onmousedown="changepreset(' + "'" + presets[p].id  + "'" + ')" onClick="loadpreset(' + "'" + presets[p].getAttribute('preset')  + "'" + ')" title="' + presets[p].getAttribute('title') +'">' + (p+1) +'</span> ' ;
+	}
+	document.getElementById('presets').innerHTML = pbut;
+	
+}
+
+var pointsTable=[["No.","Device","Group","Key","Type","Units","Description"]];
+var pointCount=0;
+
+function runsvg() {
+    
+    var svgdiv = document.getElementById('mysvg');
+    
+    //var area = document.getElementById("zoomable");
+    //window.pz = panzoom(svgdiv, {autocenter: true, bounds: false});
+    
+    
+    //window.pz.smoothMoveTo(0, 0);
+    
+    var keys = svgdiv.getElementsByClassName("key");
+    //var keys = svgdiv.getElementsByTagName("g");
+ 
+    fetchpresets();
+    //     var presets = svgdiv.getElementsByClassName("preset");
+    //     var p;
+    //     var pbut = "";
+    // 	for (p = 0; p < presets.length; p++) {
+    	    
+    // 	    pbut += '<span class="mymenu" onmousedown="changepreset(' + "'" + presets[p].id  + "'" + ')" onClick="loadpreset(' + "'" + presets[p].getAttribute('preset')  + "'" + ')" title="' + presets[p].getAttribute('title') +'">' + (p+1) +'</span> ' ;
+    // 	}
+    // 	document.getElementById('presets').innerHTML = pbut;
+ 
+    var mydat=[];
+    
+    // for (var symb in keys) {
+        
+    //     mydat.push({"class":keys[symb].getAttribute('class'),"option":keys[symb].getAttribute('option')})
+    //     //mydat.push({"class":"1","option":"2"});
+    // }
+    
+    
+    
+    //g11206,bulkhm,g14636,landlordload,g16320,g5006,bufferstore,fbyp,hiu,g68266,singlemainpump,backupmainpump,g130841-3,g14610-0,g14636-2,g14610,finestrainer,cwsvcs,g14124,g14362
+    
+   
+            
+    var i;
+	for (i = 0; i < keys.length; i++) {
+		
+		// keys[i].id.substr(0,5)!=="layer"  // replace 1==1 to filter out layers
+		// if (keys[i].getAttribute('class') || (keys[i].id.substr(0,5)!=="layer" && keys[i].id.length>1 && keys[i].id.substr(1,1)!=="-" && (keys[i].id.substr(0,1)!=="g" || isNaN(keys[i].id.substr(1,1))))) {
+		//if (keys[i].getAttribute('class') || (keys[i].id.length>1 && keys[i].id.substr(1,1)!=="-" && (keys[i].id.substr(0,1)!=="g" || isNaN(keys[i].id.substr(1,1))))) {
+		
+		// ======================= 04/2022
+		
+		if (keys[i].getAttribute('if')) {
+		
+		    console.log(keys[i].getAttribute('if'));
+		    console.log(calculated);
+		
+            var f = keys[i].getAttribute('if');
+            var ft = Mustache.render(f, calculated);
+            
+            console.log("mustached: " + ft);
+            
+            var cv = "";
+            try {
+              cv = looseJsonParse(ft); //  looseJsonParse("{a:(4-1), b:function(){}, c:new Date()}");
+            }
+            catch(err) {
+              
+            }
+		
+		    console.log("cv: " + cv);
+		
+		    if (cv===true) { 
+		        
+		        keys[i].style["display"] = "inline"; 
+		        
+		        // ======= Control Points 
+		        
+		      //  var cPoints = keys[i].getElementsByClassName("mqttkey");
+		        
+		      //  var iCP;
+        //         for (iCP = 0; iCP < cPoints.length; iCP++) {
+                    
+        //             console.log(cPoints[iCP]);
+                    
+        //             var cpKey = cPoints[iCP].getAttribute('key') || "";
+        //             var cpText = cPoints[iCP].getAttribute('title') || ""; 
+        //             var cpDev = cPoints[iCP].getAttribute('device') || ""; 
+        //             var cpUnits = cPoints[iCP].getAttribute('units') || ""; 
+        //             var cpGrp = cPoints[iCP].getAttribute('group') || "dat"; 
+        //             var cpType = cPoints[iCP].getAttribute('type') || "Input"; 
+        //             pointCount++;
+        //             pointsTable.push([pointCount,cpDev,cpGrp,cpKey,cpType,cpUnits,cpText]);
+        //         } 
+		        
+		        
+		        
+		        // ========
+		        
+		    } else { keys[i].style["display"] = "none"; }
+    		
+    		console.log("display: " + keys[i].style["display"]);
+    		
+        	mydat.push({"id":keys[i].id,"class":keys[i].getAttribute('class'),"option":keys[i].getAttribute('option'),"display":(keys[i].style.display=="none"?false:true)})
+		}
+		
+		// =====================
+		
+		
+    	else if (keys[i].getAttribute('option')) {
+    		
+    		if (loadstring && loadstring!=="") {
+    		    
+    		    if (keys[i].getAttribute('option') && ((",,"+loadstring+",").indexOf(","+keys[i].id+",")<0)) { keys[i].style["display"] = "none"; } else { keys[i].style["display"] = "inline"; }
+    		}
+    		
+    		else if (keys[i].getAttribute('option') && !keys[i].getAttribute('standard')) { keys[i].style["display"] = "none"; }
+    		
+    		mydat.push({"id":keys[i].id,"class":keys[i].getAttribute('class'),"option":keys[i].getAttribute('option'),"display":(keys[i].style.display=="none"?false:true)})
+		}
+	}
+    
+    document.getElementById('spreadsheetmeta').innerHTML="";
+    
+    myspreadsheet = jspreadsheet(document.getElementById('spreadsheetmeta'), {
+        data:mydat,
+        columns:[{
+            type: 'hidden',
+            name:'id',
+            title:'ID',
+            width:200,
+            align:'left'
+        },{
+            type: 'hidden',
+            name:'class',
+            title:'Class',
+            width:120,
+            align:'left'
+        },{
+            type: 'text',
+            name:'option',
+            title:'Option',
+            width:400,
+            align:'left'
+        },{
+            type: 'checkbox',
+            name:'display',
+            title:'Display',
+            width:80,
+            align:'center'
+        }],
+        allowInsertColumn: false,
+        allowDeleteColumn: false,
+        allowRenameColumn: false,
+        search:true,
+        pagination:25,
+        onchange: function (instance, cell, col, row, val, id) {
+            
+           // clearTimeout(tim);
+           // tim = setTimeout(function(){ refreshMeta(); }, 250);
+           //if (selectedColumnName == "selection") { selectionData = myspreadsheet.getJson()[selectedRow];  console.log(selectionData);   }
+           console.log(row);
+           var itid = myspreadsheet.getJson()[row].id;
+           var itdisplay = myspreadsheet.getJson()[row].display;
+           document.getElementById(itid).style["display"] = (itdisplay===true?"inline":"none");
+            
+            runaccessories();
+            
+        //     var accessories = document.getElementsByClassName("accessory");
+            
+        //     var aitem;
+	       // for (aitem = 0; aitem < accessories.length; aitem++) {
+                
+        //         if (accessories[aitem].getAttribute('goeswith').indexOf(itid)>-1 || accessories[aitem].getAttribute('class').indexOf(itid)>-1) {
+        //             accessories[aitem].style["display"] = (itdisplay===true?"inline":"none");
+        //         }
+        //     }
+        }
+    }); 
+    //alert(keys.length + " Keys found.");
+    
+    runaccessories();
+    
+    runPoints(); 
+    runComponents();
+    setParentObject();
+}
+
+
+function setMenus() {
+    
+
+        var x = document.getElementsByClassName("key");
+        var i;
+        for (i = 0; i < x.length; i++) {
+            x[i].oncontextmenu = rightClick; 
+        } 
+    
+    
+}  
+
+var loadstring="";
+var calculated = {};
+
+$(document).ready(function () {
+
+
+ 
+    var urlParamsC = window.location.search.replace("?","").split("&");
+            for(var upa in urlParamsC) {
+                
+                calculated[urlParamsC[upa].split("=")[0]] = urlParamsC[upa].split("=")[1];
+                
+            }
+
+    console.log(calculated);
+
+      var urlParams = new URLSearchParams(window.location.search);
+
+
+    if (urlParams.get('page')) { pageTitle = decodeURIComponent(urlParams.get('page')).replace(/\_/g," "); }
+
+    if (urlParams.get('display')) { loadstring = ",," + urlParams.get('display'); }
+
+      if (urlParams.get('svg')) {
+          
+            var form_data = {};
+            
+            
+            
+            svgname = urlParams.get('svg');
+            var form_url = svgname;
+            if(form_url.indexOf("/")<0) { form_url = "/files/svg/" + form_url; }
+            if(form_url.indexOf(".svg")<0) { form_url += ".svg"; }
+            
+            
+                
+            document.getElementById('mytit').innerHTML = "<b>" + svgname + "</b>";
+            
+           
+            var form_method = "GET";
+            
+            //$("#loadingimg").show();
+            var div = document.getElementById('mysvg');
+            
+            fetch(form_url, {mode:'no-cors'}).then(function(response) {
+                console.log(response);
+                return response.text().then(function(text) {
+                    div.innerHTML = Mustache.render(text, calculated);
+                    //var metad = [];
+                    //runsvg();
+                    clearTimeout(tim);
+                    if (urlParams.get('nozoom')) {
+                        tim = setTimeout(function(){ runsvg(); setMenus(); }, 250);
+                    }
+                    else {
+                        tim = setTimeout(function(){ runsvg(); setMenus(); window.pz = panzoom(div, {autocenter: true, bounds: false}); }, 250);
+                    }
+                });
+              });
+            
+           
+           
+            
+          
+          
+      }
+       
+      
+
+});
+
+function topdf() {
+    
+    var nn = prompt("Fileame","download.pdf");
+    if (nn===null) { return(null); }
+    nn = nn || "download.pdf";
+    if (nn.indexOf(".svg")<0) { nn = nn + ".pdf"; }
+    
+    var svgoot = document.getElementById('mysvg').innerHTML;
+    svgoot = svgoot.substr(svgoot.indexOf("<svg"));
+    
+    //alert(svgoot);
+            $("#svgtext").val(svgoot);
+            $("#svgfile").val(nn);  //  + (new Date().getTime()) +
+            
+            $("#nextform").submit(); 
+            //     $.ajax({
+            //     url: "/api/print", 
+            //     type: "POST",      
+            //     data: {"svgfile":"print.pdf","svgtext": document.getElementById('mysvg').innerHTML },     
+            //     cache: false,
+            //     success: function(returnhtml){   
+                    
+            //         console.log(returnhtml);
+                    
+                 
+                    
+            //         //$(ftarget).html(returnhtml);               
+            //     },
+            //     error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                    
+                    
+                    
+            //     }            
+            // });    
+         
+}
+
+
+</script>
+
+
+    
+</section>
+ 
+
+
+    <style type="text/css"> 
+
+    @import url('https://fonts.googleapis.com/css2?family=Lato:wght@700&family=Roboto:wght@300&display=swap');
+
+        .context-menu { 
+            position: absolute; 
+            text-align: left; 
+            background: #f0f0f0; 
+            border: 1px solid rgb(200,200,200); 
+            box-shadow: 2px 2px 2px rgb(151,146,146);
+            font-family: 'Roboto', sans-serif;
+            font-size: 0.8em;
+            border-radius: 3px;
+        } 
+  
+        .context-menu ul { 
+            padding: 0px; 
+            margin: 0px; 
+            min-width: 150px; 
+            list-style: none; 
+        } 
+  
+        .context-menu ul li { 
+            padding: 6px 12px 6px 12px; 
+            border-bottom: 1px solid rgb(215,215,215); 
+        } 
+  
+        .context-menu ul li a { 
+            text-decoration: none; 
+            color: black; 
+        } 
+  
+        .context-menu ul li:hover { 
+            background:  #e0e0e0;  
+        } 
+    </style> 
+  
+
+
+  
+    <div id="contextMenu" class="context-menu" 
+        style="display:none"> 
+        <ul> 
+            <li><a href="#">Element-1</a></li> 
+            <li><a href="#">Element-2</a></li> 
+            <li><a href="#">Element-3</a></li> 
+            <li><a href="#">Element-4</a></li> 
+            <li><a href="#">Element-5</a></li> 
+            <li><a href="#">Element-6</a></li> 
+            <li><a href="#">Element-7</a></li> 
+        </ul> 
+    </div> 
+ 
+    <script> 
+        document.onclick = hideMenu; 
+        //document.oncontextmenu = rightClick; 
+
+       // document.getElementById("clicktarg").oncontextmenu = rightClick; 
+
+
+        // var x = document.getElementsByClassName("key");
+        // var i;
+        // for (i = 0; i < x.length; i++) {
+        //     x[i].oncontextmenu = rightClick; 
+        // } 
+  
+        function hideMenu() { 
+            document.getElementById( 
+                "contextMenu").style.display = "none" 
+        } 
+  
+        function rightClick(e) { 
+            e.preventDefault(); 
+
+            console.log(e);
+            console.log(e.path);
+            console.log(e.path[1].classList);
+            console.log(e.path[1].classList.value);
+			console.log(e.path[2].classList.value);
+			console.log(e.path[3].classList.value);
+			
+			var cl = e.path[0].classList.value + " " + e.path[1].classList.value + " " + e.path[2].classList.value + " " + e.path[3].classList.value;
+			console.log(cl);
+			
+			var mytit = "";
+			
+			//alert(e.path[0].id);
+		
+		    var fme = -1;
+		    var meid = "";
+		    
+			if (e.path[0].classList.value.indexOf("key")>-1) { fme=0; }
+			else if (e.path[1].classList.value.indexOf("key")>-1) {fme=1; }
+			else if (e.path[2].classList.value.indexOf("key")>-1) { fme=2; }
+			else if (e.path[3].classList.value.indexOf("key")>-1) { fme=3; }
+			else if (e.path[4].classList.value.indexOf("key")>-1) { fme=4; }
+			else if (e.path[5].classList.value.indexOf("key")>-1) { fme=5; }
+			else if (e.path[6].classList.value.indexOf("key")>-1) { fme=6; }
+			else if (e.path[7].classList.value.indexOf("key")>-1) { fme=7; }
+			else if (e.path[8].classList.value.indexOf("key")>-1) { fme=8; }
+			else if (e.path[9].classList.value.indexOf("key")>-1) { fme=9; }
+			
+			if ( fme >-1) { mytit += "<small><i>" + e.path[fme].id + "</i></small><br>" + e.path[fme].getAttribute('option'); meid=e.path[fme].id;  }
+			
+			
+            if (document.getElementById( 
+                "contextMenu").style.display == "block") 
+                hideMenu(); 
+				
+            //else if (cl.indexOf("_")>0) {   
+			if (1>0) {   
+			    
+                var menu = document.getElementById("contextMenu") 
+                      
+                var mentext = "<ul>";
+
+                 mentext += "<li>" + mytit + "</li>"; 
+					
+                //if (cl)    {
+
+                    //var cl = e.target.classList.value;
+                    //if (cl.indexOf("_">0)) {  
+                    
+                        var tp =  cl;
+                        //var tp =  cl.substr(cl.indexOf("_")+1).split(" ")[0];
+                        
+                        var tp2 = tp.replace(/_/g,"/");
+                        tp = tp.replace(/_/g,".");
+                        tp2 = tp2.replace("/","//");
+                        
+                        
+                        
+                        //mentext += "<li><a href='#' target='_blank'><img src='/files/images/delete-16.png'>&nbsp; Remove </a></li>"; 
+                        
+                        mentext += '<li onClick="removeme(' + "'" + meid + "'" + ')"><img src="/files/images/delete-16.png">&nbsp; Remove</li>';
+                        
+						//mentext += "<li><a href='/section/livedata?show=" + tp2 + "' target='_blank'><img src='/files/images/icon_dat.png'>&nbsp; Dashboard &nbsp;" + tp + "</a></li>";
+                    //}
+                    
+                //}
+
+
+                
+                mentext += "</ul>";
+                menu.innerHTML = mentext;
+                menu.style.display = 'block'; 
+                menu.style.left = e.pageX + "px"; 
+                menu.style.top = e.pageY + "px"; 
+            } 
+        } 
+    </script> 
+
+
+</html>
