@@ -503,6 +503,29 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+
+CREATE OR REPLACE FUNCTION fn_max(schemain varchar, networknode varchar, device varchar, vargroup varchar, varkey varchar, time1 timestamp with time zone, time2 timestamp with time zone)
+RETURNS FLOAT AS $$
+DECLARE
+    avg_record RECORD;
+	max_v FLOAT := 0;
+BEGIN
+    FOR avg_record IN
+	   	EXECUTE 'SELECT MAX(value::numeric) AS mvalue FROM '
+    	|| schemain || '.' || networknode
+    	|| ' WHERE device = $1 AND vargroup = $2 AND varkey = $3 AND time >= $4 AND time <= $5'
+   		USING device, vargroup, varkey, time1, time2
+	LOOP		
+		max_v := avg_record.mvalue;	
+    END LOOP;
+	
+    
+    RETURN (max_v);
+    
+END;
+$$ LANGUAGE plpgsql;
+
+
 -- -------------------------------------------------------------------------------------------------
 
 CREATE OR REPLACE FUNCTION fn_weighted_average(networknode varchar, device varchar, vargroup varchar, varkey1 varchar, varkey2 varchar)
@@ -693,6 +716,49 @@ BEGIN
     END IF;
 END;
 $$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION fn_time_average(schemain varchar, networknode varchar, device varchar, vargroup varchar, varkey1 varchar, time1 timestamp with time zone, time2 timestamp with time zone)
+RETURNS FLOAT AS $$
+DECLARE
+    avg_cnt INTEGER := 0;
+    avg_record RECORD;
+	tot_wv FLOAT := 0;
+	tot_w FLOAT := 0;
+	last_v FLOAT := 0;
+	last_time FLOAT := 0;
+	period FLOAT := 0;
+BEGIN
+    FOR avg_record IN
+	   	EXECUTE 'SELECT varkey, value, EXTRACT(EPOCH FROM time) AS time FROM '
+    	|| schemain || '.' || networknode
+    	|| ' WHERE device = $1 AND vargroup = $2 AND (varkey = $3) AND time >= $4 AND time <= $5'
+		|| ' ORDER BY time ASC'
+   		USING device, vargroup, varkey1, time1, time2
+	LOOP
+		
+		IF avg_cnt > 0 THEN
+			period := avg_record.time - last_time;
+			tot_wv := tot_wv + (last_v * period);
+			tot_w := tot_w + (period);
+		END IF;
+	
+		last_v := avg_record.value::numeric;		
+		last_time = avg_record.time;
+		avg_cnt := avg_cnt + 1;
+	
+    END LOOP;
+
+    IF avg_cnt > 0 AND tot_w > 0 THEN
+		RETURN tot_wv / tot_w;
+    ELSE
+        RETURN 0;
+    END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
 
 
 CREATE OR REPLACE FUNCTION public.fn_kwh_from_dhw(
