@@ -218,6 +218,33 @@ END;
 $$ LANGUAGE plpgsql;
 
 
+CREATE OR REPLACE FUNCTION fn_get_value_before(schemain varchar, networkin varchar, nodein varchar, devicein varchar, vargroupin varchar, varkeyin varchar, time1 timestamp with time zone)
+RETURNS text
+AS $$
+DECLARE
+	networknode TEXT := '';
+	avg_record RECORD;
+	info_record RECORD;
+	oot TEXT := '';
+BEGIN	
+		networknode := REPLACE(LOWER(networkin||'_'||nodein), '-', '_');	
+		FOR info_record IN
+		   	EXECUTE 'SELECT value FROM '
+	    	|| schemain || '.' || networknode
+	    	|| ' WHERE device = $1 AND vargroup = $2 AND varkey = $3 AND time <= $4'
+	    	|| ' ORDER BY time DESC LIMIT 1'
+			USING devicein, vargroupin, varkeyin, time1
+		LOOP
+			
+		    oot := ''||info_record.value;
+			
+	    END LOOP;
+
+	RETURN (oot);
+	
+END;
+$$ LANGUAGE plpgsql;
+
 
 CREATE OR REPLACE FUNCTION fn_get_var_values_before(networkin varchar, varkeyin varchar, time1 timestamp with time zone)
 RETURNS table
