@@ -554,6 +554,22 @@ $$ LANGUAGE plpgsql;
 
 
 -- -------------------------------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION fn_vwatd(kwh numeric, m3 numeric)
+RETURNS numeric
+AS $$
+DECLARE x NUMERIC;
+	
+BEGIN
+
+	IF (m3 > 0.0) THEN
+		RETURN (kwh*3600.0/(4200.0*m3));
+	ELSE
+		RETURN (0.0);
+	END IF;	
+	
+END;
+$$ LANGUAGE plpgsql;
+
 
 CREATE OR REPLACE FUNCTION fn_weighted_average(networknode varchar, device varchar, vargroup varchar, varkey1 varchar, varkey2 varchar)
 RETURNS FLOAT AS $$
@@ -1909,3 +1925,4 @@ BEGIN
 	
 END;
 $BODY$;
+
