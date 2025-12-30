@@ -553,6 +553,44 @@ END;
 $$ LANGUAGE plpgsql;
 
 
+
+CREATE OR REPLACE FUNCTION fn_span_interval(network varchar, node varchar, device varchar, vargroup1 varchar, varkey1 varchar, time1 timestamp with time zone, time2 timestamp with time zone)
+RETURNS INTERVAL AS $$
+DECLARE
+    avg_record RECORD;
+	t_first TIMESTAMP;
+	t_last TIMESTAMP;
+	networknode TEXT:= REPLACE(LOWER(network||'_'||node), '-', '_');	
+BEGIN
+
+	FOR avg_record IN
+	   	EXECUTE 'SELECT time FROM '
+    	|| quote_ident(networknode)
+    	|| ' WHERE device = $1 AND vargroup = $2 AND varkey = $3 AND time > $4'
+		|| ' ORDER BY time ASC LIMIT 1'
+   		USING device, vargroup1, varkey1, time1, time2
+	LOOP
+		t_first := avg_record.time;
+	
+	END LOOP;
+
+	FOR avg_record IN
+	   	EXECUTE 'SELECT time FROM '
+    	|| quote_ident(networknode)
+    	|| ' WHERE device = $1 AND vargroup = $2 AND varkey = $3 AND time < $5'
+		|| ' ORDER BY time DESC LIMIT 1'
+   		USING device, vargroup1, varkey1, time1, time2
+	LOOP
+		t_last := avg_record.time;
+	
+	END LOOP;
+   
+	RETURN t_last - t_first;
+    
+END;
+$$ LANGUAGE plpgsql;
+
+
 -- -------------------------------------------------------------------------------------------------
 CREATE OR REPLACE FUNCTION fn_vwatd(kwh numeric, m3 numeric)
 RETURNS numeric
@@ -1984,5 +2022,6 @@ BEGIN
 	
 END;
 $BODY$;
+
 
 
