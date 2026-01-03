@@ -102,6 +102,7 @@ $$ LANGUAGE plpgsql;
 -- SELECT * FROM fn_get_value('3016031af27a0c25','tHoDHW') 
 -- SELECT * FROM fn_get_value('3016031af27a0c25','tHoDHW') WHERE vargroup='dat'
 
+-- ---------------------------------------------------------------------------------------------------------------------------------
 
 CREATE OR REPLACE FUNCTION fn_get_topic_value(topic text)
 RETURNS TEXT
@@ -137,7 +138,59 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION fn_get_topic_value(dtopic text, topic text)
+RETURNS TEXT
+AS $$
+DECLARE
+	v TEXT := '';
+	t TEXT := '';
+	lv NUMERIC := 0;
+	avg_record RECORD;
+	networkref varchar;
+	noderef varchar;
+	deviceref varchar;
+	vargroupref varchar;
+	varkeyref varchar;
+BEGIN
+	t = topic;
+	lv = (CHAR_LENGTH(topic) - CHAR_LENGTH(REPLACE(topic, '/', ''))) / CHAR_LENGTH('/');
 
+	IF (lv<1) THEN
+		t = 'reading' || '/' || t;
+	END IF;
+
+	IF (lv<2) THEN
+		t = TRIM(SPLIT_PART(dtopic, '/', 3)) || '/' || t;
+	END IF;
+	
+	IF (lv<3) THEN
+		t = TRIM(SPLIT_PART(dtopic, '/', 2)) || '/' || t;
+	END IF;
+	
+	IF (lv<4) THEN
+		t = TRIM(SPLIT_PART(dtopic, '/', 1)) || '/' || t;
+	END IF;
+	
+	networkref = TRIM(SPLIT_PART(t, '/', 1));
+	noderef = TRIM(SPLIT_PART(t, '/', 2));
+	deviceref = TRIM(SPLIT_PART(t, '/', 3));
+	vargroupref = TRIM(SPLIT_PART(t, '/', 4));
+	varkeyref = TRIM(SPLIT_PART(t, '/', 5));
+
+	FOR avg_record IN
+	EXECUTE 'SELECT value FROM readings '
+	|| ' WHERE network = $1 AND node = $2 AND device = $3 AND vargroup = $4 AND varkey = $5'
+	USING networkref, noderef, deviceref, vargroupref, varkeyref
+	LOOP
+		
+		v = avg_record.value;
+	
+	END LOOP;
+
+	RETURN v;
+	
+END;
+$$ LANGUAGE plpgsql;
 -- ---------------------------------------------------------------------------------------------------------------------------------
 
 CREATE OR REPLACE FUNCTION fn_get_values(networknode varchar, device varchar, vargroup varchar, varkey varchar)
@@ -2058,6 +2111,7 @@ BEGIN
 	
 END;
 $BODY$;
+
 
 
 
