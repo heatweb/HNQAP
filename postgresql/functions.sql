@@ -222,6 +222,76 @@ END;
 $$ LANGUAGE plpgsql;
 
 
+CREATE OR REPLACE FUNCTION fn_get_topic_ref(dtopic text, topic text)
+RETURNS TEXT
+AS $$
+DECLARE
+	v TEXT := '';
+	t TEXT := '';
+	lv NUMERIC := 0;
+	avg_record RECORD;
+	networkref varchar;
+	noderef varchar;
+	deviceref varchar;
+	vargroupref varchar;
+	varkeyref varchar;
+BEGIN
+	t = topic;
+	lv = (CHAR_LENGTH(topic) - CHAR_LENGTH(REPLACE(topic, '/', ''))) / CHAR_LENGTH('/');
+
+	IF (lv<1) THEN
+		t = 'reading' || '/' || t;
+	END IF;
+
+	IF (lv<2) THEN
+		t = TRIM(SPLIT_PART(dtopic, '/', 3)) || '/' || t;
+	END IF;
+	
+	IF (lv<3) THEN
+		t = TRIM(SPLIT_PART(dtopic, '/', 2)) || '/' || t;
+	END IF;
+	
+	IF (lv<4) THEN
+		t = TRIM(SPLIT_PART(dtopic, '/', 1)) || '/' || t;
+	END IF;
+	
+	networkref = TRIM(SPLIT_PART(t, '/', 1));
+	noderef = TRIM(SPLIT_PART(t, '/', 2));
+	deviceref = TRIM(SPLIT_PART(t, '/', 3));
+	vargroupref = TRIM(SPLIT_PART(t, '/', 4));
+	varkeyref = TRIM(SPLIT_PART(t, '/', 5));
+
+	FOR avg_record IN
+	EXECUTE 'SELECT value FROM readings '
+	|| ' WHERE network = $1 AND node = $2 AND device = $3 AND vargroup = $4 AND varkey = $5'
+	USING networkref, noderef, deviceref, vargroupref, varkeyref
+	LOOP
+		
+		v = avg_record.value;
+	
+	END LOOP;
+
+	IF (v='_lookup') THEN
+		
+		FOR avg_record IN
+		EXECUTE 'SELECT json FROM jsondata '
+		|| ' WHERE network = $1 AND node = $2 AND device = $3 AND vargroup = $4 AND varkey = $5'
+		USING networkref, noderef, deviceref, vargroupref, varkeyref
+		LOOP			
+			t = TRIM(((avg_record.json->'lookup')::text),'"');
+		END LOOP;	
+	
+	
+	END IF;
+
+	RETURN t;
+	
+
+END;
+$$ LANGUAGE plpgsql;
+
+
+
 CREATE OR REPLACE FUNCTION fn_calc_using(calcin text, dtopic text, usingin text)
 RETURNS TEXT
 AS $$
@@ -278,6 +348,179 @@ EXCEPTION
         RETURN v;	
 END;
 $$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION fn_calc_using(calcin text, dtopic text, usingin text, stime timestamp, etime timestamp)
+RETURNS TEXT
+AS $$
+DECLARE
+	v TEXT := '';
+	calc TEXT := '';
+	to_text TEXT;
+	lv NUMERIC := 0;
+	avg_record RECORD;
+	networkref varchar;
+	noderef varchar;
+	deviceref varchar;
+	vargroupref varchar;
+	varkeyref varchar;
+BEGIN
+	calc = calcin;
+	to_text = '';
+	
+	lv = (CHAR_LENGTH(calcin) - CHAR_LENGTH(REPLACE(calcin, '$', ''))) / CHAR_LENGTH('$');
+
+	IF (POSITION('$F' IN calc)>0) THEN
+		calc = REPLACE(calc, '$F', '''' || stime || '''');
+	END IF;
+
+	IF (POSITION('$T' IN calc)>0) THEN
+		calc = REPLACE(calc, '$T', '''' || etime || '''');
+	END IF;
+
+
+	IF (POSITION('@1' IN calc)>0) THEN
+		to_text = TRIM(SPLIT_PART(usingin, ',', 1));		
+		to_text = fn_get_topic_ref(dtopic, to_text);			
+		calc = REPLACE(calc, '@1', '''' || to_text || '''');
+	END IF;
+
+	IF (POSITION('@2' IN calc)>0) THEN
+		to_text = TRIM(SPLIT_PART(usingin, ',', 2));		
+		to_text = fn_get_topic_ref(dtopic, to_text);			
+		calc = REPLACE(calc, '@2', '''' || to_text || '''');
+	END IF;
+
+	IF (POSITION('$1' IN calc)>0) THEN
+		to_text = TRIM(SPLIT_PART(usingin, ',', 1));
+		to_text = fn_get_topic_value(dtopic, to_text);		
+		calc = REPLACE(calc, '$1', to_text);
+	END IF;
+
+	IF (POSITION('$2' IN calc)>0) THEN
+		to_text = TRIM(SPLIT_PART(usingin, ',', 2));
+		to_text = fn_get_topic_value(dtopic, to_text);		
+		calc = REPLACE(calc, '$2', to_text);
+	END IF;
+	
+	IF (POSITION('$3' IN calc)>0) THEN
+		to_text = TRIM(SPLIT_PART(usingin, ',', 3));
+		to_text = fn_get_topic_value(dtopic, to_text);		
+		calc = REPLACE(calc, '$3', to_text);
+	END IF;
+	
+	IF POSITION('{{' IN calc)=0 AND POSITION('?' IN calc)=0 AND POSITION('$' IN calc)=0  AND POSITION('Math' IN calc)=0 THEN
+			
+		FOR avg_record IN
+			EXECUTE 'SELECT (' || calc || ')::text AS value '
+			USING 1
+		LOOP		
+			v := avg_record.value;	
+		END LOOP;					
+
+	END IF;
+
+	RETURN v;
+	
+EXCEPTION
+    WHEN OTHERS THEN
+        RETURN v;	
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION fn_pc_topic_above_v(topic text, v numeric, stime timestamp, etime timestamp)
+RETURNS numeric
+AS $$
+DECLARE
+	vout numeric;
+	n numeric;
+	tc numeric;
+	txt TEXT;
+	t TEXT := '';
+	lv NUMERIC := 0;
+	avg_record RECORD;
+	networkref varchar;
+	noderef varchar;
+	deviceref varchar;
+	vargroupref varchar;
+	varkeyref varchar;
+	networknode TEXT;
+BEGIN
+	t = topic;
+	lv = (CHAR_LENGTH(topic) - CHAR_LENGTH(REPLACE(topic, '/', ''))) / CHAR_LENGTH('/');
+
+	IF (lv<4) THEN
+		return null;
+	END IF;
+	
+	networkref = TRIM(SPLIT_PART(t, '/', 1));
+	noderef = TRIM(SPLIT_PART(t, '/', 2));
+	deviceref = TRIM(SPLIT_PART(t, '/', 3));
+	vargroupref = TRIM(SPLIT_PART(t, '/', 4));
+	varkeyref = TRIM(SPLIT_PART(t, '/', 5));
+
+	FOR avg_record IN
+	EXECUTE 'SELECT value FROM readings '
+	|| ' WHERE network = $1 AND node = $2 AND device = $3 AND vargroup = $4 AND varkey = $5'
+	USING networkref, noderef, deviceref, vargroupref, varkeyref
+	LOOP
+		
+		txt = avg_record.value;
+	
+	END LOOP;
+
+	IF (txt='_lookup') THEN
+		
+		FOR avg_record IN
+		EXECUTE 'SELECT json FROM jsondata '
+		|| ' WHERE network = $1 AND node = $2 AND device = $3 AND vargroup = $4 AND varkey = $5'
+		USING networkref, noderef, deviceref, vargroupref, varkeyref
+		LOOP			
+			t = TRIM(((avg_record.json->'lookup')::text),'"');
+		END LOOP;
+	
+		networkref = TRIM(SPLIT_PART(t, '/', 1));
+		noderef = TRIM(SPLIT_PART(t, '/', 2));
+		deviceref = TRIM(SPLIT_PART(t, '/', 3));
+		vargroupref = TRIM(SPLIT_PART(t, '/', 4));
+		varkeyref = TRIM(SPLIT_PART(t, '/', 5));
+	
+	END IF;
+
+	networknode = fn_n_n(networkref, noderef);
+	
+	FOR avg_record IN
+	EXECUTE 'SELECT COUNT(value) AS value FROM '
+	|| quote_ident(networknode)
+	|| ' WHERE device = $1 AND vargroup = $2 AND varkey = $3 AND time >= $4 AND time <= $5'
+	USING deviceref, vargroupref, varkeyref, stime, etime
+	LOOP			
+		tc = avg_record.value;	
+	END LOOP;
+
+
+	IF (tc=0) THEN
+		return null;
+	END IF;
+
+
+	FOR avg_record IN
+	EXECUTE 'SELECT COUNT(value) AS value FROM '
+	|| quote_ident(networknode)
+	|| ' WHERE device = $1 AND vargroup = $2 AND varkey = $3 AND time >= $4 AND time <= $5'
+	|| ' AND value::numeric > $6'
+	USING deviceref, vargroupref, varkeyref, stime, etime, v
+	LOOP			
+		n = avg_record.value;	
+	END LOOP;
+
+	RETURN ROUND(100.0 * n / tc, 1);
+	
+
+END;
+$$ LANGUAGE plpgsql;
+
 
 -- ---------------------------------------------------------------------------------------------------------------------------------
 
@@ -2199,6 +2442,7 @@ BEGIN
 	
 END;
 $BODY$;
+
 
 
 
