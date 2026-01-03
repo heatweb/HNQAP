@@ -103,7 +103,7 @@ $$ LANGUAGE plpgsql;
 -- SELECT * FROM fn_get_value('3016031af27a0c25','tHoDHW') WHERE vargroup='dat'
 
 
-CREATE OR REPLACE FUNCTION fn_get_value(topic text)
+CREATE OR REPLACE FUNCTION fn_get_topic_value(topic text)
 RETURNS TEXT
 AS $$
 DECLARE
@@ -2058,6 +2058,7 @@ BEGIN
 	
 END;
 $BODY$;
+
 
 
 
