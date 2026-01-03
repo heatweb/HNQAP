@@ -187,10 +187,98 @@ BEGIN
 	
 	END LOOP;
 
+	IF (v='_lookup') THEN
+		
+		FOR avg_record IN
+		EXECUTE 'SELECT json FROM jsondata '
+		|| ' WHERE network = $1 AND node = $2 AND device = $3 AND vargroup = $4 AND varkey = $5'
+		USING networkref, noderef, deviceref, vargroupref, varkeyref
+		LOOP			
+			t = TRIM(((avg_record.json->'lookup')::text),'"');
+		END LOOP;
+	
+		networkref = TRIM(SPLIT_PART(t, '/', 1));
+		noderef = TRIM(SPLIT_PART(t, '/', 2));
+		deviceref = TRIM(SPLIT_PART(t, '/', 3));
+		vargroupref = TRIM(SPLIT_PART(t, '/', 4));
+		varkeyref = TRIM(SPLIT_PART(t, '/', 5));
+	
+		FOR avg_record IN
+		EXECUTE 'SELECT value FROM readings '
+		|| ' WHERE network = $1 AND node = $2 AND device = $3 AND vargroup = $4 AND varkey = $5'
+		USING networkref, noderef, deviceref, vargroupref, varkeyref
+		LOOP			
+			v = avg_record.value;
+		
+		END LOOP;
+	
+	
+	END IF;
+
 	RETURN v;
 	
+
 END;
 $$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION fn_calc_using(calcin text, dtopic text, usingin text)
+RETURNS TEXT
+AS $$
+DECLARE
+	v TEXT := '';
+	calc TEXT := '';
+	to_text TEXT;
+	lv NUMERIC := 0;
+	avg_record RECORD;
+	networkref varchar;
+	noderef varchar;
+	deviceref varchar;
+	vargroupref varchar;
+	varkeyref varchar;
+BEGIN
+	calc = calcin;
+	to_text = '';
+	
+	lv = (CHAR_LENGTH(calcin) - CHAR_LENGTH(REPLACE(calcin, '$', ''))) / CHAR_LENGTH('$');
+
+	IF (POSITION('$1' IN calc)>0) THEN
+		to_text = TRIM(SPLIT_PART(usingin, ',', 1));
+		to_text = fn_get_topic_value(dtopic, to_text);		
+		calc = REPLACE(calc, '$1', to_text);
+	END IF;
+
+	IF (POSITION('$2' IN calc)>0) THEN
+		to_text = TRIM(SPLIT_PART(usingin, ',', 2));
+		to_text = fn_get_topic_value(dtopic, to_text);		
+		calc = REPLACE(calc, '$2', to_text);
+	END IF;
+	
+	IF (POSITION('$3' IN calc)>0) THEN
+		to_text = TRIM(SPLIT_PART(usingin, ',', 3));
+		to_text = fn_get_topic_value(dtopic, to_text);		
+		calc = REPLACE(calc, '$3', to_text);
+	END IF;
+	
+	IF POSITION('{{' IN calc)=0 AND POSITION('?' IN calc)=0 AND POSITION('$' IN calc)=0  AND POSITION('Math' IN calc)=0 THEN
+			
+		FOR avg_record IN
+			EXECUTE 'SELECT ROUND((' || calc || ')::numeric,1)::text AS value '
+			USING 1
+		LOOP		
+			v := avg_record.value;	
+		END LOOP;					
+
+	END IF;
+
+	RETURN v;
+	
+EXCEPTION
+    WHEN OTHERS THEN
+        RETURN v;	
+END;
+$$ LANGUAGE plpgsql;
+
 -- ---------------------------------------------------------------------------------------------------------------------------------
 
 CREATE OR REPLACE FUNCTION fn_get_values(networknode varchar, device varchar, vargroup varchar, varkey varchar)
@@ -2111,6 +2199,7 @@ BEGIN
 	
 END;
 $BODY$;
+
 
 
 
