@@ -522,6 +522,92 @@ END;
 $$ LANGUAGE plpgsql;
 
 
+
+
+CREATE OR REPLACE FUNCTION fn_delta(topic text, stime timestamp, etime timestamp)
+RETURNS numeric
+AS $$
+DECLARE
+	vout numeric;
+	first_v numeric;
+	last_v numeric;
+	txt TEXT;
+	t TEXT := '';
+	lv NUMERIC := 0;
+	avg_record RECORD;
+	networkref varchar;
+	noderef varchar;
+	deviceref varchar;
+	vargroupref varchar;
+	varkeyref varchar;
+	networknode TEXT;
+BEGIN
+	t = topic;
+	lv = (CHAR_LENGTH(topic) - CHAR_LENGTH(REPLACE(topic, '/', ''))) / CHAR_LENGTH('/');
+
+	IF (lv<4) THEN
+		return null;
+	END IF;
+	
+	networkref = TRIM(SPLIT_PART(t, '/', 1));
+	noderef = TRIM(SPLIT_PART(t, '/', 2));
+	deviceref = TRIM(SPLIT_PART(t, '/', 3));
+	vargroupref = TRIM(SPLIT_PART(t, '/', 4));
+	varkeyref = TRIM(SPLIT_PART(t, '/', 5));
+
+	FOR avg_record IN
+	EXECUTE 'SELECT value FROM readings '
+	|| ' WHERE network = $1 AND node = $2 AND device = $3 AND vargroup = $4 AND varkey = $5'
+	USING networkref, noderef, deviceref, vargroupref, varkeyref
+	LOOP		
+		txt = avg_record.value;	
+	END LOOP;
+
+	IF (txt='_lookup') THEN
+		
+		FOR avg_record IN
+		EXECUTE 'SELECT json FROM jsondata '
+		|| ' WHERE network = $1 AND node = $2 AND device = $3 AND vargroup = $4 AND varkey = $5'
+		USING networkref, noderef, deviceref, vargroupref, varkeyref
+		LOOP			
+			t = TRIM(((avg_record.json->'lookup')::text),'''');
+		END LOOP;
+	
+		networkref = TRIM(SPLIT_PART(t, '/', 1));
+		noderef = TRIM(SPLIT_PART(t, '/', 2));
+		deviceref = TRIM(SPLIT_PART(t, '/', 3));
+		vargroupref = TRIM(SPLIT_PART(t, '/', 4));
+		varkeyref = TRIM(SPLIT_PART(t, '/', 5));
+	
+	END IF;
+
+	networknode = fn_n_n(networkref, noderef);
+
+	FOR avg_record IN
+	   	EXECUTE 'SELECT value, EXTRACT(EPOCH FROM time) AS time FROM '
+    	|| quote_ident(networknode)
+    	|| ' WHERE device = $1 AND vargroup = $2 AND varkey = $3 AND time <= $4'
+		|| ' ORDER BY time DESC LIMIT 1'
+   		USING deviceref, vargroupref, varkeyref, stime, etime
+	LOOP		
+		first_v := avg_record.value::numeric;	
+    END LOOP;
+	
+    FOR avg_record IN
+	   	EXECUTE 'SELECT value, EXTRACT(EPOCH FROM time) AS time FROM '
+    	|| quote_ident(networknode)
+    	|| ' WHERE device = $1 AND vargroup = $2 AND varkey = $3 AND time <= $5'
+		|| ' ORDER BY time DESC LIMIT 1'
+   		USING deviceref, vargroupref, varkeyref, stime, etime
+	LOOP		
+		last_v := avg_record.value::numeric;	
+    END LOOP;
+
+    RETURN (last_v - first_v);	
+
+END;
+$$ LANGUAGE plpgsql;
+
 -- ---------------------------------------------------------------------------------------------------------------------------------
 
 CREATE OR REPLACE FUNCTION fn_get_values(networknode varchar, device varchar, vargroup varchar, varkey varchar)
@@ -2442,6 +2528,7 @@ BEGIN
 	
 END;
 $BODY$;
+
 
 
 
