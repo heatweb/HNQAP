@@ -138,6 +138,65 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+
+
+
+CREATE OR REPLACE FUNCTION fn_resolve_topic(topic text)
+RETURNS TEXT
+AS $$
+DECLARE
+	v TEXT := '';
+	t TEXT := '';
+	lv NUMERIC := 0;
+	avg_record RECORD;
+	networkref varchar;
+	noderef varchar;
+	deviceref varchar;
+	vargroupref varchar;
+	varkeyref varchar;
+BEGIN
+	t = topic;
+	lv = (CHAR_LENGTH(topic) - CHAR_LENGTH(REPLACE(topic, '/', ''))) / CHAR_LENGTH('/');
+
+	IF (lv<4) THEN
+		return null;
+	END IF;
+	
+	networkref = TRIM(SPLIT_PART(t, '/', 1));
+	noderef = TRIM(SPLIT_PART(t, '/', 2));
+	deviceref = TRIM(SPLIT_PART(t, '/', 3));
+	vargroupref = TRIM(SPLIT_PART(t, '/', 4));
+	varkeyref = TRIM(SPLIT_PART(t, '/', 5));
+
+	FOR avg_record IN
+	EXECUTE 'SELECT value FROM readings '
+	|| ' WHERE network = $1 AND node = $2 AND device = $3 AND vargroup = $4 AND varkey = $5'
+	USING networkref, noderef, deviceref, vargroupref, varkeyref
+	LOOP
+		
+		v = avg_record.value;
+	
+	END LOOP;
+
+	IF (v='_lookup') THEN
+		
+		FOR avg_record IN
+		EXECUTE 'SELECT json FROM jsondata '
+		|| ' WHERE network = $1 AND node = $2 AND device = $3 AND vargroup = $4 AND varkey = $5'
+		USING networkref, noderef, deviceref, vargroupref, varkeyref
+		LOOP			
+			t = TRIM(((avg_record.json->'lookup')::text),'''');
+			t = TRIM(t,'"');
+		END LOOP;		
+	END IF;
+	RETURN t;
+
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+
 CREATE OR REPLACE FUNCTION fn_get_topic_value(dtopic text, topic text)
 RETURNS TEXT
 AS $$
@@ -2533,6 +2592,7 @@ BEGIN
 	
 END;
 $BODY$;
+
 
 
 
