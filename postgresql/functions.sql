@@ -722,6 +722,66 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+
+
+CREATE OR REPLACE FUNCTION fn_topic_variance(topic text, stime timestamp, etime timestamp)
+RETURNS numeric
+AS $$
+DECLARE
+	vout numeric;
+	first_v numeric;
+	last_v numeric;
+	txt TEXT;
+	t TEXT := '';
+	lv NUMERIC := 0;
+	avg_record RECORD;
+	networkref varchar;
+	noderef varchar;
+	deviceref varchar;
+	vargroupref varchar;
+	varkeyref varchar;
+	networknode TEXT;
+BEGIN
+	t = fn_resolve_topic(topic);
+	lv = (CHAR_LENGTH(topic) - CHAR_LENGTH(REPLACE(topic, '/', ''))) / CHAR_LENGTH('/');
+
+	IF (lv<4) THEN
+		return null;
+	END IF;
+	
+	networkref = TRIM(SPLIT_PART(t, '/', 1));
+	noderef = TRIM(SPLIT_PART(t, '/', 2));
+	deviceref = TRIM(SPLIT_PART(t, '/', 3));
+	vargroupref = TRIM(SPLIT_PART(t, '/', 4));
+	varkeyref = TRIM(SPLIT_PART(t, '/', 5));	
+
+	networknode = fn_n_n(networkref, noderef);
+
+	FOR avg_record IN
+	   	EXECUTE 'SELECT MIN(value) AS value FROM '
+    	|| quote_ident(networknode)
+    	|| ' WHERE device = $1 AND vargroup = $2 AND varkey = $3 AND time >= $4  AND time <= $5'
+		|| ' AND pg_input_is_valid(value, ''numeric'')'
+   		USING deviceref, vargroupref, varkeyref, stime, etime
+	LOOP		
+		first_v := avg_record.value::numeric;	
+    END LOOP;
+	
+    FOR avg_record IN
+	   	EXECUTE 'SELECT MAX(value) AS value FROM '
+    	|| quote_ident(networknode)
+    	|| ' WHERE device = $1 AND vargroup = $2 AND varkey = $3 AND time >= $4  AND time <= $5'
+		|| ' AND pg_input_is_valid(value, ''numeric'')'
+   		USING deviceref, vargroupref, varkeyref, stime, etime
+	LOOP		
+		last_v := avg_record.value::numeric;	
+    END LOOP;
+
+    RETURN (last_v - first_v);	
+
+END;
+$$ LANGUAGE plpgsql;
+
 -- ---------------------------------------------------------------------------------------------------------------------------------
 
 CREATE OR REPLACE FUNCTION fn_get_values(networknode varchar, device varchar, vargroup varchar, varkey varchar)
@@ -2642,6 +2702,7 @@ BEGIN
 	
 END;
 $BODY$;
+
 
 
 
