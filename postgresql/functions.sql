@@ -368,8 +368,13 @@ BEGIN
 	calc = calcin;
 	to_text = '';
 	
-	lv = (CHAR_LENGTH(calcin) - CHAR_LENGTH(REPLACE(calcin, '$', ''))) / CHAR_LENGTH('$');
+	IF (calcin='') THEN
+		RETURN null;
+	END IF;
 
+	IF (calcin IS NULL) THEN
+		RETURN null;
+	END IF;
 	IF (POSITION('$F' IN calc)>0) THEN
 		calc = REPLACE(calc, '$F', '''' || stime || '''');
 	END IF;
@@ -2528,6 +2533,7 @@ BEGIN
 	
 END;
 $BODY$;
+
 
 
 
