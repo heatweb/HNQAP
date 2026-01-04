@@ -573,7 +573,7 @@ BEGIN
 	EXECUTE 'SELECT COUNT(value) AS value FROM '
 	|| quote_ident(networknode)
 	|| ' WHERE device = $1 AND vargroup = $2 AND varkey = $3 AND time >= $4 AND time <= $5'
-	|| ' AND value::numeric > $6'
+	|| ' AND pg_input_is_valid(value, ''numeric'') AND value::numeric > $6'
 	USING deviceref, vargroupref, varkeyref, stime, etime, v
 	LOOP			
 		n = avg_record.value;	
@@ -2642,6 +2642,7 @@ BEGIN
 	
 END;
 $BODY$;
+
 
 
 
