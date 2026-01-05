@@ -587,6 +587,71 @@ $$ LANGUAGE plpgsql;
 
 
 
+CREATE OR REPLACE FUNCTION fn_pc_topic_in_range(topic text, v numeric, tolerance numeric, stime timestamp, etime timestamp)
+RETURNS numeric
+AS $$
+DECLARE
+	vout numeric;
+	n numeric;
+	tc numeric;
+	txt TEXT;
+	t TEXT := '';
+	lv NUMERIC := 0;
+	avg_record RECORD;
+	networkref varchar;
+	noderef varchar;
+	deviceref varchar;
+	vargroupref varchar;
+	varkeyref varchar;
+	networknode TEXT;
+BEGIN
+	t = fn_resolve_topic(topic);
+	lv = (CHAR_LENGTH(topic) - CHAR_LENGTH(REPLACE(topic, '/', ''))) / CHAR_LENGTH('/');
+
+	IF (lv<4) THEN
+		return null;
+	END IF;
+	
+	networkref = TRIM(SPLIT_PART(t, '/', 1));
+	noderef = TRIM(SPLIT_PART(t, '/', 2));
+	deviceref = TRIM(SPLIT_PART(t, '/', 3));
+	vargroupref = TRIM(SPLIT_PART(t, '/', 4));
+	varkeyref = TRIM(SPLIT_PART(t, '/', 5));
+
+	networknode = fn_n_n(networkref, noderef);
+	
+	FOR avg_record IN
+	EXECUTE 'SELECT COUNT(value) AS value FROM '
+	|| quote_ident(networknode)
+	|| ' WHERE device = $1 AND vargroup = $2 AND varkey = $3 AND time >= $4 AND time <= $5'
+	USING deviceref, vargroupref, varkeyref, stime, etime
+	LOOP			
+		tc = avg_record.value;	
+	END LOOP;
+
+
+	IF (tc=0) THEN
+		return null;
+	END IF;
+
+
+	FOR avg_record IN
+	EXECUTE 'SELECT COUNT(value) AS value FROM '
+	|| quote_ident(networknode)
+	|| ' WHERE device = $1 AND vargroup = $2 AND varkey = $3 AND time >= $4 AND time <= $5'
+	|| ' AND pg_input_is_valid(value, ''numeric'') AND value::numeric > ($6-$7) AND value::numeric < ($6+$7)'
+	USING deviceref, vargroupref, varkeyref, stime, etime, v, tolerance
+	LOOP			
+		n = avg_record.value;	
+	END LOOP;
+
+	RETURN ROUND(100.0 * n / tc, 1);
+	
+
+END;
+$$ LANGUAGE plpgsql;
+
+
 
 CREATE OR REPLACE FUNCTION fn_delta(topic text, stime timestamp, etime timestamp)
 RETURNS numeric
@@ -781,6 +846,9 @@ BEGIN
 
 END;
 $$ LANGUAGE plpgsql;
+
+
+
 
 -- ---------------------------------------------------------------------------------------------------------------------------------
 
@@ -2702,6 +2770,7 @@ BEGIN
 	
 END;
 $BODY$;
+
 
 
 
