@@ -913,7 +913,13 @@ BEGIN
 			v2 = avg_record.value;
 
 			avg_cnt = avg_cnt + 1;
-			avg_tot = avg_tot + ABS(v1 - v2);
+
+			IF avg_record.varkey = varkeyref THEN
+				avg_tot = avg_tot + (v1 - v2);
+			ELSE
+				avg_tot = avg_tot + (v2 - v1);
+			END IF;
+			
 			
 		END IF;
 
@@ -921,7 +927,7 @@ BEGIN
 	
     END LOOP;
 
-    IF (avg_cnt > 0) AND (avg_tot > 0) THEN
+    IF (avg_cnt > 0) THEN
 		RETURN ROUND(avg_tot / avg_cnt, 1);
     ELSE
         RETURN 0;
@@ -2852,6 +2858,7 @@ BEGIN
 	
 END;
 $BODY$;
+
 
 
 
