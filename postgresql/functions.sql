@@ -848,6 +848,85 @@ END;
 $$ LANGUAGE plpgsql;
 
 
+CREATE OR REPLACE FUNCTION fn_topic_time_average_diff(topic text, topic2 text, stime timestamp, etime timestamp)
+RETURNS numeric
+AS $$
+DECLARE
+	rcnt numeric := 0;
+	last_t timestamp;
+	v1 numeric := 0.0;
+	v2 numeric := 0.0;
+	txt TEXT;
+	t TEXT := '';
+	t2 TEXT := '';
+	lv NUMERIC := 0;
+	avg_cnt INTEGER := 0;
+	avg_tot numeric := 0.0;
+	avg_record RECORD;
+	networkref varchar;
+	noderef varchar;
+	deviceref varchar;
+	vargroupref varchar;
+	varkeyref varchar;
+	networknode TEXT;
+	vargroupref2 varchar;
+	varkeyref2 varchar;
+BEGIN
+	t = fn_resolve_topic(topic);
+	lv = (CHAR_LENGTH(topic) - CHAR_LENGTH(REPLACE(topic, '/', ''))) / CHAR_LENGTH('/');
+
+	IF (lv<4) THEN
+		return null;
+	END IF;
+	
+	networkref = TRIM(SPLIT_PART(t, '/', 1));
+	noderef = TRIM(SPLIT_PART(t, '/', 2));
+	deviceref = TRIM(SPLIT_PART(t, '/', 3));
+	vargroupref = TRIM(SPLIT_PART(t, '/', 4));
+	varkeyref = TRIM(SPLIT_PART(t, '/', 5));	
+	
+	networknode = fn_n_n(networkref, noderef);
+
+	t2 = fn_resolve_topic(topic2);
+	vargroupref2 = TRIM(SPLIT_PART(t2, '/', 4));
+	varkeyref2 = TRIM(SPLIT_PART(t2, '/', 5));	
+
+
+	
+	FOR avg_record IN
+	   	EXECUTE 'SELECT time_bucket(INTERVAL ''5 minutes'', time) AS times, varkey, AVG(value::numeric) AS value FROM '
+    	|| quote_ident(networknode)
+    	|| ' WHERE device = $1 AND ((vargroup = $2 AND varkey = $3) OR (vargroup = $4 AND varkey = $5)) AND time >= $6 AND time <= $7'
+		|| ' GROUP BY times,varkey ORDER BY times ASC'
+   		USING deviceref, vargroupref, varkeyref, vargroupref2, varkeyref2, stime, etime
+	LOOP
+
+		IF avg_record.times != last_t THEN
+			rcnt = 1;
+			v1 = avg_record.value;
+		END IF;
+
+		IF avg_record.times = last_t AND rcnt = 1 THEN
+			rcnt = 2;
+			v2 = avg_record.value;
+
+			avg_cnt = avg_cnt + 1;
+			avg_tot = avg_tot + (v1 - v2);
+			
+		END IF;
+
+		last_t = avg_record.times;
+	
+    END LOOP;
+
+    IF (avg_cnt > 0) AND (avg_tot > 0) THEN
+		RETURN ROUND(avg_tot / avg_cnt, 1);
+    ELSE
+        RETURN 0;
+    END IF;
+
+END;
+$$ LANGUAGE plpgsql;
 
 
 -- ---------------------------------------------------------------------------------------------------------------------------------
@@ -2770,6 +2849,7 @@ BEGIN
 	
 END;
 $BODY$;
+
 
 
 
