@@ -869,6 +869,7 @@ DECLARE
 	vargroupref varchar;
 	varkeyref varchar;
 	networknode TEXT;
+	deviceref2 varchar;
 	vargroupref2 varchar;
 	varkeyref2 varchar;
 BEGIN
@@ -888,6 +889,7 @@ BEGIN
 	networknode = fn_n_n(networkref, noderef);
 
 	t2 = fn_resolve_topic(topic2);
+	deviceref2 = TRIM(SPLIT_PART(t2, '/', 3));
 	vargroupref2 = TRIM(SPLIT_PART(t2, '/', 4));
 	varkeyref2 = TRIM(SPLIT_PART(t2, '/', 5));	
 
@@ -896,9 +898,9 @@ BEGIN
 	FOR avg_record IN
 	   	EXECUTE 'SELECT time_bucket(INTERVAL ''5 minutes'', time) AS times, varkey, AVG(value::numeric) AS value FROM '
     	|| quote_ident(networknode)
-    	|| ' WHERE device = $1 AND ((vargroup = $2 AND varkey = $3) OR (vargroup = $4 AND varkey = $5)) AND time >= $6 AND time <= $7'
+    	|| ' WHERE ((device = $1 AND vargroup = $3 AND varkey = $4) OR (device = $2 AND vargroup = $5 AND varkey = $6)) AND time >= $7 AND time <= $8'
 		|| ' GROUP BY times,varkey ORDER BY times ASC'
-   		USING deviceref, vargroupref, varkeyref, vargroupref2, varkeyref2, stime, etime
+   		USING deviceref, deviceref2, vargroupref, varkeyref, vargroupref2, varkeyref2, stime, etime
 	LOOP
 
 		IF avg_record.times != last_t THEN
@@ -911,7 +913,7 @@ BEGIN
 			v2 = avg_record.value;
 
 			avg_cnt = avg_cnt + 1;
-			avg_tot = avg_tot + (v1 - v2);
+			avg_tot = avg_tot + ABS(v1 - v2);
 			
 		END IF;
 
@@ -927,6 +929,7 @@ BEGIN
 
 END;
 $$ LANGUAGE plpgsql;
+
 
 
 -- ---------------------------------------------------------------------------------------------------------------------------------
@@ -2849,6 +2852,7 @@ BEGIN
 	
 END;
 $BODY$;
+
 
 
 
