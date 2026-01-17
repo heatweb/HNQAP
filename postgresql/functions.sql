@@ -179,7 +179,9 @@ BEGIN
 	END LOOP;
 
 	IF (v='_lookup') THEN
-		
+
+		v=null;
+
 		FOR avg_record IN
 		EXECUTE 'SELECT json FROM jsondata '
 		|| ' WHERE network = $1 AND node = $2 AND device = $3 AND vargroup = $4 AND varkey = $5'
@@ -248,6 +250,7 @@ BEGIN
 
 	IF (v='_lookup') THEN
 		
+		v=null;
 		FOR avg_record IN
 		EXECUTE 'SELECT json FROM jsondata '
 		|| ' WHERE network = $1 AND node = $2 AND device = $3 AND vargroup = $4 AND varkey = $5'
@@ -275,6 +278,112 @@ BEGIN
 	END IF;
 
 	RETURN v;
+	
+
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION fn_get_topic_reading(dtopic text, topic text)
+RETURNS table
+(
+	"node" character varying(32),
+	"device" character varying(32),
+	"vargroup" character varying(16),
+	"varkey" character varying(64),
+	"value" text,
+    "timestamp" timestamp with time zone
+)
+AS $$
+DECLARE
+	v TEXT := '';
+	t TEXT := '';
+	lv NUMERIC := 0;
+	avg_record RECORD;
+	networkref varchar;
+	noderef varchar;
+	deviceref varchar;
+	vargroupref varchar;
+	varkeyref varchar;
+BEGIN
+	t = topic;
+	lv = (CHAR_LENGTH(topic) - CHAR_LENGTH(REPLACE(topic, '/', ''))) / CHAR_LENGTH('/');
+
+	IF (lv<1) THEN
+		t = 'reading' || '/' || t;
+	END IF;
+
+	IF (lv<2) THEN
+		t = TRIM(SPLIT_PART(dtopic, '/', 3)) || '/' || t;
+	END IF;
+	
+	IF (lv<3) THEN
+		t = TRIM(SPLIT_PART(dtopic, '/', 2)) || '/' || t;
+	END IF;
+	
+	IF (lv<4) THEN
+		t = TRIM(SPLIT_PART(dtopic, '/', 1)) || '/' || t;
+	END IF;
+	
+	networkref = TRIM(SPLIT_PART(t, '/', 1));
+	noderef = TRIM(SPLIT_PART(t, '/', 2));
+	deviceref = TRIM(SPLIT_PART(t, '/', 3));
+	vargroupref = TRIM(SPLIT_PART(t, '/', 4));
+	varkeyref = TRIM(SPLIT_PART(t, '/', 5));
+
+	FOR avg_record IN
+	EXECUTE 'SELECT * FROM readings '
+	|| ' WHERE network = $1 AND node = $2 AND device = $3 AND vargroup = $4 AND varkey = $5'
+	USING networkref, noderef, deviceref, vargroupref, varkeyref
+	LOOP		
+		    timestamp := avg_record.timestamp;
+			device := avg_record.device;
+			node := avg_record.node;
+			vargroup := avg_record.vargroup;
+			varkey := avg_record.varkey;
+			value := avg_record.value;
+			--RETURN NEXT;
+	
+	END LOOP;
+
+	IF (value='_lookup') THEN
+
+		value := null;
+		
+		FOR avg_record IN
+		EXECUTE 'SELECT json FROM jsondata '
+		|| ' WHERE network = $1 AND node = $2 AND device = $3 AND vargroup = $4 AND varkey = $5'
+		USING networkref, noderef, deviceref, vargroupref, varkeyref
+		LOOP			
+			t = TRIM(((avg_record.json->'lookup')::text),'"');
+		END LOOP;
+	
+		networkref = TRIM(SPLIT_PART(t, '/', 1));
+		noderef = TRIM(SPLIT_PART(t, '/', 2));
+		deviceref = TRIM(SPLIT_PART(t, '/', 3));
+		vargroupref = TRIM(SPLIT_PART(t, '/', 4));
+		varkeyref = TRIM(SPLIT_PART(t, '/', 5));
+	
+		FOR avg_record IN
+		EXECUTE 'SELECT * FROM readings '
+		|| ' WHERE network = $1 AND node = $2 AND device = $3 AND vargroup = $4 AND varkey = $5'
+		USING networkref, noderef, deviceref, vargroupref, varkeyref
+		LOOP		
+		
+			timestamp := avg_record.timestamp;
+			device := avg_record.device;
+			node := avg_record.node;
+			vargroup := avg_record.vargroup;
+			varkey := avg_record.varkey;
+			value := avg_record.value;	
+			--RETURN NEXT;	
+		
+		END LOOP;
+	
+	
+	END IF;
+
+	RETURN NEXT;
 	
 
 END;
@@ -332,6 +441,7 @@ BEGIN
 
 	IF (v='_lookup') THEN
 		
+		v=null;
 		FOR avg_record IN
 		EXECUTE 'SELECT json FROM jsondata '
 		|| ' WHERE network = $1 AND node = $2 AND device = $3 AND vargroup = $4 AND varkey = $5'
@@ -2858,6 +2968,7 @@ BEGIN
 	
 END;
 $BODY$;
+
 
 
 
