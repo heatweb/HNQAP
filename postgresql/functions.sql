@@ -102,6 +102,63 @@ $$ LANGUAGE plpgsql;
 -- SELECT * FROM fn_get_value('3016031af27a0c25','tHoDHW') 
 -- SELECT * FROM fn_get_value('3016031af27a0c25','tHoDHW') WHERE vargroup='dat'
 
+
+
+
+CREATE OR REPLACE FUNCTION fn_get_table_values(schemain varchar, networkin varchar, nodein varchar, devicein varchar, vargroupin varchar, varkeyin varchar)
+RETURNS table
+(
+	"varkey" character varying(64),
+	"value" text
+)
+AS $$
+DECLARE
+	networknode TEXT := '';
+	nnd TEXT := '';
+	loopcnt NUMERIC :=0;
+	avg_record RECORD;
+	info_record RECORD;
+BEGIN
+
+	FOR avg_record IN
+	   	EXECUTE 'WITH t1 AS (SELECT t2.value FROM ' || schemain || '.readings t1 
+				INNER JOIN json_array_elements(t1.value::json) t2 ON 1=1
+				WHERE t1.network =$2 AND t1.node=$3 AND t1.device=$4 AND t1.vargroup=$5 AND t1.varkey=$6)
+				SELECT * FROM t1;'
+   		USING schemain, networkin, nodein, devicein, vargroupin, varkeyin
+	LOOP
+		
+		loopcnt = 0;
+		
+		FOR info_record IN
+		EXECUTE 'SELECT * FROM json_each_text($1::json);'
+   		USING avg_record.value
+		   
+		LOOP			
+
+			loopcnt = loopcnt + 1;
+			IF (loopcnt=1) THEN
+			
+				nnd = devicein||'_' || vargroupin || '_' || varkeyin || '_' ||  info_record.value;
+				
+			ELSE
+				
+				varkey := nnd || '_' ||  info_record.key; 
+				value := info_record.value;
+				RETURN NEXT;
+				
+			END IF;
+			
+		
+	    END LOOP;		
+		
+		
+    END LOOP;
+
+	
+END;
+$$ LANGUAGE plpgsql;
+
 -- ---------------------------------------------------------------------------------------------------------------------------------
 
 CREATE OR REPLACE FUNCTION fn_get_topic_value(topic text)
@@ -2968,6 +3025,7 @@ BEGIN
 	
 END;
 $BODY$;
+
 
 
 
