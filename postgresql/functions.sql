@@ -143,7 +143,7 @@ BEGIN
 				
 			ELSE
 				
-				varkey := nnd || '_' ||  info_record.key; 
+				varkey := REPLACE(nnd || '_' ||  info_record.key, ' ', ''); 
 				value := info_record.value;
 				RETURN NEXT;
 				
@@ -3025,6 +3025,7 @@ BEGIN
 	
 END;
 $BODY$;
+
 
 
 
