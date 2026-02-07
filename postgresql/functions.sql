@@ -1820,6 +1820,61 @@ END;
 $$ LANGUAGE plpgsql;
 
 
+CREATE OR REPLACE FUNCTION fn_delta_weighted_average(topic text, topic2 text, stime timestamp, etime timestamp)
+RETURNS numeric
+AS $$
+DECLARE
+	vout numeric;
+	first_v numeric;
+	last_v numeric;
+	txt TEXT;
+	t TEXT := '';
+	t2 TEXT := '';
+	lv NUMERIC := 0;
+	avg_record RECORD;
+	networkref varchar;
+	noderef varchar;
+	deviceref varchar;
+	vargroupref varchar;
+	varkeyref varchar;
+	networknode TEXT;
+	vargroupref2 varchar;
+	varkeyref2 varchar;
+BEGIN
+	t = fn_resolve_topic(topic);
+	lv = (CHAR_LENGTH(topic) - CHAR_LENGTH(REPLACE(topic, '/', ''))) / CHAR_LENGTH('/');
+
+	IF (lv<4) THEN
+		return null;
+	END IF;
+	
+	networkref = TRIM(SPLIT_PART(t, '/', 1));
+	noderef = TRIM(SPLIT_PART(t, '/', 2));
+	deviceref = TRIM(SPLIT_PART(t, '/', 3));
+	vargroupref = TRIM(SPLIT_PART(t, '/', 4));
+	varkeyref = TRIM(SPLIT_PART(t, '/', 5));	
+	--networknode = fn_n_n(networkref, noderef);
+
+	t2 = fn_resolve_topic(topic2);
+	varkeyref2 = TRIM(SPLIT_PART(t2, '/', 5));
+	vargroupref2 = TRIM(SPLIT_PART(t2, '/', 4));	
+	
+	FOR avg_record IN	
+	   	EXECUTE 'SELECT fn_delta_weighted_average($1,$2,$3,$4,$5,$6,$7,$8,$9) as value;'
+   		USING networkref, noderef, deviceref, vargroupref, varkeyref, vargroupref2, varkeyref2, stime, etime
+	LOOP		
+		first_v := avg_record.value::numeric;	
+    END LOOP;	
+
+    RETURN ROUND(first_v,1);	
+
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+
+
 
 CREATE OR REPLACE FUNCTION fn_time_average(networknode varchar, device varchar, vargroup varchar, varkey1 varchar, time1 timestamp with time zone, time2 timestamp with time zone)
 RETURNS FLOAT AS $$
@@ -3025,6 +3080,7 @@ BEGIN
 	
 END;
 $BODY$;
+
 
 
 
