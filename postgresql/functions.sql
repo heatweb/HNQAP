@@ -1612,6 +1612,41 @@ END;
 $$ LANGUAGE plpgsql;
 
 
+
+CREATE OR REPLACE FUNCTION fn_vwatd(topic text, topic2 text, stime timestamp, etime timestamp)
+RETURNS numeric
+AS $$
+DECLARE
+	vout numeric;
+	kwh numeric;
+	m3 numeric;
+	avg_record RECORD;
+BEGIN
+	
+	
+	FOR avg_record IN	
+	   	EXECUTE 'SELECT fn_delta($1,$2,$3) as value;'
+   		USING topic, stime, etime
+	LOOP		
+		kwh := avg_record.value::numeric;	
+    END LOOP;	
+	
+	FOR avg_record IN	
+	   	EXECUTE 'SELECT fn_delta($1,$2,$3) as value;'
+   		USING topic2, stime, etime
+	LOOP		
+		m3 := avg_record.value::numeric;	
+    END LOOP;	
+
+  
+    RETURN ROUND(fn_vwatd(kwh,m3),1);	
+
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+
 CREATE OR REPLACE FUNCTION fn_weighted_average(networknode varchar, device varchar, vargroup varchar, varkey1 varchar, varkey2 varchar)
 RETURNS FLOAT AS $$
 DECLARE
@@ -3080,6 +3115,7 @@ BEGIN
 	
 END;
 $BODY$;
+
 
 
 
