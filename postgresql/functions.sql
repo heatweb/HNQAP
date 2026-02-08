@@ -825,8 +825,8 @@ RETURNS numeric
 AS $$
 DECLARE
 	vout numeric;
-	first_v numeric;
-	last_v numeric;
+	first_v numeric := -1;
+	last_v numeric := -1;
 	txt TEXT;
 	t TEXT := '';
 	lv NUMERIC := 0;
@@ -838,44 +838,20 @@ DECLARE
 	varkeyref varchar;
 	networknode TEXT;
 BEGIN
-	t = topic;
+		
 	lv = (CHAR_LENGTH(topic) - CHAR_LENGTH(REPLACE(topic, '/', ''))) / CHAR_LENGTH('/');
 
 	IF (lv<4) THEN
 		return null;
 	END IF;
 	
+	t = fn_resolve_topic(topic);
+	
 	networkref = TRIM(SPLIT_PART(t, '/', 1));
 	noderef = TRIM(SPLIT_PART(t, '/', 2));
 	deviceref = TRIM(SPLIT_PART(t, '/', 3));
 	vargroupref = TRIM(SPLIT_PART(t, '/', 4));
 	varkeyref = TRIM(SPLIT_PART(t, '/', 5));
-
-	FOR avg_record IN
-	EXECUTE 'SELECT value FROM readings '
-	|| ' WHERE network = $1 AND node = $2 AND device = $3 AND vargroup = $4 AND varkey = $5'
-	USING networkref, noderef, deviceref, vargroupref, varkeyref
-	LOOP		
-		txt = avg_record.value;	
-	END LOOP;
-
-	IF (txt='_lookup') THEN
-		
-		FOR avg_record IN
-		EXECUTE 'SELECT json FROM jsondata '
-		|| ' WHERE network = $1 AND node = $2 AND device = $3 AND vargroup = $4 AND varkey = $5'
-		USING networkref, noderef, deviceref, vargroupref, varkeyref
-		LOOP			
-			t = TRIM(((avg_record.json->'lookup')::text),'''');
-		END LOOP;
-	
-		networkref = TRIM(SPLIT_PART(t, '/', 1));
-		noderef = TRIM(SPLIT_PART(t, '/', 2));
-		deviceref = TRIM(SPLIT_PART(t, '/', 3));
-		vargroupref = TRIM(SPLIT_PART(t, '/', 4));
-		varkeyref = TRIM(SPLIT_PART(t, '/', 5));
-	
-	END IF;
 
 	networknode = fn_n_n(networkref, noderef);
 
@@ -888,6 +864,21 @@ BEGIN
 	LOOP		
 		first_v := avg_record.value::numeric;	
     END LOOP;
+
+	IF (first_v<0) THEN
+
+		FOR avg_record IN
+		   	EXECUTE 'SELECT value, EXTRACT(EPOCH FROM time) AS time FROM '
+	    	|| quote_ident(networknode)
+	    	|| ' WHERE device = $1 AND vargroup = $2 AND varkey = $3 AND time > $4'
+			|| ' ORDER BY time ASC LIMIT 1'
+	   		USING deviceref, vargroupref, varkeyref, stime, etime
+		LOOP		
+			first_v := avg_record.value::numeric;	
+	    END LOOP;
+	
+	END IF;
+ 
 	
     FOR avg_record IN
 	   	EXECUTE 'SELECT value, EXTRACT(EPOCH FROM time) AS time FROM '
@@ -903,6 +894,8 @@ BEGIN
 
 END;
 $$ LANGUAGE plpgsql;
+
+
 
 
 CREATE OR REPLACE FUNCTION fn_weighted_average(topic text, topic2 text, stime timestamp, etime timestamp)
@@ -3115,6 +3108,7 @@ BEGIN
 	
 END;
 $BODY$;
+
 
 
 
