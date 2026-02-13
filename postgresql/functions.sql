@@ -856,7 +856,7 @@ BEGIN
 	networknode = fn_n_n(networkref, noderef);
 
 	FOR avg_record IN
-	   	EXECUTE 'SELECT value, EXTRACT(EPOCH FROM time) AS time FROM '
+	   	EXECUTE 'SELECT value, time FROM '
     	|| quote_ident(networknode)
     	|| ' WHERE device = $1 AND vargroup = $2 AND varkey = $3 AND time <= $4'
 		|| ' ORDER BY time DESC LIMIT 1'
@@ -868,7 +868,7 @@ BEGIN
 	IF (first_v<0) THEN
 
 		FOR avg_record IN
-		   	EXECUTE 'SELECT value, EXTRACT(EPOCH FROM time) AS time FROM '
+		   	EXECUTE 'SELECT value, time FROM '
 	    	|| quote_ident(networknode)
 	    	|| ' WHERE device = $1 AND vargroup = $2 AND varkey = $3 AND time > $4'
 			|| ' ORDER BY time ASC LIMIT 1'
@@ -881,7 +881,7 @@ BEGIN
  
 	
     FOR avg_record IN
-	   	EXECUTE 'SELECT value, EXTRACT(EPOCH FROM time) AS time FROM '
+	   	EXECUTE 'SELECT value, time FROM '
     	|| quote_ident(networknode)
     	|| ' WHERE device = $1 AND vargroup = $2 AND varkey = $3 AND time <= $5'
 		|| ' ORDER BY time DESC LIMIT 1'
@@ -3108,6 +3108,7 @@ BEGIN
 	
 END;
 $BODY$;
+
 
 
 
