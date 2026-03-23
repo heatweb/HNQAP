@@ -2357,6 +2357,102 @@ $$ LANGUAGE plpgsql;
 
 
 
+CREATE OR REPLACE FUNCTION fn_element_pc_connectivity(topic text, stime timestamp with time zone, etime timestamp with time zone)
+RETURNS FLOAT AS $$
+DECLARE
+	v TEXT := '';
+	vout FLOAT := 0.0;
+	avg_record RECORD;
+	info_record RECORD;
+	r_record RECORD;
+	networkref varchar;
+	noderef varchar;
+	deviceref varchar;
+	vargroupref varchar;
+	varkeyref varchar;
+	pdays numeric;
+	isr numeric := 0;
+	rcount numeric := 0;
+	mpcount numeric := 0;
+	mpdcount numeric := 0;
+	dstime timestamp with time zone;
+	detime timestamp with time zone;
+	
+BEGIN
+
+	pdays = fn_total_days_in_period(stime, etime);
+
+	networkref = TRIM(SPLIT_PART(topic, '/', 1));
+	noderef = TRIM(SPLIT_PART(topic, '/', 2));
+	deviceref = TRIM(SPLIT_PART(topic, '/', 3));
+	vargroupref = 'elementType';
+
+
+	FOR avg_record IN
+	EXECUTE 'WITH t1 AS (SELECT r.network,r.node,r.device,p.element_type, p.point_id,p.min_frequency,p.title AS monitoring_point
+	FROM readings r INNER JOIN element_monitoring_points p ON r.value=p.element_type 
+	WHERE varkey=$4 AND network=$1 AND node=$2 AND device=$3)
+	SELECT t1.* FROM t1 
+	ORDER BY network,node,device,element_type,point_id;'	
+	USING networkref, noderef, deviceref, vargroupref, '/', stime, etime
+	LOOP
+
+		mpcount = mpcount + 1;
+		
+		FOR counter in 1..pdays LOOP
+
+			mpdcount = mpdcount + 1;
+
+			-- search for any reading during the day. on success, increment successful days and quit loop 
+			
+			dstime = stime + ((counter-1)::text||'d')::interval;		
+			detime = dstime + INTERVAL '1d';			
+
+			FOR info_record IN
+			EXECUTE 'SELECT * FROM element_data_points WHERE mpid=$1;'	
+			USING avg_record.point_id
+			LOOP	
+
+				isr = 0;
+				FOR r_record IN
+				EXECUTE 'SELECT * FROM fn_get_topic_values_inc_before($1||$6||$2||$6||$3||$6||$4||$6||$5, $7, $8) LIMIT 2;'	
+				USING networkref, noderef, avg_record.device, info_record.vargroup, info_record.varkey, '/', dstime, detime, ''
+				LOOP	
+
+					isr = isr + 1;		
+					
+				END LOOP;
+								
+				IF isr > 1 THEN
+					rcount = rcount + 1;
+					EXIT;		
+				END IF;				
+			
+			END LOOP;
+			
+		END LOOP;	
+	
+	END LOOP;
+
+	IF rcount > 0 THEN
+		vout = 100.0;			
+	END IF;
+	
+	IF mpdcount > 0 THEN
+		vout = 100.0 * rcount / mpdcount;	
+		vout = ROUND(vout::numeric, 2);
+	END IF;
+
+	RETURN vout;
+	
+    
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+
+
 CREATE OR REPLACE FUNCTION fn_kpi_connectivity(networknode varchar, devicein varchar, vargroupin varchar, varkeyin varchar, intervalin interval, time1 timestamp with time zone, time2 timestamp with time zone)
 RETURNS FLOAT
 AS $$
