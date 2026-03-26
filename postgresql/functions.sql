@@ -2562,6 +2562,93 @@ $$ LANGUAGE plpgsql;
 
 
 
+CREATE OR REPLACE FUNCTION fn_element_pc_completeness(topic text, stime timestamp with time zone, etime timestamp with time zone)
+RETURNS FLOAT AS $$
+DECLARE
+	v TEXT := '';
+	vout FLOAT := 0.0;
+	avg_record RECORD;
+	info_record RECORD;
+	r_record RECORD;
+	networkref varchar;
+	noderef varchar;
+	deviceref varchar;
+	vargroupref varchar;
+	varkeyref varchar;
+	pdays numeric;
+	isr numeric := 0;
+	rcount numeric := 0;
+	expcount numeric := 0.0;
+	mpdcount numeric := 0;
+	dstime timestamp with time zone;
+	detime timestamp with time zone;
+	networknode TEXT;
+	
+BEGIN
+
+	pdays = fn_total_days_in_period(stime, etime);
+
+	networkref = TRIM(SPLIT_PART(topic, '/', 1));
+	noderef = TRIM(SPLIT_PART(topic, '/', 2));
+	deviceref = TRIM(SPLIT_PART(topic, '/', 3));
+	varkeyref = 'elementType';
+	
+	networknode = fn_n_n(networkref, noderef);
+	
+	FOR avg_record IN
+	EXECUTE 'WITH t1 AS (SELECT r.network,r.node,r.device,p.element_type, p.point_id,p.min_frequency,p.title AS monitoring_point
+	FROM readings r INNER JOIN element_monitoring_points p ON r.value=p.element_type 
+	WHERE varkey=$4 AND network=$1 AND node=$2)
+	SELECT t1.* FROM t1 
+	ORDER BY network,node,device,element_type,point_id;'	
+	USING networkref, noderef, deviceref, varkeyref, '/', stime, etime
+	LOOP
+	
+			expcount = (1.0 * pdays) / ( EXTRACT(EPOCH FROM avg_record.min_frequency) / (60*60*24) );
+			
+			FOR info_record IN
+			EXECUTE 'SELECT * FROM element_data_points WHERE mpid=$1 
+						AND vargroup !=$2 AND vargroup !=$3;'	
+			USING avg_record.point_id, 'design', 'setpoint'
+			LOOP					
+				
+				FOR r_record IN
+				EXECUTE 'WITH t1 AS (SELECT device,vargroup,varkey,time_bucket($6, time) AS timestamp, COUNT(value) AS value FROM '
+					|| quote_ident(networknode)
+					|| ' WHERE device=$1 AND vargroup=$2 AND varkey=$3 AND time>=$4 AND time<$5
+						GROUP BY device,vargroup,varkey,timestamp
+						ORDER BY timestamp)
+						SELECT COUNT(value) AS cnt FROM t1;'
+				USING avg_record.device, info_record.vargroup, info_record.varkey, stime, etime, avg_record.min_frequency
+				LOOP	
+
+					rcount = rcount + r_record.cnt;
+					
+				END LOOP;
+				
+				mpdcount = mpdcount + expcount;
+				
+			END LOOP;
+
+	
+	END LOOP;
+
+	IF rcount > 0 THEN
+		vout = 100.0;			
+	END IF;
+	
+	IF mpdcount > 0 THEN
+		vout = 100.0 * rcount / mpdcount;	
+		vout = ROUND(vout::numeric, 2);
+	END IF;
+
+	RETURN vout;
+	
+    
+END;
+$$ LANGUAGE plpgsql;
+
+
 CREATE OR REPLACE FUNCTION fn_kpi_operational(networknode varchar, devicein varchar, vargroupin varchar, varkeyin varchar, intervalin interval, time1 timestamp with time zone, time2 timestamp with time zone)
 RETURNS FLOAT
 AS $$
