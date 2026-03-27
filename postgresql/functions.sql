@@ -2871,7 +2871,121 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+
+
 -- ------------------------------------------------------------
+
+
+CREATE OR REPLACE FUNCTION fn_element_interruptions(ttopic text, tlow numeric, dptopic text, dplow numeric, stime timestamp with time zone, etime timestamp with time zone)
+RETURNS FLOAT AS $$
+DECLARE
+	vout FLOAT := 0.0;
+	
+BEGIN
+	
+	vout = fn_element_interruptions(ttopic, tlow::text, dptopic, dplow::text, stime, etime);
+	RETURN vout;	
+    
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+CREATE OR REPLACE FUNCTION fn_element_interruptions(ttopic text, tlow text, dptopic text, dplow text, stime timestamp with time zone, etime timestamp with time zone)
+RETURNS FLOAT AS $$
+DECLARE
+	v TEXT := '';
+	vout FLOAT := 0.0;
+	r_record RECORD;
+	networkref varchar;
+	noderef varchar;
+	deviceref varchar;
+	vargroupref varchar;
+	varkeyref varchar;
+	networkref2 varchar;
+	noderef2 varchar;
+	deviceref2 varchar;
+	vargroupref2 varchar;
+	varkeyref2 varchar;
+	rcount numeric := 0;
+	outcount numeric := 0;
+	hdowncount numeric := 0;
+	dstime timestamp with time zone;
+	detime timestamp with time zone;
+	networknode TEXT;
+	networknode2 TEXT;
+	set_interval interval; 
+	tmin numeric;
+	dpmin numeric;
+	t TEXT;
+	
+BEGIN
+
+	tmin = tlow::numeric;
+	dpmin = dplow::numeric;	
+
+	dstime = DATE_TRUNC('hour', stime);
+	detime = DATE_TRUNC('hour', etime) + interval '1 hour';
+	
+	networkref = TRIM(SPLIT_PART(ttopic, '/', 1));
+	noderef = TRIM(SPLIT_PART(ttopic, '/', 2));
+	deviceref = TRIM(SPLIT_PART(ttopic, '/', 3));
+	vargroupref = TRIM(SPLIT_PART(ttopic, '/', 4));
+	varkeyref = TRIM(SPLIT_PART(ttopic, '/', 5));
+	networknode = fn_n_n(networkref, noderef);
+	
+	networkref2 = TRIM(SPLIT_PART(dptopic, '/', 1));
+	noderef2 = TRIM(SPLIT_PART(dptopic, '/', 2));
+	deviceref2 = TRIM(SPLIT_PART(dptopic, '/', 3));
+	vargroupref2 = TRIM(SPLIT_PART(dptopic, '/', 4));
+	varkeyref2 = TRIM(SPLIT_PART(dptopic, '/', 5));
+	networknode2 = fn_n_n(networkref2, noderef2);
+	
+	set_interval = interval '1 hour';
+	
+	FOR r_record IN
+	EXECUTE 'WITH t1 AS (SELECT device,vargroup,varkey,time_bucket($6, time) AS timestamp, MAX(value::numeric) AS value FROM '
+		|| quote_ident(networknode)
+		|| ' WHERE device=$1 AND vargroup=$2 AND varkey=$3 AND time>=$4 AND time<$5
+			GROUP BY device,vargroup,varkey,timestamp
+			ORDER BY timestamp),
+			t2 AS (SELECT device,vargroup,varkey,time_bucket($6, time) AS timestamp, MAX(value::numeric) AS value FROM '
+		|| quote_ident(networknode2)
+		|| ' WHERE device=$7 AND vargroup=$8 AND varkey=$9 AND time>=$4 AND time<$5
+			GROUP BY device,vargroup,varkey,timestamp
+			ORDER BY timestamp)
+			SELECT t1.value AS temp, t2.value AS dp, t1.timestamp FROM t1
+			FULL OUTER JOIN t2 ON t1.timestamp=t2.timestamp
+			ORDER BY timestamp;'
+	USING deviceref, vargroupref, varkeyref, dstime, detime, set_interval, deviceref2, vargroupref2, varkeyref2
+	LOOP	
+		
+		IF (r_record.temp > 0 AND r_record.temp < tmin) OR (r_record.dp > 0 AND r_record.dp < dpmin) THEN
+			hdowncount = hdowncount + 1;	
+		ELSE
+			hdowncount = 0;
+		END IF;
+
+		IF (hdowncount = 13) THEN
+			outcount = outcount + 1;	
+		END IF;
+	
+		rcount = rcount + 1;
+		
+	END LOOP;
+
+	vout = outcount; --ROUND(vout::numeric, 2);
+
+	RETURN vout;
+	
+    
+END;
+$$ LANGUAGE plpgsql;
+
+-- ------------------------------------------------------------
+
+
+
 
 CREATE OR REPLACE FUNCTION fn_phe_efficicency(network varchar, node varchar, device varchar, vargroup1 varchar, tfprim varchar, trprim varchar, trsec varchar, vargroup2 varchar, varkey2 varchar, time1 timestamp with time zone, time2 timestamp with time zone)
 RETURNS FLOAT AS $$
