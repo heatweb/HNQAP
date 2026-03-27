@@ -652,6 +652,12 @@ BEGIN
 		calc = REPLACE(calc, '$3', to_text);
 	END IF;
 	
+	IF (POSITION('$4' IN calc)>0) THEN
+		to_text = TRIM(SPLIT_PART(usingin, ',', 4));
+		to_text = fn_get_topic_value(dtopic, to_text);		
+		calc = REPLACE(calc, '$4', to_text);
+	END IF;
+	
 	IF POSITION('{{' IN calc)=0 AND POSITION('?' IN calc)=0 AND POSITION('$' IN calc)=0  AND POSITION('Math' IN calc)=0 THEN
 			
 		FOR avg_record IN
