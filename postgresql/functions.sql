@@ -2649,6 +2649,154 @@ END;
 $$ LANGUAGE plpgsql;
 
 
+
+CREATE OR REPLACE FUNCTION fn_element_pc_operational(topic text, kpi_id numeric, stime timestamp with time zone, etime timestamp with time zone)
+RETURNS FLOAT AS $$
+DECLARE
+	v TEXT := '';
+	vout FLOAT := 0.0;
+	avg_record RECORD;
+	info_record RECORD;
+	r_record RECORD;
+	r_record2 RECORD;
+	networkref varchar;
+	noderef varchar;
+	deviceref varchar;
+	vargroupref varchar;
+	varkeyref varchar;
+	networkref2 varchar;
+	noderef2 varchar;
+	deviceref2 varchar;
+	vargroupref2 varchar;
+	varkeyref2 varchar;
+	pepoch numeric;
+	isr numeric := 0;
+	rcount numeric := 0;
+	expcount numeric := 0.0;
+	okcount numeric := 0;
+	mpdcount numeric := 0;
+	dstime timestamp with time zone;
+	detime timestamp with time zone;
+	networknode TEXT;
+	set_interval interval; 
+	vmin numeric := 0;
+	vmax numeric := 55000;
+	t TEXT;
+	
+BEGIN
+
+	dstime = DATE_TRUNC('day', stime);
+	detime = DATE_TRUNC('day', etime) + interval '24 hours';
+	
+	pepoch = EXTRACT(EPOCH FROM (detime - dstime)); --fn_total_days_in_period(stime, etime);
+		
+	networkref = TRIM(SPLIT_PART(topic, '/', 1));
+	noderef = TRIM(SPLIT_PART(topic, '/', 2));
+	deviceref = TRIM(SPLIT_PART(topic, '/', 3));
+	varkeyref = 'elementType';	
+	
+	FOR avg_record IN
+	EXECUTE 'WITH t1 AS (SELECT r.network,r.node,r.device,p.element_type, p.point_id,p.min_frequency,p.title AS monitoring_point
+	FROM readings r INNER JOIN element_monitoring_points p ON r.value=p.element_type 
+	WHERE varkey=$4 AND network=$1 AND node=$2)
+	SELECT t1.* FROM t1 
+	ORDER BY network,node,device,element_type,point_id;'	
+	USING networkref, noderef, deviceref, varkeyref, '/', dstime, detime
+	LOOP
+			IF kpi_id > 1 THEN
+				set_interval = avg_record.min_frequency;	
+			ELSE
+				set_interval = interval '1 day';
+			END IF; 
+			
+			expcount = pepoch / EXTRACT(EPOCH FROM set_interval) ;
+			
+			FOR info_record IN
+			EXECUTE 'SELECT * FROM element_data_points WHERE mpid=$1 AND vargroup !=$2 AND vargroup !=$3;'	
+			USING avg_record.point_id, 'design', 'setpoint'
+			LOOP					
+
+				t = fn_resolve_topic(networkref||'/'||noderef||'/'||avg_record.device||'/'||info_record.vargroup||'/'||info_record.varkey);
+				networkref2 = TRIM(SPLIT_PART(t, '/', 1));
+				noderef2 = TRIM(SPLIT_PART(t, '/', 2));
+				deviceref2 = TRIM(SPLIT_PART(t, '/', 3));
+				vargroupref2 = TRIM(SPLIT_PART(t, '/', 4));
+				varkeyref2 = TRIM(SPLIT_PART(t, '/', 5));
+
+				networknode = fn_n_n(networkref2, noderef2);
+	
+				FOR r_record IN
+				EXECUTE 'WITH t1 AS (SELECT device,vargroup,varkey,time_bucket($6, time) AS timestamp, COUNT(value) AS value FROM '
+					|| quote_ident(networknode)
+					|| ' WHERE device=$1 AND vargroup=$2 AND varkey=$3 AND time>=$4 AND time<$5
+						GROUP BY device,vargroup,varkey,timestamp
+						ORDER BY timestamp)
+						SELECT COUNT(value) AS cnt FROM t1;'
+				USING deviceref2, vargroupref2, varkeyref2, dstime, detime, set_interval
+				LOOP	
+					rcount = rcount + r_record.cnt;					
+				END LOOP;
+				
+				mpdcount = mpdcount + expcount;
+
+				IF kpi_id = 3 THEN
+
+					vmin = 0.0;
+					IF info_record.units LIKE 'm%h%' THEN
+						vmax = 100.0;
+					ELSEIF info_record.units LIKE 'm%' THEN
+						vmax = 10000.0;
+					ELSEIF LOWER(info_record.units) LIKE '%c' THEN
+						vmax = 200.0;
+					ELSEIF LOWER(info_record.units) = 'kwh' THEN
+						vmax = 55000.0;
+					ELSEIF LOWER(info_record.units) = 'kw' THEN
+						vmax = 1000.0;
+					ELSEIF LOWER(info_record.units) = 'kpa' THEN
+						vmax = 2000.0;
+					ELSEIF LOWER(info_record.units) = 'bar' THEN
+						vmax = 20.0;
+					END IF;
+
+					FOR r_record2 IN
+					EXECUTE 'WITH t1 AS (SELECT device,vargroup,varkey,time_bucket($6, time) AS timestamp, COUNT(value) AS value FROM '
+						|| quote_ident(networknode)
+						|| ' WHERE device=$1 AND vargroup=$2 AND varkey=$3 AND time>=$4 AND time<$5
+							AND (value::numeric > $7) AND (value::numeric <= $8)
+							GROUP BY device,vargroup,varkey,timestamp
+							ORDER BY timestamp)
+							SELECT COUNT(value) AS cnt FROM t1;'
+					USING deviceref2, vargroupref2, varkeyref2, dstime, detime, set_interval, vmin, vmax
+					LOOP	
+						okcount = okcount + r_record2.cnt;						
+					END LOOP;					
+				END IF; 				
+			END LOOP;	
+	END LOOP;
+
+	IF rcount > 0 THEN
+		vout = 100.0;	
+		
+		IF kpi_id = 3 THEN
+			vout = 100.0 * okcount / rcount;		
+		END IF;		
+	END IF;
+
+	IF kpi_id < 3 THEN		
+		IF mpdcount > 0 THEN
+			vout = 100.0 * rcount / mpdcount;	
+		END IF;		
+	END IF; 	
+	vout = ROUND(vout::numeric, 2);
+
+	RETURN vout;	
+    
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+
 CREATE OR REPLACE FUNCTION fn_kpi_operational(networknode varchar, devicein varchar, vargroupin varchar, varkeyin varchar, intervalin interval, time1 timestamp with time zone, time2 timestamp with time zone)
 RETURNS FLOAT
 AS $$
