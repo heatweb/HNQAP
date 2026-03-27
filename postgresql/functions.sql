@@ -622,6 +622,18 @@ BEGIN
 		calc = REPLACE(calc, '@2', '''' || to_text || '''');
 	END IF;
 
+	IF (POSITION('@3' IN calc)>0) THEN
+		to_text = TRIM(SPLIT_PART(usingin, ',', 3));		
+		to_text = fn_get_topic_ref(dtopic, to_text);			
+		calc = REPLACE(calc, '@3', '''' || to_text || '''');
+	END IF;
+
+	IF (POSITION('@4' IN calc)>0) THEN
+		to_text = TRIM(SPLIT_PART(usingin, ',', 4));		
+		to_text = fn_get_topic_ref(dtopic, to_text);			
+		calc = REPLACE(calc, '@4', '''' || to_text || '''');
+	END IF;
+
 	IF (POSITION('$1' IN calc)>0) THEN
 		to_text = TRIM(SPLIT_PART(usingin, ',', 1));
 		to_text = fn_get_topic_value(dtopic, to_text);		
