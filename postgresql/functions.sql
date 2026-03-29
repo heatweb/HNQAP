@@ -64,6 +64,23 @@ END;
 $$ LANGUAGE plpgsql;
 
 
+CREATE OR REPLACE FUNCTION fn_year_factor(stime timestamp, etime timestamp)
+RETURNS numeric
+AS $$
+DECLARE
+	vout numeric;
+BEGIN	
+
+	vout = EXTRACT(EPOCH FROM (etime - stime));
+	vout = vout / (60 * 60 * 24);
+	vout = 365 / vout;
+
+	RETURN vout;
+	
+END;
+$$ LANGUAGE plpgsql;
+
+
 
 
 CREATE OR REPLACE FUNCTION fn_get_numeric_value(networkref varchar, noderef varchar, deviceref varchar, vargroupref varchar, varkeyref varchar)
