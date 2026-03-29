@@ -25,6 +25,46 @@ LANGUAGE plpgsql IMMUTABLE;
 
 
 
+CREATE OR REPLACE FUNCTION fn_unit_json(vargroup text, varkey text)
+RETURNS JSONB
+AS $$
+DECLARE
+	vout JSONB := '{"vargroup":"' || vargroup || '","varkey":"' || varkey || '"}';
+	vjson JSONB;
+	avg_record RECORD;
+	info_record RECORD;
+BEGIN	
+
+	FOR avg_record IN
+	EXECUTE 'SELECT * FROM fields '
+	|| ' WHERE vargroup = $1 AND varkey = $2 LIMIT 1'
+	USING vargroup, varkey
+	LOOP
+		
+		vout = jsonb_insert(vout, '{title}', ('"'||avg_record.title||'"')::jsonb);
+		vout = jsonb_insert(vout, '{units}', ('"'||avg_record.units||'"')::jsonb);
+	
+	END LOOP;
+
+
+	FOR info_record IN
+	EXECUTE 'SELECT * FROM unit_limits '
+	|| ' WHERE units = $1'
+	USING vout->>'units'
+	LOOP
+
+		vjson = '{"min":' || info_record.min || ',"max":' || info_record.max || '}';
+		vout = vout || vjson;
+		
+	END LOOP;
+
+	RETURN vout;
+	
+END;
+$$ LANGUAGE plpgsql;
+
+
+
 
 CREATE OR REPLACE FUNCTION fn_get_numeric_value(networkref varchar, noderef varchar, deviceref varchar, vargroupref varchar, varkeyref varchar)
 RETURNS numeric
