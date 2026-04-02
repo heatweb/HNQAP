@@ -82,6 +82,25 @@ $$ LANGUAGE plpgsql;
 
 
 
+CREATE OR REPLACE FUNCTION fn_hours_in(time1 timestamp with time zone, time2 timestamp with time zone)
+RETURNS FLOAT AS $$
+DECLARE
+    avg_record RECORD;
+	oot FLOAT := 0;
+BEGIN
+	FOR avg_record IN
+	   	EXECUTE 'SELECT (EXTRACT(EPOCH FROM $2) - EXTRACT(EPOCH FROM $1)) AS value'
+   		USING time1, time2
+	LOOP		
+		oot := avg_record.value;	
+	END LOOP;
+	
+	RETURN (oot / (60*60));
+    
+END;
+$$ LANGUAGE plpgsql;
+
+
 
 CREATE OR REPLACE FUNCTION fn_get_numeric_value(networkref varchar, noderef varchar, deviceref varchar, vargroupref varchar, varkeyref varchar)
 RETURNS numeric
