@@ -912,6 +912,9 @@ DECLARE
 	vargroupref varchar;
 	varkeyref varchar;
 	networknode TEXT;
+	unit_json JSONB;
+	vmin NUMERIC := 0;
+	vmax NUMERIC := 1000000;
 BEGIN
 		
 	lv = (CHAR_LENGTH(topic) - CHAR_LENGTH(REPLACE(topic, '/', ''))) / CHAR_LENGTH('/');
@@ -919,6 +922,12 @@ BEGIN
 	IF (lv<4) THEN
 		return null;
 	END IF;
+
+	vargroupref = TRIM(SPLIT_PART(topic, '/', 4));
+	varkeyref = TRIM(SPLIT_PART(topic, '/', 5));
+	unit_json = fn_unit_json(vargroupref, varkeyref);
+	vmin =  unit_json->'min';
+	vmax =  unit_json->'max';
 	
 	t = fn_resolve_topic(topic);
 	
@@ -930,15 +939,20 @@ BEGIN
 
 	networknode = fn_n_n(networkref, noderef);
 
+	
+
 	FOR avg_record IN
 	   	EXECUTE 'SELECT value, time FROM '
     	|| quote_ident(networknode)
     	|| ' WHERE device = $1 AND vargroup = $2 AND varkey = $3 AND time <= $4'
+		|| ' AND value::numeric >= $6 AND value::numeric <= $7'	
 		|| ' ORDER BY time DESC LIMIT 1'
-   		USING deviceref, vargroupref, varkeyref, stime, etime
+   		USING deviceref, vargroupref, varkeyref, stime, etime, vmin, vmax
 	LOOP		
 		first_v := avg_record.value::numeric;	
     END LOOP;
+
+	
 
 	IF (first_v<0) THEN
 
@@ -946,21 +960,24 @@ BEGIN
 		   	EXECUTE 'SELECT value, time FROM '
 	    	|| quote_ident(networknode)
 	    	|| ' WHERE device = $1 AND vargroup = $2 AND varkey = $3 AND time > $4'
+			|| ' AND value::numeric >= $6 AND value::numeric <= $7'		
 			|| ' ORDER BY time ASC LIMIT 1'
-	   		USING deviceref, vargroupref, varkeyref, stime, etime
+	   		USING deviceref, vargroupref, varkeyref, stime, etime, vmin, vmax
 		LOOP		
 			first_v := avg_record.value::numeric;	
 	    END LOOP;
 	
 	END IF;
  
+	--|| ' AND value::numeric >= $6 AND value::numeric <= $7'
 	
     FOR avg_record IN
 	   	EXECUTE 'SELECT value, time FROM '
     	|| quote_ident(networknode)
     	|| ' WHERE device = $1 AND vargroup = $2 AND varkey = $3 AND time <= $5'
+		|| ' AND value::numeric >= $6 AND value::numeric <= $7'	
 		|| ' ORDER BY time DESC LIMIT 1'
-   		USING deviceref, vargroupref, varkeyref, stime, etime
+   		USING deviceref, vargroupref, varkeyref, stime, etime, vmin, vmax
 	LOOP		
 		last_v := avg_record.value::numeric;	
     END LOOP;
