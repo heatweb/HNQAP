@@ -666,6 +666,15 @@ BEGIN
 		calc = REPLACE(calc, '$T', '''' || etime || '''');
 	END IF;
 
+	IF (POSITION('#1' IN calc)>0) THEN
+		to_text = TRIM(SPLIT_PART(usingin, ',', 1));		
+		calc = REPLACE(calc, '#1', '''' || to_text || '''');
+	END IF;
+
+	IF (POSITION('#2' IN calc)>0) THEN
+		to_text = TRIM(SPLIT_PART(usingin, ',', 2));		
+		calc = REPLACE(calc, '#2', '''' || to_text || '''');
+	END IF;
 
 	IF (POSITION('@1' IN calc)>0) THEN
 		to_text = TRIM(SPLIT_PART(usingin, ',', 1));		
