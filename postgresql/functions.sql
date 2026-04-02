@@ -2958,6 +2958,54 @@ $$ LANGUAGE plpgsql;
 
 -- ------------------------------------------------------------
 
+CREATE OR REPLACE FUNCTION fn_element_losses(etopic text, topic text, stime timestamp, etime timestamp)
+RETURNS numeric
+AS $$
+DECLARE
+	vin numeric := 0;
+	vout numeric := 0;
+	child_v numeric := 0;
+	t TEXT := '';
+	lv NUMERIC := 0;
+	avg_record RECORD;
+	networkref varchar;
+	noderef varchar;
+	deviceref varchar;
+	vargroupref varchar;
+	varkeyref varchar;
+BEGIN
+		
+	
+	lv = (CHAR_LENGTH(etopic) - CHAR_LENGTH(REPLACE(etopic, '/', ''))) / CHAR_LENGTH('/');
+
+	IF (lv<4) THEN
+		return null;
+	END IF;
+
+	networkref = TRIM(SPLIT_PART(etopic, '/', 1));
+	noderef = TRIM(SPLIT_PART(etopic, '/', 2));
+	deviceref = TRIM(SPLIT_PART(etopic, '/', 3));
+	
+	vargroupref = TRIM(SPLIT_PART(topic, '/', 1));
+	varkeyref = TRIM(SPLIT_PART(topic, '/', 2));
+	
+	vin = fn_delta(networkref || ' / ' || noderef || ' / ' || deviceref || ' / ' || vargroupref || ' / ' || varkeyref, stime, etime);
+
+	FOR avg_record IN
+	   	EXECUTE 'SELECT network,node,device FROM readings WHERE varkey = $1 AND (value = $2 OR value = $3)'	
+   		USING 'parentElement', noderef || '/' || deviceref, noderef || ' / ' || deviceref
+	LOOP		
+		child_v = fn_delta(avg_record.network || ' / ' || avg_record.node || ' / ' || avg_record.device || ' / ' || vargroupref || ' / ' || varkeyref, stime, etime);
+		vout = vout + child_v;
+		
+    END LOOP;
+
+    RETURN ROUND(vin - vout, 1);	
+
+END;
+$$ LANGUAGE plpgsql;
+
+
 
 CREATE OR REPLACE FUNCTION fn_element_interruptions(ttopic text, tlow numeric, dptopic text, dplow numeric, stime timestamp with time zone, etime timestamp with time zone)
 RETURNS FLOAT AS $$
