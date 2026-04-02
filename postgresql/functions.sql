@@ -1012,6 +1012,9 @@ BEGIN
 
     RETURN (last_v - first_v);	
 
+EXCEPTION WHEN others THEN
+     RETURN 0;
+
 END;
 $$ LANGUAGE plpgsql;
 
