@@ -1,5 +1,8 @@
 CREATE EXTENSION timescaledb CASCADE;
 
+-- plv8 requires enabling in azure allowed extensions
+CREATE EXTENSION plv8;
+
 -- CHANGE PASSWORD !!!!!!!!!!!!
 
 CREATE USER grafana WITH PASSWORD 'example_password';
