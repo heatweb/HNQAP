@@ -1,4 +1,45 @@
---drop function fn_js_node_q(schemain text, networkin text, nodein text)
+
+CREATE OR REPLACE FUNCTION fn_js_node_q(schemain text, networkin text, nodein text)
+RETURNS table
+(
+	network TEXT,
+	node TEXT,
+	node_json JSONB
+)
+AS $$
+
+	var q = "SELECT * FROM "+schemain+".readings WHERE network='" + networkin + "'";
+	q += " AND node='" + nodein + "' AND varkey='deviceType'";
+  	var json_result = plv8.execute(q);
+
+	for (var r in json_result) {
+
+		var deviceType = json_result[r].value;
+
+		
+		q = "SELECT * FROM qforms WHERE POSITION('" + deviceType + "' IN devicetypes)>0";
+		q += " OR devicetypes='*' AND condition='true' ORDER BY " + '"order" ASC';
+	  	var q_result = plv8.execute(q);
+
+	  	for (var qr in q_result) {
+
+			var jsonr = q_result[qr].qjson;
+			jsonr.device = jsonr.device || json_result[r].device;			
+			jsonr.vargroup = jsonr.vargroup || json_result[r].vargroup;	
+		  
+			var obj = q_result.if;   // -- "'testing'.substring(0,2)";
+			// -- var oot = Function('"use strict";return (' + obj + ')')();
+			var oot = true;
+			if (oot) {  
+				plv8.return_next( {"network": networkin, "node": nodein, "node_json": jsonr } );
+			}
+		}
+	}
+	
+	
+  
+$$ LANGUAGE plv8 IMMUTABLE STRICT;
+
 CREATE OR REPLACE FUNCTION fn_js_dev_q(schemain text, networkin text, nodein text)
 RETURNS table
 (
