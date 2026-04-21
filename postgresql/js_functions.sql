@@ -106,3 +106,79 @@ AS $$
 	
   
 $$ LANGUAGE plv8 IMMUTABLE STRICT;
+
+
+
+CREATE OR REPLACE FUNCTION fn_js_dev_d(schemain text, networkin text, nodein text, devicein text)
+RETURNS table
+(
+	varkey TEXT,
+	"value" TEXT,
+	units TEXT
+)
+AS $$
+
+	var q = "SELECT t1.varkey, t1.value, t2.units FROM "+schemain+".readings t1 ";
+	q += " LEFT OUTER JOIN public.fields t2 ON t1.varkey=t2.varkey AND t1.vargroup=t2.vargroup ";
+	q += " WHERE t1.node ='"+nodein+"' AND t1.device='plot' AND t1.network='" + networkin + "';";
+	var qres = plv8.execute(q);
+
+	mydata = qres;
+	
+	// -- for (var r in qres) {		
+	// -- 	plv8.return_next( {"varkey": qres[r].varkey, "value": qres[r].value, "units": qres[r].units } );		
+	// -- }
+	
+	q = "SELECT t1.varkey, t1.value, t2.units FROM "+schemain+".readings t1 ";
+	q += " LEFT OUTER JOIN public.fields t2 ON t1.varkey=t2.varkey AND t1.vargroup=t2.vargroup ";
+	q += " WHERE t1.node ='"+nodein+"' AND t1.device='"+devicein+"' AND t1.network='" + networkin + "';";
+	var qres = plv8.execute(q);
+	mydata = mydata.concat(qres);
+
+	q = "SELECT (t1.vargroup||'_'||t1.varkey) AS varkey, t1.value, t2.units FROM "+schemain+".readings t1 ";
+	q += " LEFT OUTER JOIN public.fields t2 ON t1.varkey=t2.varkey AND t1.vargroup=t2.vargroup ";
+	q += " WHERE t1.node ='"+nodein+"' AND t1.network='" + networkin + "';";
+	var qres = plv8.execute(q);
+	mydata = mydata.concat(qres);
+
+	q = "SELECT (t1.device||'_'||t1.vargroup||'_'||t1.varkey) AS varkey, t1.value, t2.units FROM "+schemain+".readings t1 ";
+	q += " LEFT OUTER JOIN public.fields t2 ON t1.varkey=t2.varkey AND t1.vargroup=t2.vargroup ";
+	q += " WHERE (t1.node='"+nodein+"' OR t1.node='global') AND t1.network='" + networkin + "';";
+	var qres = plv8.execute(q);
+	mydata = mydata.concat(qres);
+
+	q = "SELECT 'today' AS varkey, TO_CHAR(MAX(now()) :: TIMESTAMP, 'dd/mm/yyyy') AS value, '' AS units;";
+	var qres = plv8.execute(q);
+	mydata = mydata.concat(qres);
+
+	q = "SELECT 'today' AS varkey, TO_CHAR(MAX(now()) :: TIMESTAMP, 'dd/mm/yyyy') AS value, '' AS units;";
+	var qres = plv8.execute(q);
+	mydata = mydata.concat(qres);
+
+	q = "SELECT 'date' AS varkey, TO_CHAR(timestamp :: TIMESTAMP, 'dd/mm/yyyy') AS value, '' AS units FROM "+schemain+".readings t1 ";
+	q += " WHERE t1.node ='"+nodein+"' AND t1.device='"+devicein+"' AND t1.network='" + networkin + "' ORDER BY timestamp DESC LIMIT 1;";
+	var qres = plv8.execute(q);
+	mydata = mydata.concat(qres);
+
+	if (devicein=='mvhr') {
+		q = "SELECT * FROM fn_get_table_values('"+schemain+"','" + networkin + "','"+nodein+"','mvhr','acceptance','extractAir')";
+		var qres = plv8.execute(q);
+		mydata = mydata.concat(qres);
+		
+		q = "SELECT * FROM fn_get_table_values('"+schemain+"','" + networkin + "','"+nodein+"','mvhr','acceptance','supplyAir')";
+		var qres = plv8.execute(q);
+		mydata = mydata.concat(qres);
+	}
+
+	q = "SELECT 'photo_'||varkey AS varkey, image AS value, '' AS units FROM "+schemain+".imagedata t1 ";
+	q += " WHERE t1.node ='"+nodein+"' AND (t1.device='"+devicein+"' OR t1.device='plot') AND t1.network='" + networkin + "';";
+	var qres = plv8.execute(q);
+	mydata = mydata.concat(qres);
+	
+
+	for (var r in mydata) {		
+		plv8.return_next( {"varkey": mydata[r].varkey, "value": mydata[r].value, "units": mydata[r].units } );		
+	}
+	
+  
+$$ LANGUAGE plv8 IMMUTABLE STRICT;
