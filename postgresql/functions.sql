@@ -3776,6 +3776,188 @@ $BODY$;
 
 
 
+-- -------------------------------------------------------------
+
+
+CREATE OR REPLACE FUNCTION public.fn_plot_json(
+	schemain text,
+	networkin text)
+    RETURNS TABLE(node text, plot_json jsonb) 
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+    ROWS 1000
+
+AS $BODY$
+DECLARE
+	vout JSONB;
+	vjson JSONB;
+	avg_record RECORD;
+	info_record RECORD;
+	info_record2 RECORD;
+	d_list TEXT :='';
+	cnt NUMERIC :=0;
+	html_issues TEXT :='';
+	nn TEXT :='';
+BEGIN	
+
+	FOR avg_record IN
+	EXECUTE 'SELECT DISTINCT node, timestamp FROM ' || schemain || '.readings '
+	|| ' WHERE network = $2 AND varkey=$3'
+	USING schemain, networkin, 'deviceType'
+	LOOP
+
+		node = avg_record.node;
+		html_issues = '';
+		
+		vout = '{"network":"' || networkin || '","node":"' || node || '"}';
+		vout = jsonb_insert(vout, '{timestamp}', ('"'||avg_record.timestamp||'"')::jsonb);
+
+		vjson = '{"status":"Unknown"}';
+		vout = vout || vjson;
+
+		-- plot readings
+		FOR info_record IN
+		EXECUTE 'SELECT * FROM ' || schemain || '.readings '
+		|| ' WHERE network = $2 AND node = $3 AND device = $4 AND (varkey = $5 OR varkey = ''address'')'
+		USING schemain, networkin, node, 'plot', 'status'
+		LOOP
+		
+			vjson = '{"' ||info_record.varkey || '":"' || info_record.value || '"}';
+			vout = vout || vjson;
+			
+		END LOOP;
+
+		-- For each device in node
+		FOR info_record IN
+		EXECUTE 'SELECT * FROM ' || schemain || '.readings '
+		|| ' WHERE network = $2 AND node = $3 AND (varkey = $4)'
+		USING schemain, networkin, node, 'deviceType'
+		LOOP
+		
+			vjson = '{"url' ||info_record.device || '":"' || schemain || '/' || networkin  || '/' || node  || '/' || info_record.device  || '"}';
+			vout = vout || vjson;		
+
+			vjson = '{"form_' ||info_record.device || '":"' || info_record.value  || '"}';
+			vout = vout || vjson;
+			
+		END LOOP;
+
+		FOR info_record IN
+		EXECUTE 'SELECT * FROM ' || schemain || '.readings '
+		|| ' WHERE network = $2 AND node = $3 AND varkey LIKE $4'
+		USING schemain, networkin, node, 'failure%'
+		LOOP
+		
+			vjson = '{"' ||info_record.device||'_'||info_record.varkey || '":"' || info_record.value  || '"}';
+			vout = vout || vjson;
+
+			IF (info_record.varkey='failureList') THEN
+				html_issues = html_issues || info_record.device || ': ' || info_record.value || '\n '; -- '<br>\n';
+			END IF;
+			
+		END LOOP;
+				
+		
+		-- progress old
+		FOR info_record IN
+		EXECUTE 'SELECT * FROM ' || schemain || '.readings '
+		|| ' WHERE network = $2 AND node = $3 AND (varkey LIKE $4) '
+		USING schemain, networkin, node, 'progress%'
+		LOOP
+		
+			vjson = '{"' || info_record.device||'_'||info_record.varkey || '_%":"' || info_record.value || '"}';
+			vout = vout || vjson;
+			
+		END LOOP;	
+
+		-- progress new
+		FOR info_record IN
+		EXECUTE 'SELECT varkey, AVG(value::numeric) AS value FROM ' || schemain || '.readings '
+		|| ' WHERE network = $2 AND node = $3 AND (varkey LIKE $4) GROUP BY varkey'
+		USING schemain, networkin, node, 'progress%'
+		LOOP
+		
+			vjson = '{"' || info_record.varkey || '_%":"' || info_record.value || '"}';
+			vout = vout || vjson;
+			
+		END LOOP;	
+
+		-- minutes
+		FOR info_record IN
+		EXECUTE 'SELECT * FROM ' || schemain || '.readings '
+		|| ' WHERE network = $2 AND node = $3 AND (varkey LIKE $4) '
+		USING schemain, networkin, node, 'minutes%'
+		LOOP
+		
+			--vjson = '{"' || info_record.device||'_'||info_record.varkey || '":"' || info_record.value || '"}';
+			
+			vjson = '{"' || info_record.device||'_'||info_record.varkey || '":"' || info_record.value || '"}';
+			vout = vout || vjson;
+			
+		END LOOP;	
+
+		-- sharepoint
+		cnt=0;
+		FOR info_record IN
+		EXECUTE 'SELECT * FROM ' || schemain || '.readings '
+		|| ' WHERE network = $2 AND node = $3 AND vargroup = $4 '
+		USING schemain, networkin, node, 'sharepoint'
+		LOOP
+			cnt = cnt + 1;
+			vjson = '{"sharepoint_'|| cnt || '":"' || info_record.value  || '"}';
+			vout = vout || vjson;
+			vjson = '{"filename_'|| cnt || '":"' || info_record.varkey  || '"}';
+			vout = vout || vjson;
+			
+		END LOOP;	
+
+	
+
+		nn = fn_n_n(networkin, node);
+		cnt=0;
+		FOR info_record IN
+		EXECUTE 'SELECT EXISTS ( '
+		|| ' SELECT FROM information_schema.tables '
+		|| ' WHERE table_schema = $1 AND table_name = $2);'
+		USING schemain, nn
+		LOOP
+			IF info_record.exists=true THEN 
+				cnt=1;
+			END IF;
+		END LOOP;	
+		
+		   
+		IF (cnt=1) THEN
+		
+			nn = fn_n_n(networkin, node);
+			FOR info_record IN
+			EXECUTE 'SELECT * FROM ' || schemain || '.' || nn
+			|| ' WHERE varkey = $4 AND value!= $5 ORDER BY time DESC LIMIT 1'
+			USING schemain, networkin, node, 'engineerName', 'Richard Hanson-Graville'
+			LOOP
+				vjson = '{"engineerName":"' || info_record.value  || '"}';
+				vout = vout || vjson;
+				
+			END LOOP;	
+		END IF;
+
+		
+
+		vjson = '{"issues":"' || html_issues || '"}';
+		vout = vout || vjson;
+
+		plot_json = vout;
+		RETURN NEXT;
+	
+	END LOOP;
+
+	
+	
+END;
+$BODY$;
+
+
 
 
 
