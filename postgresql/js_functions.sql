@@ -182,3 +182,77 @@ AS $$
 	
   
 $$ LANGUAGE plv8 IMMUTABLE STRICT;
+
+
+-- ---------------------------------------------------------------
+
+
+CREATE OR REPLACE FUNCTION public.fn_js_minutes(
+	schemain text,
+	networkin text,
+	vargroupin text,
+	time1 timestamp with time zone,
+	time2 timestamp with time zone)
+    RETURNS TABLE(network text, node text, device text, d_json jsonb) 
+    LANGUAGE 'plv8'
+    COST 100
+    IMMUTABLE STRICT PARALLEL UNSAFE
+    ROWS 1000
+
+AS $BODY$
+
+	var q = "SELECT * FROM "+schemain+".readings WHERE network='" + networkin + "'";
+	q += " AND vargroup='" + vargroupin + "' AND varkey = 'minutesProgress' ORDER BY network,node,device";
+  	var json_result = plv8.execute(q);
+
+	 
+
+	for (var r in json_result) {
+
+		var d = json_result[r].device;
+		var nodein = json_result[r].node;
+		var varkeyin = json_result[r].varkey;
+		var d_json = {};
+
+		
+		d_json[json_result[r].varkey] = json_result[r].value;
+
+		var nn = (networkin + "_" + nodein).replaceAll("-","_").toLowerCase();
+
+		var datestr1 = new Date(time1).toISOString();
+		var datestr2 = new Date(time2).toISOString();
+		
+		var d_result;
+		
+		q = "SELECT * FROM "+schemain+"." + nn + " WHERE device='" + d + "'";
+		q += " AND vargroup='" + vargroupin + "' AND varkey='" + varkeyin + "'";
+		q += " AND time<='" + datestr1 + "'::timestamp ";		
+		q += " ORDER BY time DESC LIMIT 1";				
+	  	try {  d_result = plv8.execute(q);   
+		  
+		  	// -- d_json.q = q;		
+			if (d_result && d_result[0] && d_result[0].value) { d_json["minutesStart"] = parseFloat(d_result[0].value); }
+			else  { d_json["minutesStart"] = 0; }
+			
+		  } catch {  d_json["minutesStart"] = 0; }		
+		
+
+		q = "SELECT * FROM "+schemain+"." + nn + " WHERE device='" + d + "'";
+		q += " AND vargroup='" + vargroupin + "' AND varkey='" + varkeyin + "'";
+		q += " AND time<='" + datestr2 + "'::timestamp ORDER BY time DESC LIMIT 1";				
+	  	try {  d_result = plv8.execute(q);   
+		  
+		  	if (d_result && d_result[0] && d_result[0].value) { d_json["minutesEnd"] = parseFloat(d_result[0].value); }
+			else  { d_json["minutesEnd"] = d_json["minutesStart"]; }
+			
+		  } catch { d_json["minutesEnd"] = d_json["minutesStart"]; }
+
+		 d_json["minutesChange"] = d_json["minutesEnd"] - d_json["minutesStart"];
+
+		
+		
+		plv8.return_next( {"network": networkin, "node": nodein, "device": d,"d_json": d_json } );
+	}
+	  
+$BODY$;
+
