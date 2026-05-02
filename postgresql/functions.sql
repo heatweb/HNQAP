@@ -2712,12 +2712,10 @@ DECLARE
 	varkeyref varchar;
 	varkeyref2 varchar;
 	pdays numeric;
-	isr numeric := 0;
 	rcount numeric := 0;
 	expcount numeric := 0.0;
 	mpdcount numeric := 0;
 	columncount numeric := 0;
-	columnrowcount numeric := 0;
 	dstime timestamp with time zone;
 	detime timestamp with time zone;
 	networknode TEXT;
@@ -2725,7 +2723,7 @@ DECLARE
 	set_interval interval;
 	t TEXT;
 	debugtxt TEXT := '';
-
+	
 	
 BEGIN
 
@@ -2760,7 +2758,7 @@ BEGIN
 			debugtxt = debugtxt || expcount::text ||', ';
 			
 			FOR info_record IN
-			EXECUTE 'SELECT * FROM element_data_points WHERE mpid=$1 AND vargroup !=$2 AND vargroup !=$3;'	
+			EXECUTE 'SELECT * FROM element_data_points WHERE mpid=$1 AND vargroup !=$2 AND vargroup !=$3 LIMIT 1;'	
 			USING avg_record.point_id, 'design', 'setpoint'
 			LOOP					
 
@@ -2776,16 +2774,16 @@ BEGIN
 				networknode = fn_n_n(networkref2, noderef2);
 	
 				FOR r_record IN
-				EXECUTE 'WITH t1 AS (SELECT device,vargroup,varkey,time_bucket($6, time) AS timestamp, COUNT(value) AS value FROM '
+				EXECUTE 'WITH t1 AS (SELECT vargroup,time_bucket($6, time) AS timestamp, COUNT(value) AS value FROM '
 					|| quote_ident(networknode)
-					|| ' WHERE device=$1 AND vargroup=$2 AND varkey=$3 AND time>=$4 AND time<=$5
-						GROUP BY device,vargroup,varkey,timestamp
+					|| ' WHERE device=$1 AND vargroup=$2  AND varkey=$3 AND time>=$4 AND time<=$5
+						GROUP BY vargroup,timestamp
 						ORDER BY timestamp)
 						SELECT COUNT(value) AS cnt FROM t1;'
 				USING deviceref2, vargroupref2, varkeyref2, dstime, detime, set_interval
 				LOOP	
-
-					columnrowcount = columnrowcount +  r_record.cnt;
+		
+					rcount = rcount  +  r_record.cnt;
 
 					debugtxt = debugtxt || varkeyref2 || ' ' || r_record.cnt::text ||',, ';
 								
@@ -2795,7 +2793,7 @@ BEGIN
 			END LOOP;
 
 			-- total number of values / number of columns = average number of rows.
-			rcount = rcount + (columnrowcount / columncount);		
+			-- rcount = rcount + (columnrowcount / columncount);		
 
 	
 	END LOOP;
