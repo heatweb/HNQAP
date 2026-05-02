@@ -2686,8 +2686,15 @@ $$ LANGUAGE plpgsql;
 
 
 
-CREATE OR REPLACE FUNCTION fn_element_pc_completeness(topic text, stime timestamp with time zone, etime timestamp with time zone)
-RETURNS FLOAT AS $$
+CREATE OR REPLACE FUNCTION public.fn_element_pc_completeness(
+	topic text,
+	stime timestamp with time zone,
+	etime timestamp with time zone)
+    RETURNS double precision
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+AS $BODY$
 DECLARE
 	v TEXT := '';
 	vout FLOAT := 0.0;
@@ -2695,29 +2702,44 @@ DECLARE
 	info_record RECORD;
 	r_record RECORD;
 	networkref varchar;
-	noderef varchar;
+	networkref2 varchar;
+	noderef varchar;	
+	noderef2 varchar;
 	deviceref varchar;
+	deviceref2 varchar;
 	vargroupref varchar;
+	vargroupref2 varchar;
 	varkeyref varchar;
+	varkeyref2 varchar;
 	pdays numeric;
 	isr numeric := 0;
 	rcount numeric := 0;
 	expcount numeric := 0.0;
 	mpdcount numeric := 0;
+	columncount numeric := 0;
+	columnrowcount numeric := 0;
 	dstime timestamp with time zone;
 	detime timestamp with time zone;
 	networknode TEXT;
+	pepoch numeric;
+	set_interval interval;
+	t TEXT;
+	debugtxt TEXT := '';
+
 	
 BEGIN
 
+	dstime = DATE_TRUNC('day', stime);
+	detime = DATE_TRUNC('day', etime) + interval '24 hours';
+	
+	pepoch = EXTRACT(EPOCH FROM (detime - dstime)); --fn_total_days_in_period(stime, etime);
 	pdays = fn_total_days_in_period(stime, etime);
-
+	
 	networkref = TRIM(SPLIT_PART(topic, '/', 1));
 	noderef = TRIM(SPLIT_PART(topic, '/', 2));
 	deviceref = TRIM(SPLIT_PART(topic, '/', 3));
 	varkeyref = 'elementType';
 	
-	networknode = fn_n_n(networkref, noderef);
 	
 	FOR avg_record IN
 	EXECUTE 'WITH t1 AS (SELECT r.network,r.node,r.device,p.element_type, p.point_id,p.min_frequency,p.title AS monitoring_point
@@ -2725,34 +2747,55 @@ BEGIN
 	WHERE varkey=$4 AND network=$1 AND node=$2)
 	SELECT t1.* FROM t1 
 	ORDER BY network,node,device,element_type,point_id;'	
-	USING networkref, noderef, deviceref, varkeyref, '/', stime, etime
+	USING networkref, noderef, deviceref, varkeyref, '/', dstime, detime
 	LOOP
-	
-			expcount = (1.0 * pdays) / ( EXTRACT(EPOCH FROM avg_record.min_frequency) / (60*60*24) );
+			set_interval = avg_record.min_frequency;	
+				
+			expcount = (1.0 * pdays) / ( EXTRACT(EPOCH FROM set_interval) / (60*60*24) );
+			mpdcount = mpdcount + expcount;
+
+			columncount = 0;
+			columnrowcount = 0;
+
+			debugtxt = debugtxt || expcount::text ||', ';
 			
 			FOR info_record IN
-			EXECUTE 'SELECT * FROM element_data_points WHERE mpid=$1 
-						AND vargroup !=$2 AND vargroup !=$3;'	
+			EXECUTE 'SELECT * FROM element_data_points WHERE mpid=$1 AND vargroup !=$2 AND vargroup !=$3;'	
 			USING avg_record.point_id, 'design', 'setpoint'
 			LOOP					
-				
+
+				columncount = columncount + 1;
+
+				t = fn_resolve_topic(networkref||'/'||noderef||'/'||avg_record.device||'/'||info_record.vargroup||'/'||info_record.varkey);
+				networkref2 = TRIM(SPLIT_PART(t, '/', 1));
+				noderef2 = TRIM(SPLIT_PART(t, '/', 2));
+				deviceref2 = TRIM(SPLIT_PART(t, '/', 3));
+				vargroupref2 = TRIM(SPLIT_PART(t, '/', 4));
+				varkeyref2 = TRIM(SPLIT_PART(t, '/', 5));
+
+				networknode = fn_n_n(networkref2, noderef2);
+	
 				FOR r_record IN
 				EXECUTE 'WITH t1 AS (SELECT device,vargroup,varkey,time_bucket($6, time) AS timestamp, COUNT(value) AS value FROM '
 					|| quote_ident(networknode)
-					|| ' WHERE device=$1 AND vargroup=$2 AND varkey=$3 AND time>=$4 AND time<$5
+					|| ' WHERE device=$1 AND vargroup=$2 AND varkey=$3 AND time>=$4 AND time<=$5
 						GROUP BY device,vargroup,varkey,timestamp
 						ORDER BY timestamp)
 						SELECT COUNT(value) AS cnt FROM t1;'
-				USING avg_record.device, info_record.vargroup, info_record.varkey, stime, etime, avg_record.min_frequency
+				USING deviceref2, vargroupref2, varkeyref2, dstime, detime, set_interval
 				LOOP	
 
-					rcount = rcount + r_record.cnt;
-					
+					columnrowcount = columnrowcount +  r_record.cnt;
+
+					debugtxt = debugtxt || varkeyref2 || ' ' || r_record.cnt::text ||',, ';
+								
 				END LOOP;
 				
-				mpdcount = mpdcount + expcount;
 				
 			END LOOP;
+
+			-- total number of values / number of columns = average number of rows.
+			rcount = rcount + (columnrowcount / columncount);		
 
 	
 	END LOOP;
@@ -2766,11 +2809,13 @@ BEGIN
 		vout = ROUND(vout::numeric, 2);
 	END IF;
 
-	RETURN vout;
+	-- vout = mpdcount;		
+
+	RETURN vout; --debugtxt; --
 	
     
 END;
-$$ LANGUAGE plpgsql;
+$BODY$;
 
 
 
