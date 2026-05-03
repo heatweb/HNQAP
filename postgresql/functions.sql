@@ -2552,7 +2552,7 @@ BEGIN
 	FOR avg_record IN
 	EXECUTE 'WITH t1 AS (SELECT r.network,r.node,r.device,p.element_type, p.point_id,p.min_frequency,p.title AS monitoring_point
 	FROM readings r INNER JOIN element_monitoring_points p ON r.value=p.element_type 
-	WHERE varkey=$4 AND network=$1 AND node=$2 AND device=$3)
+	WHERE varkey=$4 AND network=$1 AND node=$2 AND device=$3 AND LENGTH(point_id)<4)
 	SELECT t1.* FROM t1 
 	ORDER BY network,node,device,element_type,point_id;'	
 	USING networkref, noderef, deviceref, vargroupref, '/', stime, etime
