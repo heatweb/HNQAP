@@ -256,3 +256,205 @@ AS $BODY$
 	  
 $BODY$;
 
+
+
+CREATE OR REPLACE FUNCTION public.fn_js_element_pc_operational(
+    topic text,
+    stime timestamptz,
+    etime timestamptz
+)
+RETURNS double precision
+LANGUAGE plv8
+VOLATILE
+PARALLEL UNSAFE
+AS $$
+
+
+function intervalToSeconds(interval) {
+  return plv8.execute(
+    `SELECT EXTRACT(EPOCH FROM $1::interval) AS sec`,
+    [interval]
+  )[0].sec;
+}
+
+
+/* -----------------------------
+   Variable declarations
+----------------------------- */
+let vout = 0.0;
+
+let rcount = 0;
+let okcount = 0;
+let expcount = 0;
+let mpdcount = 0;
+
+let vmin = 0;
+let vmax = 55000;
+
+/* -----------------------------
+   Time calculations
+----------------------------- */
+let dstime = new Date(stime);
+dstime.setUTCHours(0,0,0,0);
+
+let detime = new Date(etime);
+detime.setUTCHours(0,0,0,0);
+detime.setUTCDate(detime.getUTCDate() + 1);
+
+let pepoch = (detime - dstime) / 1000;
+
+/* -----------------------------
+   Topic parsing
+----------------------------- */
+let parts = topic.split('/');
+let networkref = parts[0]?.trim();
+let noderef    = parts[1]?.trim();
+let deviceref  = parts[2]?.trim();
+let varkeyref  = 'elementType';
+
+/* -----------------------------
+   avg_record loop
+----------------------------- */
+var q = "WITH t1 AS (SELECT r.network, r.node, r.device, p.element_type, p.point_id, p.min_frequency, p.title AS monitoring_point FROM readings r ";
+q+= "INNER JOIN element_monitoring_points p ON r.value = p.element_type WHERE varkey = '" + varkeyref + "' AND network = '" + networkref + "' AND node = '" + noderef + "') ";
+q+= "SELECT * FROM t1 ORDER BY network, node, device, element_type, point_id";
+
+let avgRecords = plv8.execute(q);
+
+for (let avg of avgRecords) {
+    let setInterval = avg.min_frequency;
+	expcount = pepoch / intervalToSeconds(avg.min_frequency);
+
+	
+    /* -----------------------------
+       info_record loop
+    ----------------------------- */
+    let infoRecords = plv8.execute(
+      `SELECT *
+       FROM element_data_points
+       WHERE mpid = $1
+         AND vargroup != $2
+         AND vargroup != $3`,
+      [avg.point_id, 'design', 'setpoint']
+    );
+
+	var slotsok = {};
+	var columncount = 0;
+	// --rcount += expcount;
+	
+	
+    for (let info of infoRecords) {
+
+        /* Resolve topic */
+        let t = plv8.execute(
+          `SELECT fn_resolve_topic($1) AS t`,
+          [`${networkref}/${noderef}/${avg.device}/${info.vargroup}/${info.varkey}`]
+        )[0].t;
+
+        let tp = t.split('/');
+        let networkref2 = tp[0]?.trim();
+        let noderef2    = tp[1]?.trim();
+        let deviceref2  = tp[2]?.trim();
+        let vargroupref2= tp[3]?.trim();
+        let varkeyref2  = tp[4]?.trim();
+
+        let networknode = plv8.execute(
+          `SELECT fn_n_n($1,$2) AS n`,
+          [networkref2, noderef2]
+        )[0].n;
+
+		columncount++;
+		
+        /* -----------------------------
+           Total record count
+        ----------------------------- */
+        if (columncount==1) {
+			
+			let rRes = plv8.execute(
+	        `WITH t1 AS (
+	           SELECT time_bucket($6, time) AS ts,
+	                  COUNT(value) AS value
+	           FROM ${networknode}
+	           WHERE device = $1
+	             AND vargroup = $2
+	             AND varkey = $3
+	             AND time >= $4
+	             AND time <= $5
+	           GROUP BY ts
+	        )
+	        SELECT COUNT(value) AS cnt FROM t1`,
+	        [deviceref2, vargroupref2, varkeyref2, dstime, detime, setInterval]
+	        );
+	
+	        rcount += Number(rRes[0]?.cnt || 0);
+	        // -- mpdcount += expcount;
+		}
+		
+        /* -----------------------------
+           vmax logic
+        ----------------------------- */
+        vmin = 0;
+        let units = (info.units || '').toLowerCase();
+
+        if (units.startsWith('m') && units.includes('h')) {
+            vmax = 100.0;
+        } else if (units.startsWith('m')) {
+            vmax = 1000 * 10000.0;
+        } else if (units.endsWith('c')) {
+            vmax = 200.0;
+        } else if (units === 'kwh') {
+            vmax = 1000 * 55000.0;
+        } else if (units === 'kw') {
+            vmax = 1000 * 1000.0;
+        } else if (units === 'kpa') {
+            vmax = 2000.0;
+        } else if (units === 'bar') {
+            vmax = 20.0;
+        }
+
+        /* -----------------------------
+           OK record count
+        ----------------------------- */
+        let okRes = plv8.execute(
+        `SELECT time_bucket($6, time) AS ts,
+                  COUNT(value) AS value
+           FROM ${networknode}
+           WHERE device = $1
+             AND vargroup = $2
+             AND varkey = $3
+             AND time >= $4
+             AND time <=  $5
+             AND value::numeric >= $7
+             AND value::numeric <= $8
+           GROUP BY ts`,
+        [deviceref2, vargroupref2, varkeyref2, dstime, detime, setInterval, vmin, vmax]
+        );
+
+		var cnt = 0;
+		for (let dpoint of okRes) {
+			cnt++;
+			slotsok[dpoint.ts] = (slotsok[dpoint.ts] ||0) +1;
+		}
+        
+    }
+
+	// -- var cnt = 0;
+	for (var tpoint in slotsok) {
+		if (slotsok[tpoint] == columncount) { okcount++;  }
+		// --rcount++;
+	}
+	// -- okcount = okcount + cnt;
+}
+
+/* -----------------------------
+   Final calculation
+----------------------------- */
+if (rcount > 0) {
+    vout = 100.0 * okcount / rcount;
+}
+
+// -- vout = rcount ;
+
+return Math.round(vout * 100) / 100;
+$$;
+
