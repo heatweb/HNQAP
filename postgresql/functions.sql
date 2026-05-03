@@ -764,6 +764,43 @@ END;
 $$ LANGUAGE plpgsql;
 
 
+CREATE OR REPLACE FUNCTION public.fn_execute(
+	execstr text, kpi_target text, kpi_value text)
+    RETURNS boolean
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+AS $BODY$
+DECLARE
+	v TEXT := '';
+	avg_record RECORD;
+BEGIN
+
+	execstr = REPLACE(execstr, '$T', kpi_target);
+	execstr = REPLACE(execstr, '$V', kpi_value);
+
+	FOR avg_record IN
+	EXECUTE 'SELECT (' || execstr || ')::boolean AS value;'
+	USING 1
+	LOOP
+		
+		v = avg_record.value;
+	
+	END LOOP;
+
+	IF (v::text='true') THEN
+		RETURN true;
+	END IF;
+
+	RETURN false;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        RETURN false;	
+END;
+$BODY$;
+
+
 CREATE OR REPLACE FUNCTION fn_pc_topic_above_v(topic text, v numeric, stime timestamp, etime timestamp)
 RETURNS numeric
 AS $$
