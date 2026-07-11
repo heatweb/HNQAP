@@ -1,0 +1,9 @@
+hiuType,classBS8635,typeDHW,typeHTG,pumpHTG
+HIU Type,BS8635 Class,DHW,HTG,HTG Pump
+DHW Only via PHEx,HWI-1,PHEx,None,None
+HTG Only via PHEx,HI-1,None,PHEx,Fitted
+HTG Only Direct,HD-1,None,Direct,None
+DHW & Direct HTG,HD/HWI-1,PHEx,Direct,None
+DHW & Direct HTG with Pump,HD-MV/HWI-1,PHEx,Direct,Fitted
+Twin PHEx (DHW & HTG),HI/HWI-1,PHEx,PHEx,Fitted
+Electric Unvented Cylinder,UV-ELEC,Stored,None,None
