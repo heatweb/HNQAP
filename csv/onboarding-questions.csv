@@ -1,0 +1,18 @@
+dataType,dataName,devicetypes,elementTypes,section,page,order,attachTo,type,title,question,notes,units,required,hidden,protected,dontsend,requiresConfirmation,ignoreDefault,minutes,photo,commentTitle,ifExpr,defaultExpr,passfailExpr,failtext,options,columns,legacyId
+Process,Variable,Device types,Element types,Section,Page,Order,Attach to,Type,Title,Question,Notes,Units,Required,Hidden,Protected,Reference data,Confirm,Ignore default,Minutes,Photo tag,Comment title,If,Default,Passfail,Fail text,Options,Columns,Legacy ID
+onboarding,companyName,company,,Company Details,,10,,text,Company Name,What is the registered company name?,,,true,false,false,false,true,false,1,,,,,,,,,
+onboarding,companyRegNo,company,,Company Details,,20,,text,Company Registration No.,What is the Companies House registration number?,,,true,false,false,false,true,false,1,,,,,,,,,
+onboarding,vatNo,company,,Company Details,,30,,text,VAT Number,What is the company VAT number (if registered)?,,,false,false,false,false,true,false,1,,,,,,,,,
+onboarding,companyAddress,company,,Company Details,,40,,textarea,Registered Address,What is the registered company address?,,,true,false,false,false,true,false,2,,,,,,,,,
+onboarding,contactName,company,,Company Details,,50,,text,Primary Contact,Who is the primary contact for Heatweb?,,,true,false,false,false,true,false,1,,,,,,,,,
+onboarding,contactPhone,company,,Company Details,,60,,text,Contact Phone,What is the primary contact phone number?,,,true,false,false,false,true,false,1,,,,,,,,,
+onboarding,contactEmail,company,,Company Details,,70,,email,Contact Email,What is the primary contact email address?,,,true,false,false,false,true,false,1,,,,,,,,,
+onboarding,gasSafeNumber,company,,Accreditations,,80,,text,Gas Safe Registration No.,What is the company Gas Safe registration number?,,,false,false,false,false,true,false,2,Gas Safe certificate,,,,,,,,
+onboarding,publicLiabilityInsurer,company,,Insurance,,90,,text,Public Liability Insurer,Who provides the company's public liability insurance?,,,true,false,false,false,true,false,1,,,,,,,,,
+onboarding,publicLiabilityExpiry,company,,Insurance,,100,,text,Public Liability Expiry,When does the public liability policy expire? (DD/MM/YYYY),,,true,false,false,false,true,false,1,,,,,,,,,
+onboarding,insuranceCertificate,company,,Insurance,,110,,text,Insurance Certificate,Attach a photo of the current insurance certificate.,,,true,false,false,false,true,false,2,Insurance certificate,,,,,,,,
+onboarding,engineerName,engineer,,Engineer Details,,200,,text,Engineer Name,What is your full name?,,,true,false,false,false,true,false,1,,,,,,,,,
+onboarding,engineerPhone,engineer,,Engineer Details,,210,,text,Engineer Phone,What is your mobile number?,,,true,false,false,false,true,false,1,,,,,,,,,
+onboarding,gasSafeIdNumber,engineer,,Engineer Accreditations,,220,,text,Gas Safe ID No.,What is your Gas Safe ID card number (if held)?,,,false,false,false,false,true,false,2,Gas Safe ID card,,,,,,,,
+onboarding,unventedG3,engineer,,Engineer Accreditations,,230,,boolean,Unvented (G3) Qualified,Do you hold an unvented hot water (G3) qualification?,,,false,false,false,false,true,false,1,,,,,,,,,
+onboarding,qualifications,engineer,,Engineer Accreditations,,240,,textarea,Qualifications,List your relevant qualifications (one per line).,,,true,false,false,false,true,false,3,Qualification certificates,,,,,,,,

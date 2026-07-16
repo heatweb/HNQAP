@@ -1,0 +1,52 @@
+dataType,dataName,devicetypes,title,section,units,notes,order,ifExpr,functionExpr,vlookup,legacyId
+Process,Variable,Device types,Title,Section,Units,Notes,Order,If,Function,Vlookup,Legacy ID
+design,density,network,Average people per building (density),Calculations,people,NULL,9,{{nBuildings}},{{nPeople}} / {{nBuildings}},,8
+design,pPP,network,Average people per property,Calculations,people,NULL,10,{{nProperties}},{{nPeople}} / {{nProperties}},,10
+design,peepDS439,network,People per standard DS439 property,Calculations,people,NULL,11,true,2.3,,4
+design,eqPropDS439,network,Equivalent number of DS439 properties,Calculations,properties,NULL,11.5,{{peepDS439}},{{nPeople}}/{{peepDS439}},,7
+design,vPHEST,network,Volume DHW used per person per day,Calculations,litres,NULL,12,true,28,,2
+design,vPPEST,network,Volume DHW used per property per day,Calculations,litres,NULL,13,true,40,,9
+design,tRiseEST,network,Average temperature Rise on DHW,Calculations,°C,NULL,14,true,35,,3
+design,kwDHWEst,network,Typical HIU rating for DHW,Calculations,kW,NULL,15,{{pPP}},{{pPP}}<3?37.5:({{pPP}}<5?45:60),,1
+design,kwDS439,network,Peak DHW Load,Calculations,kW,NULL,17,{{eqPropDS439}},"Math.ceil((1.19* {{eqPropDS439}}) + (18.8* Math.pow({{eqPropDS439}},0.5)) + 17.6)",,5
+design,vDHWEST,network,Volume drawn per day for DHW (tap),Calculations,litres,NULL,19,{{nPeople}},({{nProperties}}*{{vPPEST}})+({{nPeople}}*{{vPHEST}}),,6
+design,vPDHW,network,Volume used per day for DHW (primary),Calculations,litres,NULL,20,{{vDHWEST}},({{vDHWEST}} * {{tRiseEST}}) / (({{tPeak}}-{{tPriRtnDHW}})),,14
+design,kwhDHWEST,network,Energy used per day for DHW,Calculations,kWh,NULL,21,{{vDHWEST}},({{vDHWEST}} * 4.2 * {{tRiseEST}}) / 3600,,11
+design,vBuffer9,network,Buffer Storage for DHW (based on 9%),Calculations,litres,NULL,27,{{vPDHW}},{{vPDHW}} * 0.09,,13
+design,kwCH,network,Peak diversified (steady state) central heating load,Calculations,kW,NULL,29,{{kwCHMax}} &&  {{divCH}},({{kwCHMax}} * {{divCH}}) / 100,,12
+design,kwhCH,network,Energy used per day for CH,Calculations,kWh,NULL,30,{{kwCH}},{{kwCH}} * 24,,15
+design,vPCH,network,Volume used on peak load day for CH (primary),Calculations,litres,NULL,31,{{kwCH}},({{kwhCH}} * 3600) / (4.2 * ({{tPeak}}-{{tPriRtnCH}})),,16
+design,dDaysCalc,network,Calculated degree days per year,Calculations,°days,NULL,31.05,{{baseTemp}},"('{{degDaysAvg}}').split(',')[({{baseTemp}}-16)*2]",,43
+design,dDaysPeak,network,Peak load day degree days,Calculations,°days,NULL,31.1,('{{tXPeak}}'!=='') && ('{{baseTemp}}'!==''),{{baseTemp}} - {{tXPeak}},,46
+design,eqDaysPeak,network,Annual days of full load heating,Calculations,days,NULL,31.2,{{dDaysPeak}},{{dDaysCalc}} / {{dDaysPeak}},,45
+design,kwPeak,network,Peak load,Calculations,kW,NULL,31.6,true,{{kwCH}}+{{kwDS439}},,18
+design,kwP24,network,Average 24h peak load,Calculations,kW,NULL,31.8,true,{{kwCH}}+({{kwhDHWEST}}/24),,19
+design,kwhP24,network,Peak energy used per day,Calculations,kWh,NULL,32,true,{{kwhCH}}+{{kwhDHWEST}},,17
+design,vP24,network,Peak volume used per day (primary),Calculations,litres,NULL,32.5,true,{{vPCH}}+{{vPDHW}},,20
+design,tPriRtnPeak,network,Primary return temperature at peak load,Calculations,°C,NULL,36,{{m3hPeak}},{{tPeak}} - ({{kwPeak}} / (4.2 * {{m3hPeak}} / 3.6)),,24
+design,tVWART24,network,Weighted primary return temperature on peak load day,Calculations,°C,NULL,37,{{m3hPeak}},( ({{tPriRtnCH}} * {{vPCH}}) + ({{tPriRtnDHW}} * {{vPDHW}}) ) / ({{vPCH}} + {{vPDHW}}),,25
+design,bufferkWh,network,Buffer storage peak energy content,Calculations,kWh,NULL,38,{{vBuffer}},({{vBuffer}} * 4.2 * ({{tPeak}} - {{tPriRtnPeak}})) / 3600,,26
+design,m3hDHWPeak,network,Primary flow rate at peak DHW load,Calculations,m3/h,NULL,50,{{tPriRtnDHW}},3.6 * {{kwDS439}} / (4.2 * ({{tPeak}}-{{tPriRtnDHW}})),,21
+design,m3hCHPeak,network,Primary flow rate at peak central heating load,Calculations,m3/h,NULL,51,{{tPriRtnCH}},3.6 * {{kwCH}} / (4.2 * ({{tPeak}}-{{tPriRtnCH}})),,22
+design,m3hPeak,network,Primary flow rate at peak load,Calculations,m3/h,NULL,53,{{m3hDHWPeak}}||{{m3hCHPeak}},{{m3hDHWPeak}}+{{m3hCHPeak}},,23
+design,borePeak,network,Pipe bore at peak load and velocity,Calculations,mm,NULL,55,{{m3hPeak}},2 * Math.sqrt( 1000 * ({{m3hPeak}}/3.6)/({{maxVelocity}}*3.14159) ),,52
+design,boilerkWPeak,network,Boiler peak power (n),Calculations,kW,NULL,60,'{{selectBoilers}}'!=='',{{boilerkW}}*{{boilerQty}},,29
+design,kWxN1,network,Peak power available from (n-1) sources,Calculations,kW,NULL,70,true,"{{kWInPeak}}-Math.max(parseFloat('{{boilerkW}}'||0),parseFloat('{{ASHPkW}}'||0),parseFloat('{{WSHPkW}}'||0))",,39
+design,kWInPeak,network,Peak power available from all sources,Calculations,kW,NULL,80,true,parseFloat('{{boilerkWPeak}}'||0)+parseFloat('{{ASHPkWPeak}}'||0)+parseFloat('{{WSHPkWPeak}}'||0),,38
+design,boilerkWxN1,network,Boiler power (n-1),Calculations,kW,NULL,81,'{{selectBoilers}}'!=='',{{boilerkW}}*({{boilerQty}}-1),,30
+design,ovsersizing,network,Oversizing (n),Calculations,%,NULL,83,{{kwP24}},100*({{kWInPeak}}-{{kwP24}})/{{kwP24}},,42
+design,ovsersizingN1,network,Oversizing (n-1),Calculations,%,NULL,84,{{kwP24}},100*({{kWxN1}}-{{kwP24}})/{{kwP24}},,44
+design,ASHPQty,network,ASHP quantity,Calculations,ASHPs,NULL,99,'{{selectASHP}}'!=='',('{{selectASHP}}').split('x')[0].trim(),,31
+design,ASHPkW,network,ASHP unit power,Calculations,kW,NULL,99,'{{selectASHP}}'!=='',('{{selectASHP}}').split('x')[1].trim(),,32
+design,ASHPkWPeak,network,ASHP peak power (n),Calculations,kW,NULL,99,'{{selectASHP}}'!=='',{{ASHPkW}}*{{ASHPQty}},,33
+design,ASHPkWxN1,network,ASHP power (n-1),Calculations,kW,NULL,99,'{{selectASHP}}'!=='',{{ASHPkW}}*({{ASHPQty}}-1),,34
+design,WSHPQty,network,WSHP quantity,Calculations,WSHPs,NULL,99,'{{selectWSHP}}'!=='',('{{selectWSHP}}').split('x')[0].trim(),,37
+design,WSHPkW,network,WSHP unit power,Calculations,kW,NULL,99,'{{selectWSHP}}'!=='',('{{selectWSHP}}').split('x')[1].trim(),,35
+design,WSHPkWPeak,network,WSHP peak power (n),Calculations,kW,NULL,99,'{{selectWSHP}}'!=='',{{WSHPkW}}*{{WSHPQty}},,36
+design,WSHPkWxN1,network,WSHP power (n-1),Calculations,kW,NULL,99,'{{selectWSHP}}'!=='',{{WSHPkW}}*({{WSHPQty}}-1),,40
+design,sparekW,network,Excess power availiable (n),Calculations,kW,NULL,99,{{kwP24}},({{kWInPeak}}-{{kwP24}}),,41
+design,kwhDHW365,network,Annual energy for domestic hot water,Calculations,kWh,NULL,101,{{kwhDHWEST}},parseInt({{kwhDHWEST}} * 365),,48
+design,kwhCH365,network,Annual energy for central heating,Calculations,kWh,NULL,102,{{dDaysPeak}},parseInt({{eqDaysPeak}} * {{kwhCH}}),,47
+design,kwhUsed365,network,Annual energy utilised,Calculations,kWh,NULL,103,{{kwhDHWEST}},parseInt({{kwhCH365}} + {{kwhDHW365}}),,49
+design,kwhDistLoss365,network,Annual distribution heat losses (est at 20%),Calculations,kWh,NULL,104,{{kwhUsed365}},parseInt({{kwhUsed365}} * 0.2),,50
+design,kwh365,network,Annual energy required,Calculations,kWh,NULL,105,{{kwhCH365}},parseInt('{{kwhCH365}}'||0) + parseInt('{{kwhDHW365}}'||0) + parseInt('{{kwhDistLoss365}}'||0),,51

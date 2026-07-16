@@ -1,0 +1,23 @@
+dataType,dataName,devicetypes,title,section,units,notes,order,ifExpr,functionExpr,vlookup,legacyId
+Process,Variable,Device types,Title,Section,Units,Notes,Order,If,Function,Vlookup,Legacy ID
+acceptance,dateToday,hiu,Date Today,Calculations,NULL,NULL,1,true,a.getDate() + '/' + (a.getMonth()+1) + '/' + a.getFullYear(),,76
+acceptance,testoPrefix,hiu,Testo MQTT Prefix,Calculations,NULL,NULL,6,'{{network}}'!='' && '{{node}}'!='','{{engineerEmail}}/{{schema}}/{{network}}/{{node}}/',,85
+acceptance,typeDHW,hiu,DHW Connection,Calculations,NULL,NULL,7,'{{hiuType}}'!=='',,"[""hiuTypes"",""typeDHW"",""hiuType"",""hiuType""]",79
+acceptance,typeHTG,hiu,Central Heating Connection,Calculations,NULL,NULL,8,'{{hiuType}}'!=='',,"[""hiuTypes"",""typeHTG"",""hiuType"",""hiuType""]",88
+acceptance,pumpHTG,hiu,Central Heating Pump,Calculations,NULL,NULL,9,'{{hiuType}}'!=='',,"[""hiuTypes"",""pumpHTG"",""hiuType"",""hiuType""]",80
+acceptance,classBS8635,hiu,BS8635 Classification,Calculations,NULL,NULL,10,'{{hiuType}}'!=='',,"[""hiuTypes"",""classBS8635"",""hiuType"",""hiuType""]",90
+acceptance,productGroup,hiu,Product Group,Calculations,NULL,NULL,11,'{{hiuModel}}'!=='',('{{hiuModel}}'.toLowerCase().indexOf('inta')>-1) ? 'INTA Hyper' : ('{{hiuModel}}'.toLowerCase().indexOf('bosch')>-1) ? 'Worcester Bosch' : ('{{hiuModel}}'.toLowerCase().indexOf('sav')>-1) ? 'SAV with IHPT and RAVK' : 'Other',,82
+acceptance,typeEmitterD,hiu,Heating Emitter Type,Calculations,NULL,NULL,12,'{{propertyType}}'!='',,"[""propertyTypes"",""typeEmitter"",""propertyType"",""propertyType""]",83
+acceptance,tSetDHW,hiu,Design DHW Setpoint Temperature,Calculations,°C,NULL,13,'{{propertyType}}'!='',,"[""propertyTypes"",""tSetDHW"",""propertyType"",""propertyType""]",84
+acceptance,tSetHTG,hiu,Design HTG Setpoint Temperature,Calculations,°C,NULL,14,'{{propertyType}}'!='' && '{{pumpHTG}}'=='Fitted',,"[""propertyTypes"",""tSetHTG"",""propertyType"",""propertyType""]",86
+acceptance,tDesignHTGRtn,hiu,Design HTG Return Temperature,Calculations,°C,NULL,15,'{{hiuParameters}}'!='' && '{{typeHTG}}'!='None',,"[""propertyTypes"",""tDesignHTGRtn"",""propertyType"",""propertyType""]",87
+acceptance,tLimitHTGRtn,hiu,HTG Return Limit Temperature,Calculations,°C,NULL,16,'{{propertyTypes}}'!='' && '{{typeHTG}}'!='None',,"[""propertyTypes"",""tLimitRtn"",""propertyType"",""propertyType""]",89
+acceptance,tDHWTap,hiu,DHW Kitchen Tap Temperature,Calculations,°C,NULL,17,{{tDHW1}}>0,('{{tDHW2}}'!='') ? '{{tDHW2}}' : '{{tDHW1}}',,91
+acceptance,passfailDHWResponse,hiu,DHW Response Test,Calculations,NULL,NULL,18,'{{tapTime45C}}'>0,({{tapTime45C}}>45) ? 'FAIL' : 'PASS',,92
+acceptance,passfailDHWSetpointL,hiu,"DHW Temperature, Low Flow",Calculations,NULL,NULL,19,{{tDHWTap}}>0,( ({{tDHWTap}}>({{tSetpointDHW}}+{{tTolerance}}))  || ({{tDHWTap}}<({{tSetpointDHW}}-{{tTolerance}})) ) ? 'FAIL' : 'PASS',,93
+acceptance,passfailDHWSetpointH,hiu,"DHW Temperature, High Flow",Calculations,NULL,NULL,20,{{tDHWPeak}}>0,( ({{tDHWPeak}}>({{tSetpointDHW}}+{{tTolerance}}))  || ({{tDHWPeak}}<({{tSetpointDHW}}-{{tTolerance}})) ) ? 'FAIL' : 'PASS',,94
+acceptance,passfailDHWBathTemp,hiu,"Bath Temperature, 50C Max",Calculations,NULL,NULL,21,{{tDHWBath}}>0,( {{tDHWBath}}>48 ) ? 'FAIL' : 'PASS',,95
+acceptance,passfailHTGSetpoint,hiu,Central Heating Setpoint (pass/fail),Calculations,NULL,NULL,22,'{{tSetHTG}}'!=='' && '{{tHTGOut}}'!='',( ({{tHTGOut}}>({{tSetHTG}}+{{tToleranceHTG}}))  || ({{tHTGOut}}<({{tSetHTG}}-{{tToleranceHTG}})) ) ? 'FAIL' : 'PASS',,96
+acceptance,passfailHTGRtnTemp,hiu,Central Heating Return Limit (pass/fail),Calculations,NULL,NULL,23,'{{tDesignHTGRtn}}'!=='' && '{{tHTGTRtn}}'!='',({{tHTGTRtn}}>=(5+{{tDesignHTGRtn}})) ? 'FAIL' : 'PASS',,97
+acceptance,passfailHeatMeter,hiu,Operation of HIU heat meter (pass/fail),Calculations,NULL,NULL,24,true,('{{kwh1}}'!=''||'{{kwh2}}'!='') ? 'PASS' : 'FAIL',,98
+acceptance,dp1calc,hiu,Calculated DP from static,Calculations,kPa,NULL,99,'{{p1}}'!='' && '{{p2}}'!='',Math.round(100*({{p1}}-{{p2}})),,99
