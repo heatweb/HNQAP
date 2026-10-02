@@ -1,11 +1,11 @@
 {
   "$schema": "heatweb-vocabulary/1",
-  "exportedAt": "2026-10-02T01:02:07.247Z",
+  "exportedAt": "2026-10-02T01:15:50.927Z",
   "source": {
     "registry": "Heatweb vocabulary registry",
     "published": "https://github.com/heatweb/HNQAP/tree/main/standard"
   },
-  "rule": "A varkey name has ONE shape (type, units) everywhere. Reuse an approved name before minting; nominate new names in the Heatweb registry so both products stay on one dictionary.",
+  "rule": "A varkey name has ONE shape (type, units) everywhere. Reuse an approved name before minting; nominate new names in the Heatweb registry so both products stay on one dictionary. Store readings exactly as published; resolve legacy names through aliases on read.",
   "vargroups": [
     {
       "name": "acceptance",
@@ -26,6 +26,18 @@
       "name": "device",
       "title": "device",
       "kind": "system_record"
+    },
+    {
+      "name": "emeter",
+      "title": "Electricity meter",
+      "kind": "telemetry",
+      "description": "Electricity meter registers, power and current"
+    },
+    {
+      "name": "gmeter",
+      "title": "Gas meter",
+      "kind": "telemetry",
+      "description": "Gas meter registers and flow"
     },
     {
       "name": "hnes_application",
@@ -58,9 +70,33 @@
       "kind": "process"
     },
     {
+      "name": "sensor",
+      "title": "Sensor readings",
+      "kind": "telemetry",
+      "description": "Live measurements from sensors"
+    },
+    {
+      "name": "set",
+      "title": "Operator input",
+      "kind": "telemetry",
+      "description": "Values set by an operator (keypad, scanner, app)"
+    },
+    {
+      "name": "setpoint",
+      "title": "Setpoints",
+      "kind": "telemetry",
+      "description": "Control setpoints in force"
+    },
+    {
       "name": "site",
       "title": "site",
       "kind": "system_record"
+    },
+    {
+      "name": "status",
+      "title": "Equipment status flags",
+      "kind": "telemetry",
+      "description": "Live on/off states published by equipment (0/1)"
     },
     {
       "name": "survey",
@@ -315,6 +351,39 @@
       ]
     },
     {
+      "name": "ampsL1",
+      "title": "Current L1",
+      "type": "number",
+      "units": "A",
+      "status": "approved",
+      "meaning": "Current, phase 1",
+      "vargroups": [
+        "emeter"
+      ]
+    },
+    {
+      "name": "ampsL2",
+      "title": "Current L2",
+      "type": "number",
+      "units": "A",
+      "status": "approved",
+      "meaning": "Current, phase 2",
+      "vargroups": [
+        "emeter"
+      ]
+    },
+    {
+      "name": "ampsL3",
+      "title": "Current L3",
+      "type": "number",
+      "units": "A",
+      "status": "approved",
+      "meaning": "Current, phase 3",
+      "vargroups": [
+        "emeter"
+      ]
+    },
+    {
       "name": "analysisYears",
       "title": "Analysis period",
       "type": "integer",
@@ -349,6 +418,16 @@
       "status": "approved",
       "vargroups": [
         "model_signoff"
+      ]
+    },
+    {
+      "name": "bake",
+      "title": "Bake mode",
+      "type": "boolean",
+      "status": "approved",
+      "meaning": "Bake mode active",
+      "vargroups": [
+        "status"
       ]
     },
     {
@@ -734,6 +813,34 @@
       ]
     },
     {
+      "name": "carbonFactorElec",
+      "title": "Electricity carbon factor",
+      "type": "number",
+      "units": "kgCO2e/kWh",
+      "status": "approved",
+      "meaning": "Carbon factor for grid electricity",
+      "aliases": [
+        "co2Elec"
+      ],
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "carbonFactorGas",
+      "title": "Gas carbon factor",
+      "type": "number",
+      "units": "kgCO2e/kWh",
+      "status": "approved",
+      "meaning": "Carbon factor for gas (UK Government GHG conversion factors)",
+      "aliases": [
+        "co2Gas"
+      ],
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
       "name": "carbonPrice",
       "title": "Carbon value",
       "type": "number",
@@ -1092,6 +1199,16 @@
       "status": "approved",
       "vargroups": [
         "onboarding"
+      ]
+    },
+    {
+      "name": "cool",
+      "title": "Cool-down",
+      "type": "boolean",
+      "status": "approved",
+      "meaning": "Cool-down active",
+      "vargroups": [
+        "status"
       ]
     },
     {
@@ -1552,7 +1669,12 @@
       "type": "number",
       "units": "p/kWh",
       "status": "approved",
+      "meaning": "Electricity unit price",
+      "aliases": [
+        "costElec"
+      ],
       "vargroups": [
+        "design",
         "hnes_rev_study"
       ]
     },
@@ -1609,6 +1731,16 @@
       "status": "approved",
       "vargroups": [
         "model_signoff"
+      ]
+    },
+    {
+      "name": "emac",
+      "title": "Emergency stop",
+      "type": "boolean",
+      "status": "approved",
+      "meaning": "Emergency stop / forced off",
+      "vargroups": [
+        "status"
       ]
     },
     {
@@ -1759,6 +1891,16 @@
       ]
     },
     {
+      "name": "flashoff",
+      "title": "Flash-off mode",
+      "type": "boolean",
+      "status": "approved",
+      "meaning": "Flash-off mode active",
+      "vargroups": [
+        "status"
+      ]
+    },
+    {
       "name": "flowLimitKitchen",
       "title": "Flow Limiters Installed on Kitchen Tap",
       "type": "boolean",
@@ -1841,12 +1983,42 @@
       ]
     },
     {
+      "name": "gasCalorificValue",
+      "title": "Gas calorific value",
+      "type": "number",
+      "units": "MJ/m³",
+      "status": "approved",
+      "meaning": "Calorific value used to convert metered gas m³ to kWh (kWh = m³ × correction × CV ÷ 3.6)",
+      "aliases": [
+        "calorificGas"
+      ],
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "gasFlow",
+      "title": "Gas flow rate",
+      "type": "number",
+      "units": "m³/h",
+      "status": "approved",
+      "meaning": "Instantaneous gas flow rate",
+      "vargroups": [
+        "gmeter"
+      ]
+    },
+    {
       "name": "gasPrice",
       "title": "Gas unit price",
       "type": "number",
       "units": "p/kWh",
       "status": "approved",
+      "meaning": "Gas unit price",
+      "aliases": [
+        "costGas"
+      ],
       "vargroups": [
+        "design",
         "hnes_rev_study"
       ]
     },
@@ -1876,6 +2048,17 @@
       "status": "approved",
       "vargroups": [
         "onboarding"
+      ]
+    },
+    {
+      "name": "gasVolumeCorrection",
+      "title": "Gas volume correction",
+      "type": "number",
+      "units": "factor",
+      "status": "approved",
+      "meaning": "Gas volume correction factor applied to metered m³",
+      "vargroups": [
+        "design"
       ]
     },
     {
@@ -2451,6 +2634,16 @@
       ]
     },
     {
+      "name": "imageUrl",
+      "title": "Image URL",
+      "type": "text",
+      "status": "approved",
+      "meaning": "Image for tiles and headers",
+      "vargroups": [
+        "system"
+      ]
+    },
+    {
       "name": "immersionsBothOn",
       "title": "Setup Times",
       "type": "boolean",
@@ -2629,6 +2822,16 @@
       "status": "approved",
       "vargroups": [
         "site"
+      ]
+    },
+    {
+      "name": "jobCode",
+      "title": "Job code",
+      "type": "text",
+      "status": "approved",
+      "meaning": "Operator job reference in force (QR scan); none clears",
+      "vargroups": [
+        "set"
       ]
     },
     {
@@ -2939,6 +3142,17 @@
       ]
     },
     {
+      "name": "kwhElectric",
+      "title": "Electricity register",
+      "type": "number",
+      "units": "kWh",
+      "status": "approved",
+      "meaning": "Electricity meter register",
+      "vargroups": [
+        "emeter"
+      ]
+    },
+    {
       "name": "kwhFinal",
       "title": "Final Meter Reading and Photo",
       "type": "number",
@@ -3159,6 +3373,17 @@
       "status": "approved",
       "vargroups": [
         "acceptance"
+      ]
+    },
+    {
+      "name": "m3",
+      "title": "Gas register (m³)",
+      "type": "number",
+      "units": "m³",
+      "status": "approved",
+      "meaning": "Gas meter register, whole cubic metres",
+      "vargroups": [
+        "gmeter"
       ]
     },
     {
@@ -4776,6 +5001,17 @@
       ]
     },
     {
+      "name": "mm3",
+      "title": "Gas register (sub-m³)",
+      "type": "number",
+      "units": "L",
+      "status": "approved",
+      "meaning": "Gas meter register, sub-cubic-metre part in litres",
+      "vargroups": [
+        "gmeter"
+      ]
+    },
+    {
       "name": "model",
       "title": "Cylinder Model",
       "type": "text",
@@ -5133,6 +5369,16 @@
       "status": "approved",
       "vargroups": [
         "acceptance"
+      ]
+    },
+    {
+      "name": "name",
+      "title": "Name",
+      "type": "text",
+      "status": "approved",
+      "meaning": "Display name of the element or site (on global/network: the site name)",
+      "vargroups": [
+        "system"
       ]
     },
     {
@@ -5653,6 +5899,16 @@
       "status": "approved",
       "vargroups": [
         "hnes_application"
+      ]
+    },
+    {
+      "name": "prep",
+      "title": "Prep mode",
+      "type": "boolean",
+      "status": "approved",
+      "meaning": "Prep mode active",
+      "vargroups": [
+        "status"
       ]
     },
     {
@@ -6323,12 +6579,33 @@
       ]
     },
     {
+      "name": "rhumidity",
+      "title": "Relative humidity",
+      "type": "number",
+      "units": "%RH",
+      "status": "approved",
+      "meaning": "Relative humidity",
+      "vargroups": [
+        "sensor"
+      ]
+    },
+    {
       "name": "riskRegister",
       "title": "Risk register",
       "type": "sheet",
       "status": "approved",
       "vargroups": [
         "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "run",
+      "title": "Running",
+      "type": "boolean",
+      "status": "approved",
+      "meaning": "Equipment running",
+      "vargroups": [
+        "status"
       ]
     },
     {
@@ -6570,6 +6847,17 @@
       ]
     },
     {
+      "name": "sessionIdleMinutes",
+      "title": "Session idle minutes",
+      "type": "number",
+      "units": "min",
+      "status": "approved",
+      "meaning": "Idle gap that closes an equipment session (spray booth firing sequence)",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
       "name": "settingDPCV",
       "title": "DPCV Setting",
       "type": "text",
@@ -6758,6 +7046,16 @@
       "status": "approved",
       "vargroups": [
         "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "spray",
+      "title": "Spray mode",
+      "type": "boolean",
+      "status": "approved",
+      "meaning": "Spray mode active",
+      "vargroups": [
+        "status"
       ]
     },
     {
@@ -7182,6 +7480,20 @@
       ]
     },
     {
+      "name": "tInlet",
+      "title": "Inlet temperature",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "meaning": "Inlet air temperature",
+      "aliases": [
+        "temperatureInlet"
+      ],
+      "vargroups": [
+        "sensor"
+      ]
+    },
+    {
       "name": "tLimitHTGRtn",
       "title": "tLimitHTGRtn",
       "type": "number",
@@ -7299,6 +7611,17 @@
       "status": "approved",
       "vargroups": [
         "design"
+      ]
+    },
+    {
+      "name": "tSet",
+      "title": "Temperature setpoint",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "meaning": "Temperature setpoint in force",
+      "vargroups": [
+        "setpoint"
       ]
     },
     {
@@ -7424,6 +7747,17 @@
       "status": "approved",
       "vargroups": [
         "design"
+      ]
+    },
+    {
+      "name": "temperature",
+      "title": "Temperature",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "meaning": "Air or space temperature at the element",
+      "vargroups": [
+        "sensor"
       ]
     },
     {
@@ -7742,6 +8076,17 @@
       ]
     },
     {
+      "name": "voc",
+      "title": "VOC",
+      "type": "number",
+      "units": "ppb",
+      "status": "approved",
+      "meaning": "Volatile organic compounds concentration",
+      "vargroups": [
+        "sensor"
+      ]
+    },
+    {
       "name": "voltageRoomStat",
       "title": "Room thermostat volt-free",
       "type": "select",
@@ -7775,6 +8120,39 @@
       "status": "approved",
       "vargroups": [
         "acceptance"
+      ]
+    },
+    {
+      "name": "wattsL1",
+      "title": "Power L1",
+      "type": "number",
+      "units": "W",
+      "status": "approved",
+      "meaning": "Active power, phase 1",
+      "vargroups": [
+        "emeter"
+      ]
+    },
+    {
+      "name": "wattsL2",
+      "title": "Power L2",
+      "type": "number",
+      "units": "W",
+      "status": "approved",
+      "meaning": "Active power, phase 2",
+      "vargroups": [
+        "emeter"
+      ]
+    },
+    {
+      "name": "wattsL3",
+      "title": "Power L3",
+      "type": "number",
+      "units": "W",
+      "status": "approved",
+      "meaning": "Active power, phase 3",
+      "vargroups": [
+        "emeter"
       ]
     },
     {

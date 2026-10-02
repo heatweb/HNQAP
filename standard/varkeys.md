@@ -1,23 +1,29 @@
 # Varkeys
 
-Generated from `vocabulary.json` exported 2026-10-02T01:02:07.247Z. 838 names.
+Generated from `vocabulary.json` exported 2026-10-02T01:15:50.927Z. 868 names.
 
 A varkey may be allowed under more than one vargroup; it is listed under each. The shape (type, units) is the same everywhere.
 
 ## Index
 - [`acceptance`](#acceptance) (238)
 - [`callout`](#callout) (5)
-- [`design`](#design) (113)
+- [`design`](#design) (120)
 - [`device`](#device) (1)
+- [`emeter`](#emeter) (7)
+- [`gmeter`](#gmeter) (3)
 - [`hnes_application`](#hnes_application) (31)
 - [`hnes_asmt`](#hnes_asmt) (140)
 - [`hnes_rev_study`](#hnes_rev_study) (77)
 - [`hnes_rfi`](#hnes_rfi) (25)
 - [`model_signoff`](#model_signoff) (18)
 - [`onboarding`](#onboarding) (16)
+- [`sensor`](#sensor) (4)
+- [`set`](#set) (1)
+- [`setpoint`](#setpoint) (1)
 - [`site`](#site) (1)
+- [`status`](#status) (7)
 - [`survey`](#survey) (201)
-- [`system`](#system) (1)
+- [`system`](#system) (3)
 - [`wp_replace_pressure_gauge`](#wp_replace_pressure_gauge) (7)
 
 ## acceptance
@@ -289,6 +295,8 @@ A varkey may be allowed under more than one vargroup; it is listed under each. T
 | `boilerkWxN1` | number |  | boilerkWxN1 |  |  | approved |
 | `borePeak` | number |  | borePeak |  |  | approved |
 | `bufferkWh` | number |  | bufferkWh |  |  | approved |
+| `carbonFactorElec` | number | kgCO2e/kWh | Electricity carbon factor | Carbon factor for grid electricity | co2Elec | approved |
+| `carbonFactorGas` | number | kgCO2e/kWh | Gas carbon factor | Carbon factor for gas (UK Government GHG conversion factors) | co2Gas | approved |
 | `connectionCH` | select |  | Central heating connection |  |  | approved |
 | `dDaysCalc` | number |  | dDaysCalc |  |  | approved |
 | `dDaysPeak` | number |  | dDaysPeak |  |  | approved |
@@ -298,11 +306,15 @@ A varkey may be allowed under more than one vargroup; it is listed under each. T
 | `divCH` | number | % | Central heating diversity |  |  | approved |
 | `efficiency` | number | % | Minimum Generation Efficiency |  |  | approved |
 | `elecEmissions` | number | kgCO2/kWh | Electrical Supply Emissions |  |  | approved |
+| `elecPrice` | number | p/kWh | Electricity unit price | Electricity unit price | costElec | approved |
 | `email` | email |  | Email address |  |  | approved |
 | `eqDaysPeak` | number |  | eqDaysPeak |  |  | approved |
 | `eqPropDS439` | number |  | eqPropDS439 |  |  | approved |
 | `fridgeASHP` | select |  | ASHP refrigerant |  |  | approved |
 | `fridgeWSHP` | select |  | WSHP refrigerant |  |  | approved |
+| `gasCalorificValue` | number | MJ/m³ | Gas calorific value | Calorific value used to convert metered gas m³ to kWh (kWh = m³ × correction × CV ÷ 3.6) | calorificGas | approved |
+| `gasPrice` | number | p/kWh | Gas unit price | Gas unit price | costGas | approved |
+| `gasVolumeCorrection` | number | factor | Gas volume correction | Gas volume correction factor applied to metered m³ |  | approved |
 | `goASHP` | boolean |  | Air Source Heat Pumps |  |  | approved |
 | `goBoilers` | boolean |  | Boilers |  |  | approved |
 | `goCHP` | boolean |  | Combined Heat & Power |  |  | approved |
@@ -360,6 +372,7 @@ A varkey may be allowed under more than one vargroup; it is listed under each. T
 | `selectASHP` | object | n x kW | ASHP selection |  |  | approved |
 | `selectBoilers` | object | n x kW | Boiler selection |  |  | approved |
 | `selectWSHP` | object | n x kW | WSHP selection |  |  | approved |
+| `sessionIdleMinutes` | number | min | Session idle minutes | Idle gap that closes an equipment session (spray booth firing sequence) |  | approved |
 | `sparekW` | number |  | sparekW |  |  | approved |
 | `substationType` | select |  | Substation Type |  |  | approved |
 | `supplyCWS` | select |  | CWS Supply |  |  | approved |
@@ -396,6 +409,26 @@ A varkey may be allowed under more than one vargroup; it is listed under each. T
 | Varkey | Type | Units | Title | Meaning | Aliases | Status |
 |---|---|---|---|---|---|---|
 | `typeDHW` | select |  | DHW Type |  |  | approved |
+
+## emeter
+
+| Varkey | Type | Units | Title | Meaning | Aliases | Status |
+|---|---|---|---|---|---|---|
+| `ampsL1` | number | A | Current L1 | Current, phase 1 |  | approved |
+| `ampsL2` | number | A | Current L2 | Current, phase 2 |  | approved |
+| `ampsL3` | number | A | Current L3 | Current, phase 3 |  | approved |
+| `kwhElectric` | number | kWh | Electricity register | Electricity meter register |  | approved |
+| `wattsL1` | number | W | Power L1 | Active power, phase 1 |  | approved |
+| `wattsL2` | number | W | Power L2 | Active power, phase 2 |  | approved |
+| `wattsL3` | number | W | Power L3 | Active power, phase 3 |  | approved |
+
+## gmeter
+
+| Varkey | Type | Units | Title | Meaning | Aliases | Status |
+|---|---|---|---|---|---|---|
+| `gasFlow` | number | m³/h | Gas flow rate | Instantaneous gas flow rate |  | approved |
+| `m3` | number | m³ | Gas register (m³) | Gas meter register, whole cubic metres |  | approved |
+| `mm3` | number | L | Gas register (sub-m³) | Gas meter register, sub-cubic-metre part in litres |  | approved |
 
 ## hnes_application
 
@@ -612,11 +645,11 @@ A varkey may be allowed under more than one vargroup; it is listed under each. T
 | `decarbPathway` | richtext |  | Decarbonisation pathway |  |  | approved |
 | `discountRate` | number | % | Discount rate |  |  | approved |
 | `disseminationPlan` | richtext |  | Dissemination |  |  | approved |
-| `elecPrice` | number | p/kWh | Electricity unit price |  |  | approved |
+| `elecPrice` | number | p/kWh | Electricity unit price | Electricity unit price | costElec | approved |
 | `elecPriceForecast` | number | p/kWh | Electricity price (analysis) |  |  | approved |
 | `energyBalance` | sheet |  | Annual energy balance |  |  | approved |
 | `forecastSpend` | number | GBP | Forecast to completion |  |  | approved |
-| `gasPrice` | number | p/kWh | Gas unit price |  |  | approved |
+| `gasPrice` | number | p/kWh | Gas unit price | Gas unit price | costGas | approved |
 | `gasPriceForecast` | number | p/kWh | Gas price (analysis) |  |  | approved |
 | `grantAmount` | number | GBP | HNES grant award |  |  | approved |
 | `heatLossModel` | sheet |  | Heat loss model segments |  |  | approved |
@@ -734,11 +767,44 @@ A varkey may be allowed under more than one vargroup; it is listed under each. T
 | `unventedG3` | boolean |  | Unvented (G3) Qualified |  |  | approved |
 | `vatNo` | text |  | VAT Number |  |  | approved |
 
+## sensor
+
+| Varkey | Type | Units | Title | Meaning | Aliases | Status |
+|---|---|---|---|---|---|---|
+| `rhumidity` | number | %RH | Relative humidity | Relative humidity |  | approved |
+| `temperature` | number | °C | Temperature | Air or space temperature at the element |  | approved |
+| `tInlet` | number | °C | Inlet temperature | Inlet air temperature | temperatureInlet | approved |
+| `voc` | number | ppb | VOC | Volatile organic compounds concentration |  | approved |
+
+## set
+
+| Varkey | Type | Units | Title | Meaning | Aliases | Status |
+|---|---|---|---|---|---|---|
+| `jobCode` | text |  | Job code | Operator job reference in force (QR scan); none clears |  | approved |
+
+## setpoint
+
+| Varkey | Type | Units | Title | Meaning | Aliases | Status |
+|---|---|---|---|---|---|---|
+| `tSet` | number | °C | Temperature setpoint | Temperature setpoint in force |  | approved |
+
 ## site
 
 | Varkey | Type | Units | Title | Meaning | Aliases | Status |
 |---|---|---|---|---|---|---|
 | `issueN1` | textarea |  | Network Wide Issue 1 |  |  | approved |
+
+## status
+
+| Varkey | Type | Units | Title | Meaning | Aliases | Status |
+|---|---|---|---|---|---|---|
+| `bake` | boolean |  | Bake mode | Bake mode active |  | approved |
+| `cool` | boolean |  | Cool-down | Cool-down active |  | approved |
+| `emac` | boolean |  | Emergency stop | Emergency stop / forced off |  | approved |
+| `flashoff` | boolean |  | Flash-off mode | Flash-off mode active |  | approved |
+| `prep` | boolean |  | Prep mode | Prep mode active |  | approved |
+| `run` | boolean |  | Running | Equipment running |  | approved |
+| `spray` | boolean |  | Spray mode | Spray mode active |  | approved |
 
 ## survey
 
@@ -950,6 +1016,8 @@ A varkey may be allowed under more than one vargroup; it is listed under each. T
 
 | Varkey | Type | Units | Title | Meaning | Aliases | Status |
 |---|---|---|---|---|---|---|
+| `imageUrl` | text |  | Image URL | Image for tiles and headers |  | approved |
+| `name` | text |  | Name | Display name of the element or site (on global/network: the site name) |  | approved |
 | `qrCode` | text |  | QR / Label Code |  |  | approved |
 
 ## wp_replace_pressure_gauge
