@@ -30,8 +30,8 @@ the column name in exports.
 
 | # | Level | Identifies | Examples |
 |---|---|---|---|
-| 1 | **schema** | The owning organisation or partner group; one database partition | `heatweb`, `jaguar`, `akzonobel` |
-| 2 | **network** | A site: a heat network or a body shop | `onecrownplace`, `didcot` |
+| 1 | **schema** | The owning organisation or partner group; one database partition | `heatweb`, `acme`, `org_name` |
+| 2 | **network** | A site: a heat network or a body shop | `riverside_court`, `unit4_bodyshop` |
 | 3 | **element** (node) | A thing on the site with its own identity: an energy centre, substation, dwelling (consumer connection), BMS controller. `global` = the site itself | `ec1`, `cc14`, `b1_4_130`, `global` |
 | 4 | **device** | A physical device within the element; `network` for site-wide values on `global` | `boiler1`, `pump1`, `hiu1`, `cp1`, a serial number, `network` |
 | 5 | **vargroup** | The *kind* of value — what sort of thing it is, not which process produced it | `sensor`, `hmeter`, `gmeter`, `emeter`, `status`, `setpoint`, `set`, `design`, `system`, `acceptance` |
@@ -44,7 +44,7 @@ heatweb/myHeatNetwork/energycentre/boiler1/sensor/tF        = 73.5
 heatweb/myHeatNetwork/energycentre/boiler1/gmeter/m3Gas     = 16353499.1
 heatweb/myHeatNetwork/b1_4_130/hiu1/acceptance/tSetpointDHW = 52.5
 heatweb/myHeatNetwork/global/network/design/gasCalorificValue = 39.5
-akzonobel/didcot/cp1/cp1/status/spray                       = 1
+acme/unit4_bodyshop/cp1/cp1/status/spray                    = 1
 ```
 
 ### Why the levels are MQTT-shaped
