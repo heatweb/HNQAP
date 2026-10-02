@@ -1,0 +1,7817 @@
+{
+  "$schema": "heatweb-vocabulary/1",
+  "exportedAt": "2026-10-02T01:02:07.247Z",
+  "source": {
+    "registry": "Heatweb vocabulary registry",
+    "published": "https://github.com/heatweb/HNQAP/tree/main/standard"
+  },
+  "rule": "A varkey name has ONE shape (type, units) everywhere. Reuse an approved name before minting; nominate new names in the Heatweb registry so both products stay on one dictionary.",
+  "vargroups": [
+    {
+      "name": "acceptance",
+      "title": "acceptance",
+      "kind": "process"
+    },
+    {
+      "name": "callout",
+      "title": "callout",
+      "kind": "process"
+    },
+    {
+      "name": "design",
+      "title": "design",
+      "kind": "shared"
+    },
+    {
+      "name": "device",
+      "title": "device",
+      "kind": "system_record"
+    },
+    {
+      "name": "hnes_application",
+      "title": "hnes_application",
+      "kind": "process"
+    },
+    {
+      "name": "hnes_asmt",
+      "title": "hnes_asmt",
+      "kind": "process"
+    },
+    {
+      "name": "hnes_rev_study",
+      "title": "hnes_rev_study",
+      "kind": "process"
+    },
+    {
+      "name": "hnes_rfi",
+      "title": "hnes_rfi",
+      "kind": "process"
+    },
+    {
+      "name": "model_signoff",
+      "title": "model_signoff",
+      "kind": "process"
+    },
+    {
+      "name": "onboarding",
+      "title": "onboarding",
+      "kind": "process"
+    },
+    {
+      "name": "site",
+      "title": "site",
+      "kind": "system_record"
+    },
+    {
+      "name": "survey",
+      "title": "survey",
+      "kind": "process"
+    },
+    {
+      "name": "system",
+      "title": "system",
+      "kind": "shared"
+    },
+    {
+      "name": "wp_replace_pressure_gauge",
+      "title": "wp_replace_pressure_gauge",
+      "kind": "process"
+    }
+  ],
+  "varkeys": [
+    {
+      "name": "3AFusedSpur",
+      "title": "3 Amp Fused Spur",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "ASHPQty",
+      "title": "ASHPQty",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "ASHPkW",
+      "title": "ASHPkW",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "ASHPkWPeak",
+      "title": "ASHPkWPeak",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "ASHPkWxN1",
+      "title": "ASHPkWxN1",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "WSHPQty",
+      "title": "WSHPQty",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "WSHPkW",
+      "title": "WSHPkW",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "WSHPkWPeak",
+      "title": "WSHPkWPeak",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "WSHPkWxN1",
+      "title": "WSHPkWxN1",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "accessSafeToWork",
+      "title": "Safe Access",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "actionsPerformed",
+      "title": "Actions Performed",
+      "type": "richtext",
+      "status": "approved",
+      "vargroups": [
+        "callout"
+      ]
+    },
+    {
+      "name": "actionsRecommended",
+      "title": "Actions Recommended",
+      "type": "richtext",
+      "status": "approved",
+      "vargroups": [
+        "callout"
+      ]
+    },
+    {
+      "name": "adeyProChecked",
+      "title": "Adey Pro-Checked",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "adjustedDPCV",
+      "title": "DPCV Adjusted to Design Flowrate",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "adjustments",
+      "title": "Adjustments",
+      "type": "textarea",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "airVentsRiser",
+      "title": "Air Vents at Riser Tops",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "allAppliancesCommissioned",
+      "title": "All Appliances Commissioned",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "allLabelsAttached",
+      "title": "All Labels Attached",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "allOff1",
+      "title": "Check All Off",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "allOff2",
+      "title": "Check All Off",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "allOff2b",
+      "title": "Check Bath Off",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "allOff3",
+      "title": "Check All Off",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "allStrainersCleaned",
+      "title": "All Strainers Cleaned",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "allowPipeDiff",
+      "title": "Allow different flow and return pipe sizing",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "alternativesDecision",
+      "title": "Alternatives decision",
+      "type": "richtext",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "ambientRiser",
+      "title": "Riser / Corridor Ambient Temperature",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "analysisYears",
+      "title": "Analysis period",
+      "type": "integer",
+      "units": "years",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "armsLetter",
+      "title": "ARMS permission letter (template)",
+      "type": "textarea",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rfi"
+      ]
+    },
+    {
+      "name": "armsLetterSent",
+      "title": "ARMS permission letter sent",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rfi"
+      ]
+    },
+    {
+      "name": "assumptionsConfirmed",
+      "title": "Assumptions appropriate for this network",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "model_signoff"
+      ]
+    },
+    {
+      "name": "baseTemp",
+      "title": "Base temperature",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "baselineConfidence",
+      "title": "Baseline confidence",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "baselineKpis",
+      "title": "Baseline and target KPIs",
+      "type": "sheet",
+      "status": "approved",
+      "vargroups": [
+        "hnes_application"
+      ]
+    },
+    {
+      "name": "benchmarkCompleted",
+      "title": "CYLINDER BENCHMARK FORM BEEN COMPLETED",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "bleedHIU",
+      "title": "Bleed air from HIU",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "bmsAccess",
+      "title": "BMS Access",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "boilerEmissions",
+      "title": "Boiler Emissions",
+      "type": "number",
+      "units": "kgCO2/kWh",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "boilerFuel",
+      "title": "Boiler fuel type",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "design",
+        "survey"
+      ]
+    },
+    {
+      "name": "boilerkWPeak",
+      "title": "boilerkWPeak",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "boilerkWxN1",
+      "title": "boilerkWxN1",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "borePeak",
+      "title": "borePeak",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "budgetLines",
+      "title": "Budget by works package",
+      "type": "sheet",
+      "status": "approved",
+      "vargroups": [
+        "hnes_application"
+      ]
+    },
+    {
+      "name": "bufferCondition",
+      "title": "Condition",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "bufferConfig",
+      "title": "Hydraulic Configuration",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "bufferInsulation",
+      "title": "Insulation",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "bufferSensors",
+      "title": "Temperature Sensors",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "bufferVolume",
+      "title": "Volume",
+      "type": "number",
+      "units": "l",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "bufferkWh",
+      "title": "bufferkWh",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "bulkMetering",
+      "title": "Bulk heat metering at energy centre",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "bypassEndLateral",
+      "title": "End-of-Lateral Bypasses",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "bypassRegister",
+      "title": "Bypass Register",
+      "type": "sheet",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "bypassTopRiser",
+      "title": "Top-of-Riser Bypasses",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "calLegionella",
+      "title": "Legionella Regime",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "calPresent",
+      "title": "Calorifiers / Cylinders",
+      "type": "textarea",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "calTemps",
+      "title": "Storage Temperature",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "calcAnnualCarbon",
+      "title": "calcAnnualCarbon",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "calcAnnualElec",
+      "title": "calcAnnualElec",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "calcAnnualGas",
+      "title": "calcAnnualGas",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "calcCarbonContent",
+      "title": "calcCarbonContent",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "calcDistributionEfficiency",
+      "title": "calcDistributionEfficiency",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "calcEb",
+      "title": "calcEb",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "calcEffCurve",
+      "title": "calcEffCurve",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "calcHeatCost",
+      "title": "calcHeatCost",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "calcHeatDelivered",
+      "title": "calcHeatDelivered",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "calcHeatGenerated",
+      "title": "calcHeatGenerated",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "calcHeatLeavingEc",
+      "title": "calcHeatLeavingEc",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "calcHlm",
+      "title": "calcHlm",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "calcLossPerDwelling",
+      "title": "calcLossPerDwelling",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "calcLossesPrimary",
+      "title": "calcLossesPrimary",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "calcLossesSecondary",
+      "title": "calcLossesSecondary",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "calcLossesTotal",
+      "title": "calcLossesTotal",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "calcNetworkEfficiency",
+      "title": "calcNetworkEfficiency",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "carbonPrice",
+      "title": "Carbon value",
+      "type": "number",
+      "units": "GBP/tCO2e",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "causesSummary",
+      "title": "Causes of sub-optimal performance",
+      "type": "textarea",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "ccBypassPresent",
+      "title": "Consumer Bypass",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "ccCupboardInsulation",
+      "title": "Cupboard Insulation (BS 5422)",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "ccDhwStabilised",
+      "title": "Stabilised DHW Temperature",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "ccDhwTime45",
+      "title": "Time to 45 °C at Kitchen Tap",
+      "type": "number",
+      "units": "s",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "ccVentSystem",
+      "title": "Ventilation System",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "checkCasing",
+      "title": "HIU Casing",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "checkFLoop1",
+      "title": "Check Filling Loop",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "acceptance",
+        "wp_replace_pressure_gauge"
+      ]
+    },
+    {
+      "name": "checkFLoop2",
+      "title": "Filling Loop Disconnected & Capped",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "checkFlushingBypass",
+      "title": "Flushing Bypass",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "checkHeatMeter",
+      "title": "Heat Meter",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "checkParameters",
+      "title": "Paramaters Adjusted",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "checkPrimaryStrainer",
+      "title": "Check Primary Strainer",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "checkPumpOff",
+      "title": "Check Pump Off",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "checkTRVs",
+      "title": "TRVs Adjusted",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "checkTestPoints",
+      "title": "Differential Pressure Test Points",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "chpCondition",
+      "title": "Condition",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "chpElecEff",
+      "title": "CHP electrical efficiency",
+      "type": "number",
+      "units": "%",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "chpElecOutput",
+      "title": "Electrical Output",
+      "type": "number",
+      "units": "kWe",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "chpHoursRun",
+      "title": "Hours Run",
+      "type": "number",
+      "units": "h",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "chpMakeModel",
+      "title": "Make and Model",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "chpQI",
+      "title": "Quality Index",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "chpThermalOutput",
+      "title": "Thermal Output",
+      "type": "number",
+      "units": "kW",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "ciuCondition",
+      "title": "CIU Condition",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "ciuDataPlate",
+      "title": "Data Plate",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "classBS8635",
+      "title": "classBS8635",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "cleanCombiValve",
+      "title": "Clean Combination Valve",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "clientName",
+      "title": "Applicant organisation",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "hnes_application",
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "commValves",
+      "title": "Commissioning Valves & Settings",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "companyAddress",
+      "title": "Registered Address",
+      "type": "textarea",
+      "status": "approved",
+      "vargroups": [
+        "onboarding"
+      ]
+    },
+    {
+      "name": "companyName",
+      "title": "Company Name",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "onboarding"
+      ]
+    },
+    {
+      "name": "companyRegNo",
+      "title": "Company Registration No.",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "onboarding"
+      ]
+    },
+    {
+      "name": "connectionCH",
+      "title": "Central heating connection",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "design",
+        "survey"
+      ]
+    },
+    {
+      "name": "connectionsCheckedBasin",
+      "title": "APPLIANCE CONNECTIONS CHECKED",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "connectorCheckedToilet",
+      "title": "FLUSH PIPE/ SOIL PAN CONNECTOR CHECKED",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "contactEmail",
+      "title": "Contact Email",
+      "type": "email",
+      "status": "approved",
+      "vargroups": [
+        "onboarding"
+      ]
+    },
+    {
+      "name": "contactName",
+      "title": "Primary Contact",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "onboarding"
+      ]
+    },
+    {
+      "name": "contactPhone",
+      "title": "Contact Phone",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "onboarding"
+      ]
+    },
+    {
+      "name": "coolingOperation",
+      "title": "Cooling Operation",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "costBasisNotes",
+      "title": "Costing basis",
+      "type": "textarea",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "ctrlARMS",
+      "title": "Remote Monitoring (ARMS)",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "ctrlAlarms",
+      "title": "Alarms",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "ctrlBMS",
+      "title": "Control System",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "ctrlSetpointsDoc",
+      "title": "Setpoints Recorded",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "ctrlTimeClock",
+      "title": "Time Schedules",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "ctrlWeatherComp",
+      "title": "Weather Compensation",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "customersInNeedPct",
+      "title": "Customers in need",
+      "type": "number",
+      "units": "%",
+      "status": "approved",
+      "vargroups": [
+        "hnes_application"
+      ]
+    },
+    {
+      "name": "dDaysCalc",
+      "title": "dDaysCalc",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "dDaysPeak",
+      "title": "dDaysPeak",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "dataGaps",
+      "title": "Data gaps and estimates",
+      "type": "textarea",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "dataSharingConfirm",
+      "title": "Data sharing accepted",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "hnes_application"
+      ]
+    },
+    {
+      "name": "dataSources",
+      "title": "Data sources register",
+      "type": "sheet",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "dateToday",
+      "title": "dateToday",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "ddAccessChambers",
+      "title": "Access Chambers",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "ddBypasses",
+      "title": "Bypasses",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "ddInsulationRoute",
+      "title": "Route Insulation",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "ddLeakDetection",
+      "title": "Leak Detection",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "ddPipeSizes",
+      "title": "Pipe Sizes",
+      "type": "textarea",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "ddRouteCondition",
+      "title": "Route Condition",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "decarbPathway",
+      "title": "Decarbonisation pathway",
+      "type": "richtext",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "degDays",
+      "title": "Central heating degree-days at base temperature",
+      "type": "number",
+      "units": "°days",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "degDaysAvg",
+      "title": "Central heating degree-days",
+      "type": "csv",
+      "units": "°days",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "deliverability",
+      "title": "Deliverability and risk",
+      "type": "richtext",
+      "status": "approved",
+      "vargroups": [
+        "hnes_application"
+      ]
+    },
+    {
+      "name": "density",
+      "title": "density",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "discountRate",
+      "title": "Discount rate",
+      "type": "number",
+      "units": "%",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "disseminationPlan",
+      "title": "Dissemination",
+      "type": "richtext",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "divCH",
+      "title": "Central heating diversity",
+      "type": "number",
+      "units": "%",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "dooAvailable",
+      "title": "Description of Operation",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "dp1",
+      "title": "Initial Readings, Differential Pressure",
+      "type": "number",
+      "units": "kPa",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "dp1calc",
+      "title": "dp1calc",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "dpDHWPeak",
+      "title": "DHW Readings, Differential Pressure",
+      "type": "number",
+      "units": "kPa",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "dwellingsLocated",
+      "title": "Every dwelling has a block and floor",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "model_signoff"
+      ]
+    },
+    {
+      "name": "ecAmbientTemp",
+      "title": "Plant Room Ambient Temperature",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "ecBoundaryMeter",
+      "title": "Boundary Heat Meter (EC3)",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "ecFloorDrainage",
+      "title": "Drainage",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "ecFuelInputMeters",
+      "title": "Fuel Input Metering (EC1)",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "ecHeatSources",
+      "title": "Heat Source Inventory",
+      "type": "textarea",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "ecPlaced",
+      "title": "Energy centre positioned",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "model_signoff"
+      ]
+    },
+    {
+      "name": "ecPumpElecMeter",
+      "title": "Pump Electricity Meter (EC4)",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "ecResilience",
+      "title": "Resilience",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "ecRoomCondition",
+      "title": "Plant Room Condition",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "ecTopUpMeter",
+      "title": "Top-up Water Meter",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "ecTopUpReading",
+      "title": "Top-up Meter Reading",
+      "type": "number",
+      "units": "m3",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "ecVentilation",
+      "title": "Ventilation",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "efficiency",
+      "title": "Minimum Generation Efficiency",
+      "type": "number",
+      "units": "%",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "efficiencyCurve",
+      "title": "Generation efficiency curve",
+      "type": "sheet",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "elecEmissions",
+      "title": "Electrical Supply Emissions",
+      "type": "number",
+      "units": "kgCO2/kWh",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "elecPrice",
+      "title": "Electricity unit price",
+      "type": "number",
+      "units": "p/kWh",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "elecPriceForecast",
+      "title": "Electricity price (analysis)",
+      "type": "number",
+      "units": "p/kWh",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "elementAccess",
+      "title": "Access Arrangements",
+      "type": "textarea",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "elementLocation",
+      "title": "Location",
+      "type": "textarea",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "elementOverviewPhoto",
+      "title": "Element Overview Photo",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "elementRef",
+      "title": "Element Reference",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "elementsComplete",
+      "title": "All network elements are defined",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "model_signoff"
+      ]
+    },
+    {
+      "name": "email",
+      "title": "Email address",
+      "type": "email",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "energyBalance",
+      "title": "Annual energy balance",
+      "type": "sheet",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "engineerName",
+      "title": "Engineer Name",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "onboarding"
+      ]
+    },
+    {
+      "name": "engineerPhone",
+      "title": "Engineer Phone",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "onboarding"
+      ]
+    },
+    {
+      "name": "eoiChecklist",
+      "title": "Readiness checklist",
+      "type": "sheet",
+      "status": "approved",
+      "vargroups": [
+        "hnes_application"
+      ]
+    },
+    {
+      "name": "eoiSummary",
+      "title": "Expression-of-interest summary",
+      "type": "richtext",
+      "status": "approved",
+      "vargroups": [
+        "hnes_application"
+      ]
+    },
+    {
+      "name": "eqDaysPeak",
+      "title": "eqDaysPeak",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "eqPropDS439",
+      "title": "eqPropDS439",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "equipIsolation",
+      "title": "Safe Isolation & Maintainability",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "equipRatings",
+      "title": "Ratings vs Operating Conditions",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "expectedOutcomes",
+      "title": "Expected outcomes",
+      "type": "richtext",
+      "status": "approved",
+      "vargroups": [
+        "hnes_application"
+      ]
+    },
+    {
+      "name": "fDHW",
+      "title": "DHW Readings, Kitchen Tap Flow Rate",
+      "type": "number",
+      "units": "ltr/min",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "fDHWBasin",
+      "title": "Bathroom Basin Tap Flow Rate",
+      "type": "number",
+      "units": "ltr/min",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "fDHWBath",
+      "title": "Bath Tap Flow Rate",
+      "type": "number",
+      "units": "ltr/min",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "failsafeBasin",
+      "title": "Bathroom Basin Tap Fail Safe",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "fcuWorking",
+      "title": "FCU Working",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "flowLimitKitchen",
+      "title": "Flow Limiters Installed on Kitchen Tap",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "flushedCylinder",
+      "title": "Hot water cylinder drained and flushed",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "flusherCheckedToilet",
+      "title": "Toilet Flusher Checked",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "followUpBy",
+      "title": "Follow Up By",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "followUpRequired",
+      "title": "Follow Up",
+      "type": "textarea",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "footprintsAssigned",
+      "title": "Building footprints assigned",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "model_signoff"
+      ]
+    },
+    {
+      "name": "forecastSpend",
+      "title": "Forecast to completion",
+      "type": "number",
+      "units": "GBP",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "fridgeASHP",
+      "title": "ASHP refrigerant",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "fridgeWSHP",
+      "title": "WSHP refrigerant",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "gasPrice",
+      "title": "Gas unit price",
+      "type": "number",
+      "units": "p/kWh",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "gasPriceForecast",
+      "title": "Gas price (analysis)",
+      "type": "number",
+      "units": "p/kWh",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "gasSafeIdNumber",
+      "title": "Gas Safe ID No.",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "onboarding"
+      ]
+    },
+    {
+      "name": "gasSafeNumber",
+      "title": "Gas Safe Registration No.",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "onboarding"
+      ]
+    },
+    {
+      "name": "gbBadgePhoto",
+      "title": "Data Badge Photo",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "gbCondition",
+      "title": "Condition",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "gbControls",
+      "title": "Boiler Controls",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "gbFlowTemp",
+      "title": "Operating Flow Temperature",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "gbFlueCondition",
+      "title": "Flue Condition",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "gbFlueType",
+      "title": "Flue Arrangement",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "gbGrossEfficiency",
+      "title": "Gross Efficiency",
+      "type": "number",
+      "units": "%",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "gbIsolation",
+      "title": "Isolation Valves",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "gbLeaks",
+      "title": "Leaks",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "gbMakeModel",
+      "title": "Make and Model",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "gbOutput",
+      "title": "Rated Output",
+      "type": "number",
+      "units": "kW",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "gbReturnTemp",
+      "title": "Operating Return Temperature",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "gbServiceRecord",
+      "title": "Service Record",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "gbYear",
+      "title": "Year of Manufacture",
+      "type": "integer",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "generalCondition",
+      "title": "General Condition",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "generatorType",
+      "title": "Boiler type",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "goASHP",
+      "title": "Air Source Heat Pumps",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "goBoilers",
+      "title": "Boilers",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "goCHP",
+      "title": "Combined Heat & Power",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "goHN",
+      "title": "External Heat Network Supply",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "goReclaim",
+      "title": "Cooling Source Heat Pumps",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "goSave",
+      "title": "Save design",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "goSolar",
+      "title": "Solar Thermal",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "goWSHP",
+      "title": "Water Source Heat Pumps",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "grantAmount",
+      "title": "HNES grant award",
+      "type": "number",
+      "units": "GBP",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "grantType",
+      "title": "Grant type",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "hnes_application"
+      ]
+    },
+    {
+      "name": "hHighPoint",
+      "title": "System height",
+      "type": "number",
+      "units": "m",
+      "status": "approved",
+      "vargroups": [
+        "design",
+        "survey"
+      ]
+    },
+    {
+      "name": "heatLossModel",
+      "title": "Heat loss model segments",
+      "type": "sheet",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "heatingFlushed",
+      "title": "Central Heating Flushed",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "heatingLeakFree",
+      "title": "Central Heating Free from Leaks",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "acceptance",
+        "wp_replace_pressure_gauge"
+      ]
+    },
+    {
+      "name": "heatingStrainerClean",
+      "title": "Central Heating Strainer Clean",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "hiuModel",
+      "title": "HIU Make and Model",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "hiuParameters",
+      "title": "HIU Parameters",
+      "type": "sheet",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "hiuType",
+      "title": "HIU Type",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "hmCalibration",
+      "title": "Calibration",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "hmClass",
+      "title": "Accuracy Class",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "hmEnergyRead",
+      "title": "Energy Reading",
+      "type": "number",
+      "units": "kWh",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "hmErrorCodes",
+      "title": "Error Codes",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "hmFlowRate",
+      "title": "Flow Rate",
+      "type": "number",
+      "units": "m³/h",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "hmFlowTemp",
+      "title": "Flow Temperature",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "hmLocation",
+      "title": "Meter Location",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "hmMakeModel",
+      "title": "Make and Model",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "hmRemoteReads",
+      "title": "Remote Reading",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "hmReturnTemp",
+      "title": "Return Temperature",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "hmSerial",
+      "title": "Serial Number",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "hmVolumeRead",
+      "title": "Volume Reading",
+      "type": "number",
+      "units": "m3",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "hotColdCheckedBasin",
+      "title": "Hot and Cold Taps Checked",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "hotColdCheckedBath",
+      "title": "HOT AND COLD CHECKED",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "hotColdCheckedKitchen",
+      "title": "HOT AND COLD CHECKED",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "hotColdCheckedShower",
+      "title": "HOT AND COLD CHECKED",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "hpBadgePhoto",
+      "title": "Data Badge Photo",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "hpCOP",
+      "title": "Stated COP",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "hpCondition",
+      "title": "Condition",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "hpElecMeter",
+      "title": "Electricity Metering",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "hpMakeModel",
+      "title": "Make and Model",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "hpNoise",
+      "title": "Noise / Vibration",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "hpOutput",
+      "title": "Rated Output",
+      "type": "number",
+      "units": "kW",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "hpRefrigerant",
+      "title": "Refrigerant",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "hpServiceRecord",
+      "title": "Service Record",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "hpType",
+      "title": "Heat Pump Type",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "htgControlsChecked",
+      "title": "Heating Controls Checked",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "hydraulicSeparation",
+      "title": "Hydraulic Separation",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "immersionsBothOn",
+      "title": "Setup Times",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "indexTap3Bar",
+      "title": "PRV set for 3 bar at Index Tap",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "initialFindings",
+      "title": "Initial Findings",
+      "type": "richtext",
+      "status": "approved",
+      "vargroups": [
+        "callout"
+      ]
+    },
+    {
+      "name": "insulationCondition",
+      "title": "Insulation Condition",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "insulationSpec",
+      "title": "Insulation Material & Thickness",
+      "type": "textarea",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "insuranceCertificate",
+      "title": "Insurance Certificate",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "onboarding"
+      ]
+    },
+    {
+      "name": "isBath",
+      "title": "Bath tub fitted",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "isEnsuite1",
+      "title": "Ensuite with Shower",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "isToilet",
+      "title": "Bathroom fitted with toilet",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "acceptance",
+        "survey"
+      ]
+    },
+    {
+      "name": "isoValveLocations",
+      "title": "Isolation Valves",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "isolationCheckedToilet",
+      "title": "ISOLATION VALVE CHECKED",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "issue1",
+      "title": "Issue 1",
+      "type": "textarea",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "issue2",
+      "title": "Issue 2",
+      "type": "textarea",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "issue3",
+      "title": "Issue 3",
+      "type": "textarea",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "issue4",
+      "title": "Issue 4",
+      "type": "textarea",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "issue5",
+      "title": "Issue 5",
+      "type": "textarea",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "issue6",
+      "title": "Issue 6",
+      "type": "textarea",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "issue7",
+      "title": "Issue 7",
+      "type": "textarea",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "issue8",
+      "title": "Issue 8",
+      "type": "textarea",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "issueN1",
+      "title": "Network Wide Issue 1",
+      "type": "textarea",
+      "status": "approved",
+      "vargroups": [
+        "site"
+      ]
+    },
+    {
+      "name": "kWInPeak",
+      "title": "kWInPeak",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "kWxN1",
+      "title": "kWxN1",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "kpiAnnualCarbon",
+      "title": "Annual network carbon emissions",
+      "type": "number",
+      "units": "kgCO2e/yr",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "kpiAnnualElec",
+      "title": "Annual fuel use: electricity",
+      "type": "number",
+      "units": "kWh/yr",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "kpiAnnualGas",
+      "title": "Annual fuel use: gas",
+      "type": "number",
+      "units": "kWh/yr",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "kpiCarbonContent",
+      "title": "Carbon content of delivered heat",
+      "type": "number",
+      "units": "kgCO2e/kWh",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "kpiDistributionEfficiency",
+      "title": "Distribution efficiency (heat delivered / heat leaving EC)",
+      "type": "number",
+      "units": "%",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "kpiFlowTemp",
+      "title": "Network flow temperature",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "kpiHeatCost",
+      "title": "Cost of heat delivered to customer interfaces",
+      "type": "number",
+      "units": "p/kWh",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "kpiInterruptions",
+      "title": "Service interruptions over 24h in last 12 months",
+      "type": "number",
+      "units": "count",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "kpiLossPerDwelling",
+      "title": "Network heat loss per dwelling",
+      "type": "number",
+      "units": "W/dwelling",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "kpiLossesPrimary",
+      "title": "Distribution losses: primary",
+      "type": "number",
+      "units": "kWh/yr",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "kpiLossesSecondary",
+      "title": "Distribution losses: secondary",
+      "type": "number",
+      "units": "kWh/yr",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "kpiNetworkEfficiency",
+      "title": "Overall network efficiency (heat delivered / fuel in)",
+      "type": "number",
+      "units": "%",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "kpiReturnTemp",
+      "title": "Network return temperature",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "kw1",
+      "title": "Initial Readings, Meter Power",
+      "type": "number",
+      "units": "kW",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "kwCH",
+      "title": "kwCH",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "kwDHW1",
+      "title": "DHW Readings, Meter Power",
+      "type": "number",
+      "units": "kW",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "kwDHWEst",
+      "title": "kwDHWEst",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "kwDHWPeak",
+      "title": "DHW Readings, Meter Power",
+      "type": "number",
+      "units": "kW",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "kwDS439",
+      "title": "kwDS439",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "kwHTGPeak",
+      "title": "HTG Readings, Meter Power",
+      "type": "number",
+      "units": "kW",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "kwP24",
+      "title": "kwP24",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "kwPeak",
+      "title": "kwPeak",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "kwh1",
+      "title": "Initial Readings, Meter Energy",
+      "type": "number",
+      "units": "kWh",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "kwh365",
+      "title": "kwh365",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "kwhAnnualPump",
+      "title": "Design Annual Pump Energy Use",
+      "type": "number",
+      "units": "kWh",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "kwhCH",
+      "title": "kwhCH",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "kwhCH365",
+      "title": "kwhCH365",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "kwhDHW365",
+      "title": "kwhDHW365",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "kwhDHWEST",
+      "title": "kwhDHWEST",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "kwhDistLoss365",
+      "title": "kwhDistLoss365",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "kwhFinal",
+      "title": "Final Meter Reading and Photo",
+      "type": "number",
+      "units": "kWh",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "kwhP24",
+      "title": "kwhP24",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "kwhUsed365",
+      "title": "kwhUsed365",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "labelledFusedSpur",
+      "title": "Labelled Fused Spur",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "labellingAdequate",
+      "title": "Labelling",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "labelsFitted",
+      "title": "COMMISSIONING LABELS",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "layoutSaved",
+      "title": "3D layout saved to site",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "model_signoff"
+      ]
+    },
+    {
+      "name": "leaksVisible",
+      "title": "Visible Leaks",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "lengthD1",
+      "title": "Length of D1 discharge pipework",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "lengthD1Below600",
+      "title": "D1 Length Below 600mm",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "lengthD2",
+      "title": "Length of D2 discharge pipework",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "lengthD2Drop300",
+      "title": "D2 Length 300mm Before Elbow",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "limescaleReducerFitted",
+      "title": "Limescale Reducer Fitted",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "limiterBathTap",
+      "title": "Bath Tap Flow Restrictor",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "listASHPSizes",
+      "title": "Available heat pump outputs",
+      "type": "csv",
+      "units": "kW",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "listBSizes",
+      "title": "Available boiler outputs",
+      "type": "csv",
+      "units": "kW",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "listWSHPSizes",
+      "title": "Available heat pump outputs",
+      "type": "csv",
+      "units": "kW",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "litresInhibitor",
+      "title": "Inhibitor Volume Added",
+      "type": "text",
+      "units": "l",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "loadSchedule",
+      "title": "Schedule of loads",
+      "type": "sheet",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "loadSharePct",
+      "title": "Annual load share",
+      "type": "number",
+      "units": "%",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "localAuthorityArea",
+      "title": "Local authority area",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "hnes_application"
+      ]
+    },
+    {
+      "name": "locationCombiValve",
+      "title": "Position of Combination Valve",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "locationCyl",
+      "title": "Cylinder Location",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "lphPeak",
+      "title": "Peak HTG Primary Flow Rate (litres per hour)",
+      "type": "number",
+      "units": "ltr/h",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "m31",
+      "title": "Initial Readings, Meter Volume",
+      "type": "number",
+      "units": "m3",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "m3WaterMeter",
+      "title": "Cold Water Meter Reading",
+      "type": "number",
+      "units": "m3",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "m3h1",
+      "title": "Initial Readings, Meter Flow Rate",
+      "type": "number",
+      "units": "m³/h",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "m3hCHPeak",
+      "title": "m3hCHPeak",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "m3hDHW1",
+      "title": "DHW Readings, Meter Flow Rate",
+      "type": "number",
+      "units": "m³/h",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "m3hDHWPeak",
+      "title": "DHW Readings, Meter Flow Rate",
+      "type": "number",
+      "units": "m³/h",
+      "status": "approved",
+      "vargroups": [
+        "acceptance",
+        "design"
+      ]
+    },
+    {
+      "name": "m3hHTGPeak",
+      "title": "HTG Readings, Meter Flow Rate",
+      "type": "number",
+      "units": "m³/h",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "m3hPeak",
+      "title": "m3hPeak",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "m4_1_10_cc",
+      "title": "M4.1.10 Resilience strategy",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_10_cd",
+      "title": "M4.1.10 Condition audit/survey",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_10_dd",
+      "title": "M4.1.10 Condition audit/survey",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_10_ec",
+      "title": "M4.1.10 Condition audit/survey",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_10_ss",
+      "title": "M4.1.10 Condition audit/survey",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_11_cc",
+      "title": "M4.1.11 Circulation after stagnation",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_11_cd",
+      "title": "M4.1.11 Destructive testing of pipework",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_11_dd",
+      "title": "M4.1.11 Destructive testing of pipework",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_11_ec",
+      "title": "M4.1.11 Destructive testing of pipework",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_11_ss",
+      "title": "M4.1.11 Destructive testing of pipework",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_12_cc",
+      "title": "M4.1.12 Equipment disconnection",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_12_cd",
+      "title": "M4.1.12 Resilience strategy",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_12_dd",
+      "title": "M4.1.12 Resilience strategy",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_12_ec",
+      "title": "M4.1.12 Resilience strategy",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_12_ss",
+      "title": "M4.1.12 Resilience strategy",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_13_cc",
+      "title": "M4.1.13 Working pressure assessment",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_13_cd",
+      "title": "M4.1.13 Water quality PPM",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_13_dd",
+      "title": "M4.1.13 Water quality PPM",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_13_ec",
+      "title": "M4.1.13 Water quality PPM",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_13_ss",
+      "title": "M4.1.13 Water quality PPM",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_14_cc",
+      "title": "M4.1.14 Statement of conformity",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_14_cd",
+      "title": "M4.1.14 Water quality KPIs",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_14_dd",
+      "title": "M4.1.14 Water quality KPIs",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_14_ec",
+      "title": "M4.1.14 Water quality KPIs",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_14_ss",
+      "title": "M4.1.14 Water quality KPIs",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_15_cc",
+      "title": "M4.1.15 KPI schedule",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_15_cd",
+      "title": "M4.1.15 Water quality records",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_15_dd",
+      "title": "M4.1.15 Water quality records",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_15_ec",
+      "title": "M4.1.15 Top-up water quality",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_15_ss",
+      "title": "M4.1.15 Water quality records",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_16_cc",
+      "title": "M4.1.16 Technical parameters schedule",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_16_cd",
+      "title": "M4.1.16 Circulation after stagnation",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_16_dd",
+      "title": "M4.1.16 Circulation after stagnation",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_16_ec",
+      "title": "M4.1.16 Water quality records",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_16_ss",
+      "title": "M4.1.16 Circulation after stagnation",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_17_cd",
+      "title": "M4.1.17 Equipment disconnection",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_17_dd",
+      "title": "M4.1.17 Equipment disconnection",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_17_ec",
+      "title": "M4.1.17 Circulation after stagnation",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_17_ss",
+      "title": "M4.1.17 Equipment disconnection",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_18_cd",
+      "title": "M4.1.18 Annual inspection",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_18_dd",
+      "title": "M4.1.18 Annual inspection",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_18_ec",
+      "title": "M4.1.18 Equipment disconnection",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_18_ss",
+      "title": "M4.1.18 Annual inspection",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_19_cd",
+      "title": "M4.1.19 Water quality equipment",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_19_dd",
+      "title": "M4.1.19 Water quality equipment",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_19_ec",
+      "title": "M4.1.19 Annual inspection",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_19_ss",
+      "title": "M4.1.19 Water quality equipment",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_1_cc",
+      "title": "M4.1.1 O&M manual",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_1_cd",
+      "title": "M4.1.1 O&M manual",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_1_dd",
+      "title": "M4.1.1 O&M manual",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_1_ec",
+      "title": "M4.1.1 O&M manual",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_1_ss",
+      "title": "M4.1.1 O&M manual",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_20_cd",
+      "title": "M4.1.20 Working pressure assessment",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_20_dd",
+      "title": "M4.1.20 Working pressure assessment",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_20_ec",
+      "title": "M4.1.20 Water quality equipment",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_20_ss",
+      "title": "M4.1.20 Working pressure assessment",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_21_cd",
+      "title": "M4.1.21 Statement of conformity",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_21_dd",
+      "title": "M4.1.21 Statement of conformity",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_21_ec",
+      "title": "M4.1.21 Working pressure assessment",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_21_ss",
+      "title": "M4.1.21 Statement of conformity",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_22_cd",
+      "title": "M4.1.22 KPI schedule",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_22_dd",
+      "title": "M4.1.22 KPI schedule",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_22_ec",
+      "title": "M4.1.22 Statement of conformity",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_22_ss",
+      "title": "M4.1.22 KPI schedule",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_23_cd",
+      "title": "M4.1.23 Technical parameters schedule",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_23_dd",
+      "title": "M4.1.23 Technical parameters schedule",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_23_ec",
+      "title": "M4.1.23 KPI schedule",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_23_ss",
+      "title": "M4.1.23 Technical parameters schedule",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_24_ec",
+      "title": "M4.1.24 Technical parameters schedule",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_2_cc",
+      "title": "M4.1.2 PPM schedule",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_2_cd",
+      "title": "M4.1.2 PPM schedule",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_2_dd",
+      "title": "M4.1.2 PPM schedule",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_2_ec",
+      "title": "M4.1.2 PPM schedule",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_2_ss",
+      "title": "M4.1.2 PPM schedule",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_3_cc",
+      "title": "M4.1.3 As-built drawings",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_3_cd",
+      "title": "M4.1.3 As-built drawings",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_3_dd",
+      "title": "M4.1.3 As-built drawings",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_3_ec",
+      "title": "M4.1.3 As-built drawings",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_3_ss",
+      "title": "M4.1.3 As-built drawings",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_4_cc",
+      "title": "M4.1.4 Document storage",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_4_cd",
+      "title": "M4.1.4 Document storage",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_4_dd",
+      "title": "M4.1.4 Document storage",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_4_ec",
+      "title": "M4.1.4 Document storage",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_4_ss",
+      "title": "M4.1.4 Document storage",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_5_cc",
+      "title": "M4.1.5 Maintenance & remedial log",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_5_cd",
+      "title": "M4.1.5 Maintenance & remedial log",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_5_dd",
+      "title": "M4.1.5 Maintenance & remedial log",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_5_ec",
+      "title": "M4.1.5 Maintenance & remedial log",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_5_ss",
+      "title": "M4.1.5 Maintenance & remedial log",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_6_cc",
+      "title": "M4.1.6 Insulation condition evidence",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_6_cd",
+      "title": "M4.1.6 Insulation condition evidence",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_6_dd",
+      "title": "M4.1.6 Insulation condition evidence",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_6_ec",
+      "title": "M4.1.6 Insulation condition evidence",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_6_ss",
+      "title": "M4.1.6 Insulation condition evidence",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_7_cc",
+      "title": "M4.1.7 Operative training",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_7_cd",
+      "title": "M4.1.7 Operative training",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_7_dd",
+      "title": "M4.1.7 Operative training",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_7_ec",
+      "title": "M4.1.7 Operative training",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_7_ss",
+      "title": "M4.1.7 Operative training",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_8_cc",
+      "title": "M4.1.8 Site inductions",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_8_cd",
+      "title": "M4.1.8 Site inductions",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_8_dd",
+      "title": "M4.1.8 Site inductions",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_8_ec",
+      "title": "M4.1.8 Site inductions",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_8_ss",
+      "title": "M4.1.8 Site inductions",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_9_cc",
+      "title": "M4.1.9 Operating risk register",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_9_cd",
+      "title": "M4.1.9 Operating risk register",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_9_dd",
+      "title": "M4.1.9 Operating risk register",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_9_ec",
+      "title": "M4.1.9 Operating risk register",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_1_9_ss",
+      "title": "M4.1.9 Operating risk register",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_2_1_cc",
+      "title": "M4.2.1 Metering & monitoring strategy",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_2_1_cd",
+      "title": "M4.2.1 Metering & monitoring strategy",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_2_1_dd",
+      "title": "M4.2.1 Metering & monitoring strategy",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_2_1_ec",
+      "title": "M4.2.1 Metering & monitoring strategy",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_2_1_ss",
+      "title": "M4.2.1 Metering & monitoring strategy",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_2_2_cc",
+      "title": "M4.2.2 Meter servicing strategy",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_2_2_cd",
+      "title": "M4.2.2 ARMS specification",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_2_2_dd",
+      "title": "M4.2.2 ARMS specification",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_2_2_ec",
+      "title": "M4.2.2 ARMS specification",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_2_2_ss",
+      "title": "M4.2.2 ARMS specification",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_2_3_cc",
+      "title": "M4.2.3 ARMS specification",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_2_3_cd",
+      "title": "M4.2.3 Monitoring point specification",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_2_3_dd",
+      "title": "M4.2.3 Monitoring point specification",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_2_3_ec",
+      "title": "M4.2.3 Monitoring point specification",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_2_3_ss",
+      "title": "M4.2.3 Monitoring point specification",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_2_4_cc",
+      "title": "M4.2.4 Monitoring point specification",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_2_4_cd",
+      "title": "M4.2.4 Thermal energy meter records",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_2_4_dd",
+      "title": "M4.2.4 Thermal energy meter records",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_2_4_ec",
+      "title": "M4.2.4 Thermal energy meter records",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_2_4_ss",
+      "title": "M4.2.4 Thermal energy meter records",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_2_5_cc",
+      "title": "M4.2.5 Thermal energy meter records",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_2_5_cd",
+      "title": "M4.2.5 KPI reporting frequency",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_2_5_dd",
+      "title": "M4.2.5 KPI reporting frequency",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_2_5_ec",
+      "title": "M4.2.5 KPI reporting frequency",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_2_5_ss",
+      "title": "M4.2.5 KPI reporting frequency",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_2_6_cc",
+      "title": "M4.2.6 KPI reporting frequency",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_2_6_cd",
+      "title": "M4.2.6 KPI data & thresholds",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_2_6_dd",
+      "title": "M4.2.6 KPI data & thresholds",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_2_6_ec",
+      "title": "M4.2.6 KPI data & thresholds",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_2_6_ss",
+      "title": "M4.2.6 KPI data & thresholds",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "m4_2_7_cc",
+      "title": "M4.2.7 KPI data & thresholds",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "hnes_asmt"
+      ]
+    },
+    {
+      "name": "mainsStopcock",
+      "title": "Cold Mains Stopcock",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "maintenanceRecordsPhoto",
+      "title": "Maintenance Records Photo",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "makeCleansingAgent",
+      "title": "Cleansing Agent",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "makeControl",
+      "title": "Time Controller Make",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "makeInhibitor",
+      "title": "Inhibitor Make",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "makeModelHeatMeter",
+      "title": "Heat Meter Make and Model",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "makePump",
+      "title": "Pump Make",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "manualUFH",
+      "title": "UFH Manual Override",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "manualsHandedOver",
+      "title": "Manuals and Certificates Handed to Client",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "manufacturer",
+      "title": "Cylinder Make",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "matchFunding",
+      "title": "Match funding",
+      "type": "number",
+      "units": "GBP",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "matchFundingValue",
+      "title": "Applicant contribution",
+      "type": "number",
+      "units": "GBP",
+      "status": "approved",
+      "vargroups": [
+        "hnes_application"
+      ]
+    },
+    {
+      "name": "maxApproachTemp",
+      "title": "Maximum PHE Approach Temperature",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "maxBypassFlow",
+      "title": "Design maximum bypass flowrate",
+      "type": "number",
+      "units": "m³/h",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "maxDPOff",
+      "title": "Maximum Supply DP",
+      "type": "number",
+      "units": "kPa",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "maxDPSupply",
+      "title": "Maximum Supply DP",
+      "type": "number",
+      "units": "kPa",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "maxPressure",
+      "title": "Maximum System Pressure",
+      "type": "number",
+      "units": "bar",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "maxVelocity",
+      "title": "Flow pipe sizing maximum velocity",
+      "type": "number",
+      "units": "m/s",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "meanFlowTemp",
+      "title": "Mean network flow temperature",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "meanReturnTemp",
+      "title": "Mean network return temperature",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "measuresLonglist",
+      "title": "Optimisation measures long-list",
+      "type": "sheet",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "meterCoverage",
+      "title": "Consumer meters read",
+      "type": "integer",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "meterCoverageOf",
+      "title": "Total dwellings (meter coverage denominator)",
+      "type": "integer",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "meteringOverview",
+      "title": "Metering and data",
+      "type": "richtext",
+      "status": "approved",
+      "vargroups": [
+        "hnes_application"
+      ]
+    },
+    {
+      "name": "metersAccessible",
+      "title": "Heat Meters Accessible",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "minDPIndex",
+      "title": "Minimum Index Differential Pressure",
+      "type": "number",
+      "units": "kPa",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "minFlowTemp",
+      "title": "Minimum Flow Temperature",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "minFlowTempOff",
+      "title": "Minimum Output Temperature",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "minVelocity",
+      "title": "Return pipe sizing minimum velocity",
+      "type": "number",
+      "units": "m/s",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "model",
+      "title": "Cylinder Model",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "modelComplete",
+      "title": "Model complete — sign-off",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "model_signoff"
+      ]
+    },
+    {
+      "name": "modelControl",
+      "title": "Time Controller Model",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "modelNotes",
+      "title": "Model notes",
+      "type": "textarea",
+      "status": "approved",
+      "vargroups": [
+        "model_signoff"
+      ]
+    },
+    {
+      "name": "modelPump",
+      "title": "Pump Model",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "modelledBy",
+      "title": "Modelled by",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "model_signoff"
+      ]
+    },
+    {
+      "name": "monitoringCommit",
+      "title": "Monitoring returns and KPI reporting accepted",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "hnes_application"
+      ]
+    },
+    {
+      "name": "monthlyProfile",
+      "title": "Monthly energy profile",
+      "type": "sheet",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "monthlyReconciliation",
+      "title": "Monthly reconciliation",
+      "type": "sheet",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "mpCC1",
+      "title": "Consumer Connection Boundary — heat meter",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "mpCD1",
+      "title": "Intake Boundary — heat meter",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "mpCD3",
+      "title": "DP Measuring Point — pressure/DP sensor",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "mpDD1",
+      "title": "Intake Boundary — heat meter",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "mpDD3",
+      "title": "DP Measuring Point — pressure/DP sensor",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "mpEC1",
+      "title": "Heat Generator: Heat source energy input — gas meter",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "mpEC2",
+      "title": "Heat Generator: Heat Source energy output — heat meter",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "mpEC3",
+      "title": "EC Distribution: Energy Centre boundary — heat meter",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "mpEC4",
+      "title": "EC Distribution: Distribution pump set — electricity meter",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "mpEC5",
+      "title": "Pressurisation: Make-up Water meter — water meter",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "mpEC6",
+      "title": "EC Distribution: Index differential pressure measurement point — pressure/DP sensor",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "mpEC7",
+      "title": "EC Distribution: Distribution differential pressure measurement point — pressure/DP sensor",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "mpEC8",
+      "title": "Pressurisation: Operating pressure measurement point — pressure/DP sensor",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "mpSS1",
+      "title": "Intake Boundary — heat meter",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "mpSS2",
+      "title": "Offtake Boundary — heat meter",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "mpSS3",
+      "title": "Network distribution pump — electricity meter",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "mpSS4",
+      "title": "Water meter — water meter",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "mpSS5",
+      "title": "Defined index differential pressure measurement point — pressure/DP sensor",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "mpSS6",
+      "title": "Defined differential pressure exceedance measurement point — pressure/DP sensor",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "mpSS7",
+      "title": "Defined operating pressure measurement point — pressure/DP sensor",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "mvhrFilters",
+      "title": "MVHR Filters",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "mvhrVentsFitted",
+      "title": "MVHR Ceiling Vents Fitted",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "acceptance",
+        "survey"
+      ]
+    },
+    {
+      "name": "mvhrWorking",
+      "title": "MVHR Working",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "acceptance",
+        "survey"
+      ]
+    },
+    {
+      "name": "nBuildings",
+      "title": "Number of buildings",
+      "type": "integer",
+      "units": "buildings",
+      "status": "approved",
+      "vargroups": [
+        "design",
+        "survey"
+      ]
+    },
+    {
+      "name": "nFloors",
+      "title": "Number of floors",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "nIntakes",
+      "title": "Number of intake plantrooms",
+      "type": "integer",
+      "units": "intakes",
+      "status": "approved",
+      "vargroups": [
+        "design",
+        "survey"
+      ]
+    },
+    {
+      "name": "nPeople",
+      "title": "Total number of people",
+      "type": "integer",
+      "units": "people",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "nProperties",
+      "title": "Number of properties",
+      "type": "integer",
+      "units": "properties",
+      "status": "approved",
+      "vargroups": [
+        "design",
+        "survey"
+      ]
+    },
+    {
+      "name": "nRads",
+      "title": "Number of radiators",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "nZones",
+      "title": "Number of zones",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "networkDescription",
+      "title": "Network description",
+      "type": "textarea",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "networkName",
+      "title": "Network name",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "networkTempValve",
+      "title": "Network temperature control valve",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "newGaugeFitted",
+      "title": "Remove damaged gauge and fit new pressure gauge matching connection and range",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "wp_replace_pressure_gauge"
+      ]
+    },
+    {
+      "name": "occupancyPresent",
+      "title": "Beds or occupancy recorded per dwelling",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "model_signoff"
+      ]
+    },
+    {
+      "name": "omDocsAvailable",
+      "title": "O&M Documentation",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "opTime",
+      "title": "Initial Readings, Operating Time",
+      "type": "number",
+      "units": "h",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "orgType",
+      "title": "Organisation type",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "hnes_application"
+      ]
+    },
+    {
+      "name": "overflowBasin",
+      "title": "Bathroom Basin Overflow",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "overflowBath",
+      "title": "Bath Overflow",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "overflowKitchen",
+      "title": "OVERFLOW TESTED",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "ovsersizing",
+      "title": "ovsersizing",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "ovsersizingN1",
+      "title": "ovsersizingN1",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "p1",
+      "title": "Initial Readings, Static Primary Flow Pressure",
+      "type": "number",
+      "units": "bar",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "p2",
+      "title": "Initial Readings, Static Primary Return Pressure",
+      "type": "number",
+      "units": "bar",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "pCHWFinal",
+      "title": "Cooling System Pressure",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "pCWS",
+      "title": "Incoming Cold Water Pressure",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "pHTG1",
+      "title": "Initial Readings, Central Heating Pressure",
+      "type": "number",
+      "units": "bar",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "pHTG2",
+      "title": "Top-up Heating Pressure",
+      "type": "number",
+      "units": "bar",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "pHTGFill",
+      "title": "Fill Central Heating Pressure",
+      "type": "number",
+      "units": "bar",
+      "status": "approved",
+      "vargroups": [
+        "acceptance",
+        "wp_replace_pressure_gauge"
+      ]
+    },
+    {
+      "name": "pHTGFinal",
+      "title": "Final Central Heating Pressure",
+      "type": "number",
+      "units": "bar",
+      "status": "approved",
+      "vargroups": [
+        "acceptance",
+        "wp_replace_pressure_gauge"
+      ]
+    },
+    {
+      "name": "pHTGMin",
+      "title": "Minimum system fill pressure",
+      "type": "number",
+      "units": "bar",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "pPP",
+      "title": "pPP",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "passfailDHWBathTemp",
+      "title": "passfailDHWBathTemp",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "passfailDHWResponse",
+      "title": "passfailDHWResponse",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "passfailDHWSetpointH",
+      "title": "passfailDHWSetpointH",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "passfailDHWSetpointL",
+      "title": "passfailDHWSetpointL",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "passfailHTGRtnTemp",
+      "title": "passfailHTGRtnTemp",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "passfailHTGSetpoint",
+      "title": "passfailHTGSetpoint",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "passfailHeatMeter",
+      "title": "passfailHeatMeter",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "peepDS439",
+      "title": "peepDS439",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "performanceGap",
+      "title": "Performance gap analysis",
+      "type": "richtext",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "photoDistrictPlan",
+      "title": "District pipework plan (numbered)",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "model_signoff"
+      ]
+    },
+    {
+      "name": "photoFloorplan",
+      "title": "Floorplan view",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "model_signoff"
+      ]
+    },
+    {
+      "name": "photoHeatLoss",
+      "title": "Pipework — heat loss",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "model_signoff"
+      ]
+    },
+    {
+      "name": "photoRenderPipes",
+      "title": "Pipework — velocity vs limits",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "model_signoff"
+      ]
+    },
+    {
+      "name": "photoRenderSolid",
+      "title": "3D view — buildings",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "model_signoff"
+      ]
+    },
+    {
+      "name": "photoSchematic",
+      "title": "Riser / HIU schematic",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "model_signoff"
+      ]
+    },
+    {
+      "name": "photoSitePlan",
+      "title": "Site plan",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "model_signoff"
+      ]
+    },
+    {
+      "name": "phxApproach",
+      "title": "Approach Temperature",
+      "type": "number",
+      "units": "K",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "phxCondition",
+      "title": "Condition",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "phxControlValves",
+      "title": "Control Valves",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "phxDuty",
+      "title": "Rated Duty",
+      "type": "number",
+      "units": "kW",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "phxFlowArrangement",
+      "title": "Flow Arrangement",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "phxInsulated",
+      "title": "Insulation",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "phxMakeModel",
+      "title": "Make and Model",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "phxPrimaryFlow",
+      "title": "Primary Flow Temp",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "phxPrimaryReturn",
+      "title": "Primary Return Temp",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "phxSecondaryFlow",
+      "title": "Secondary Flow Temp",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "phxSecondaryReturn",
+      "title": "Secondary Return Temp",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "pipeSizes",
+      "title": "Schedule of pipes sizes",
+      "type": "sheet",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "pipeSupports",
+      "title": "Pipe Supports",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "pipeworkFixed",
+      "title": "Pipework Fastened",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "powerOff",
+      "title": "Turn off power to the system",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "wp_replace_pressure_gauge"
+      ]
+    },
+    {
+      "name": "ppmInPlace",
+      "title": "Planned Maintenance",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "preAwardStatement",
+      "title": "Pre-award spend",
+      "type": "textarea",
+      "status": "approved",
+      "vargroups": [
+        "hnes_application"
+      ]
+    },
+    {
+      "name": "pressAlarms",
+      "title": "Alarms",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "pressColdFill",
+      "title": "Cold Fill Pressure",
+      "type": "number",
+      "units": "bar",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "pressCondition",
+      "title": "Condition",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "pressMakeModel",
+      "title": "Make and Model",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "pressOperating",
+      "title": "Operating Pressure",
+      "type": "number",
+      "units": "bar",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "pressVesselPrecharge",
+      "title": "Vessel Pre-charge",
+      "type": "number",
+      "units": "bar",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "pressVesselSize",
+      "title": "Expansion Vessel Size",
+      "type": "number",
+      "units": "l",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "primaryInsulation",
+      "title": "Primary Insulation",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "primaryStrainerClean",
+      "title": "Primary Strainer Clean",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "problemStatement",
+      "title": "The problem to be solved",
+      "type": "richtext",
+      "status": "approved",
+      "vargroups": [
+        "hnes_application"
+      ]
+    },
+    {
+      "name": "productGroup",
+      "title": "productGroup",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "profileDHW",
+      "title": "DHW load profile",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "programmeSchedule",
+      "title": "Delivery programme",
+      "type": "sheet",
+      "status": "approved",
+      "vargroups": [
+        "hnes_application"
+      ]
+    },
+    {
+      "name": "programmerDateTimeCorrect",
+      "title": "Check Programmer Times",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "progressNarrative",
+      "title": "Delivery progress",
+      "type": "textarea",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "projectDescription",
+      "title": "Project description",
+      "type": "richtext",
+      "status": "approved",
+      "vargroups": [
+        "hnes_application"
+      ]
+    },
+    {
+      "name": "projectName",
+      "title": "Project name",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "hnes_application"
+      ]
+    },
+    {
+      "name": "projectRef",
+      "title": "Existing HNES reference",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "hnes_application",
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "propertiesManaged",
+      "title": "Properties managed by the applicant",
+      "type": "integer",
+      "status": "approved",
+      "vargroups": [
+        "hnes_application",
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "propertiesTotal",
+      "title": "Properties on the network",
+      "type": "integer",
+      "status": "approved",
+      "vargroups": [
+        "hnes_application",
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "propertyType",
+      "title": "Select Property Type",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "proposedWorks",
+      "title": "Proposed works",
+      "type": "richtext",
+      "status": "approved",
+      "vargroups": [
+        "hnes_application"
+      ]
+    },
+    {
+      "name": "proveFlowToZones",
+      "title": "Flow to all UFH zones",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "proveStatsMatchZones",
+      "title": "Check each room stat controls the correct zones.",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "publicLiabilityExpiry",
+      "title": "Public Liability Expiry",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "onboarding"
+      ]
+    },
+    {
+      "name": "publicLiabilityInsurer",
+      "title": "Public Liability Insurer",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "onboarding"
+      ]
+    },
+    {
+      "name": "pumpCondition",
+      "title": "Condition",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "pumpControlMode",
+      "title": "Control Mode",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "pumpDp",
+      "title": "Differential Pressure",
+      "type": "number",
+      "units": "kPa",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "pumpDpTestPoints",
+      "title": "DP Test Points",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "pumpDuty",
+      "title": "Duty Arrangement",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "pumpExercised",
+      "title": "Standby Rotation",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "pumpFree",
+      "title": "Pump Free and Bled",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "acceptance",
+        "wp_replace_pressure_gauge"
+      ]
+    },
+    {
+      "name": "pumpGlands",
+      "title": "Glands and Seals",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "pumpHTG",
+      "title": "pumpHTG",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "pumpMakeModel",
+      "title": "Make and Model",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "pumpSpeedHTG",
+      "title": "Pump Speed",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "pumpVSD",
+      "title": "Variable Speed",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "qrCode",
+      "title": "QR / Label Code",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "system"
+      ]
+    },
+    {
+      "name": "qualifications",
+      "title": "Qualifications",
+      "type": "textarea",
+      "status": "approved",
+      "vargroups": [
+        "onboarding"
+      ]
+    },
+    {
+      "name": "quoteDocs",
+      "title": "Contractor quotes received",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "quotesStatus",
+      "title": "Supplier quotations",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "hnes_application"
+      ]
+    },
+    {
+      "name": "radsAndTowelRailsWorking",
+      "title": "Rads and Towel Rails Working",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "rechargedExpansion",
+      "title": "Cylinder internal expansion recharged",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "refitCasing",
+      "title": "Refit Casing",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "relayRoomStat",
+      "title": "Room thermostat relay",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "removeCasing",
+      "title": "Remove Casing",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "requestValue",
+      "title": "Grant requested",
+      "type": "number",
+      "units": "GBP",
+      "status": "approved",
+      "vargroups": [
+        "hnes_application"
+      ]
+    },
+    {
+      "name": "resultsPublished",
+      "title": "Model results published",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "model_signoff"
+      ]
+    },
+    {
+      "name": "returnMonth",
+      "title": "Reporting month",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "rfiAppCalcs",
+      "title": "Application supporting calculations",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rfi"
+      ]
+    },
+    {
+      "name": "rfiApplication",
+      "title": "HNES application & project narrative",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rfi"
+      ]
+    },
+    {
+      "name": "rfiArmsProvider",
+      "title": "ARMS / metering & billing provider details",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rfi"
+      ]
+    },
+    {
+      "name": "rfiAsBuilts",
+      "title": "As-built / O&M record drawings",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rfi"
+      ]
+    },
+    {
+      "name": "rfiAwardLetter",
+      "title": "Award letter / grant funding agreement",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rfi"
+      ]
+    },
+    {
+      "name": "rfiBaselineWorkbook",
+      "title": "Corrected baseline data workbook",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rfi"
+      ]
+    },
+    {
+      "name": "rfiBilling",
+      "title": "Consumption data: billing & AMR exports",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rfi"
+      ]
+    },
+    {
+      "name": "rfiBms",
+      "title": "BMS details & access",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rfi"
+      ]
+    },
+    {
+      "name": "rfiCommissioning",
+      "title": "Commissioning records",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rfi"
+      ]
+    },
+    {
+      "name": "rfiDesignIntent",
+      "title": "Original design intent & specifications",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rfi"
+      ]
+    },
+    {
+      "name": "rfiDrawings",
+      "title": "Site drawings: schematics, layouts, floor plans",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rfi"
+      ]
+    },
+    {
+      "name": "rfiFuelBills",
+      "title": "Fuel bills: gas & electricity input data",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rfi"
+      ]
+    },
+    {
+      "name": "rfiGapSummary",
+      "title": "Gap analysis summary",
+      "type": "textarea",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rfi"
+      ]
+    },
+    {
+      "name": "rfiMaintLogs",
+      "title": "Maintenance & servicing records",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rfi"
+      ]
+    },
+    {
+      "name": "rfiMeterReads",
+      "title": "Meter schedule: IDs, models & locations",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rfi"
+      ]
+    },
+    {
+      "name": "rfiOmManuals",
+      "title": "O&M manuals",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rfi"
+      ]
+    },
+    {
+      "name": "rfiOutages",
+      "title": "Outage & interruption records",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rfi"
+      ]
+    },
+    {
+      "name": "rfiPpmSchedule",
+      "title": "PPM schedule",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rfi"
+      ]
+    },
+    {
+      "name": "rfiPreviousStudies",
+      "title": "Previous studies & audits",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rfi"
+      ]
+    },
+    {
+      "name": "rfiRiskRegister",
+      "title": "Risk register / resilience plans",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rfi"
+      ]
+    },
+    {
+      "name": "rfiTariff",
+      "title": "Tariff information & heat charges",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rfi"
+      ]
+    },
+    {
+      "name": "rfiTraining",
+      "title": "Personnel training & competency records",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rfi"
+      ]
+    },
+    {
+      "name": "rfiWaterQuality",
+      "title": "Water quality & treatment records",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rfi"
+      ]
+    },
+    {
+      "name": "riskRegister",
+      "title": "Risk register",
+      "type": "sheet",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "runDHWPeak",
+      "title": "Run Peak DHW",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "runHTG",
+      "title": "Run Central Heating",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "runHTGDP",
+      "title": "Run Central Heating",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "safEICR",
+      "title": "Electrical Certificate",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "safElectricalCondition",
+      "title": "Electrical Installation",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "safEmergencyStop",
+      "title": "Emergency Stops",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "safGasCert",
+      "title": "Gas Safety Certificate",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "safGasDetection",
+      "title": "Gas Detection",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "safSafetyValves",
+      "title": "Safety Valves",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "safSignage",
+      "title": "Safety Signage",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "safeCylinderInstall",
+      "title": "Installed Safe and Secure",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "safetyControlsInstall",
+      "title": "Installed Safety Controls Correctly",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "schematicAvailable",
+      "title": "Schematic Available",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "acceptance",
+        "survey"
+      ]
+    },
+    {
+      "name": "scopeOfWorks",
+      "title": "Scope of Works",
+      "type": "richtext",
+      "status": "approved",
+      "vargroups": [
+        "callout"
+      ]
+    },
+    {
+      "name": "secureBasin",
+      "title": "Bathrom Basin Pedastal & Taps Secure",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "secureBath",
+      "title": "BATH AND TAPS SECURE",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "secureKitchen",
+      "title": "Kitchen Sink Pedastal & Taps Secure",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "selectASHP",
+      "title": "ASHP selection",
+      "type": "object",
+      "units": "n x kW",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "selectBoilers",
+      "title": "Boiler selection",
+      "type": "object",
+      "units": "n x kW",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "selectWSHP",
+      "title": "WSHP selection",
+      "type": "object",
+      "units": "n x kW",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "serialBilling",
+      "title": "Metering Home Display Serial Number",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "serialCyl",
+      "title": "Cylinder Serial Number",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "serialHIU",
+      "title": "HIU Serial Number",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "serialHeatMeter",
+      "title": "Heat Meter Serial Number",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "serialPump",
+      "title": "Pump Serial Number",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "serialWaterMeter",
+      "title": "Cold Water Meter Serial Number",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "settingDPCV",
+      "title": "DPCV Setting",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "settingIHPT",
+      "title": "IPHT Setting",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "settingImmersionStat",
+      "title": "Temperature Setting of Immersion Heaters",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "settingRAVK",
+      "title": "RAVK (Htg) Setting",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "setupControllerTimes",
+      "title": "Setup Times",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "shortList",
+      "title": "Recommended short-list",
+      "type": "richtext",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "showerEnclosureChecked",
+      "title": "ENCLOSURE CHECKED FOR LEAKS",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "showerTraySealed",
+      "title": "TRAY / WASTE MASTIC SEALED",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "signatoryDate",
+      "title": "Date",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "hnes_application"
+      ]
+    },
+    {
+      "name": "signatoryName",
+      "title": "Signatory",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "hnes_application"
+      ]
+    },
+    {
+      "name": "signatoryRole",
+      "title": "Signatory role",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "hnes_application"
+      ]
+    },
+    {
+      "name": "signsOfLeaks",
+      "title": "Leaks on Pipework",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "siteVisitBy",
+      "title": "Site visit carried out by",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "siteVisitDate",
+      "title": "Site visit date(s)",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "siteVisitSummary",
+      "title": "Site visit summary",
+      "type": "richtext",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "soilAccessGapsOK",
+      "title": "ACCESS GAPS SECURE AND ACCESSIBLE",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "soilDurgos110",
+      "title": "DURGOS 110MM DB20",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "soilDurgosVentilated",
+      "title": "DURGOS VENTILATED",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "sparekW",
+      "title": "sparekW",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "spares",
+      "title": "Spare Parts",
+      "type": "sheet",
+      "status": "approved",
+      "vargroups": [
+        "acceptance",
+        "callout"
+      ]
+    },
+    {
+      "name": "spendToDate",
+      "title": "Spend to date",
+      "type": "number",
+      "units": "GBP",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "ssAmbientTemp",
+      "title": "Substation Ambient Temperature",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "ssDpPoints",
+      "title": "DP Measurement Points (SS5/SS6)",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "ssDpReading",
+      "title": "DP Reading",
+      "type": "number",
+      "units": "kPa",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "ssIntakeMeter",
+      "title": "Intake Heat Meter (SS1)",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "ssOfftakeMeter",
+      "title": "Offtake Heat Meter (SS2)",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "ssOperatingPressure",
+      "title": "Operating Pressure (SS7)",
+      "type": "number",
+      "units": "bar",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "ssPumpMeter",
+      "title": "Pump Energy Meter (SS3)",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "ssTopUpMeter",
+      "title": "Top-up Water Meter (SS4)",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "stickerFitted",
+      "title": "INSTALLATION STICKER",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "storageVolume",
+      "title": "Cylinder Volume",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "studyEndDate",
+      "title": "Planned completion date",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "studyStartDate",
+      "title": "Study start date",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "suboptimalIndicators",
+      "title": "Indicators of sub-optimal performance",
+      "type": "textarea",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "subsidyControlConfirm",
+      "title": "Subsidy control position confirmed",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "hnes_application"
+      ]
+    },
+    {
+      "name": "substationType",
+      "title": "Substation Type",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "design",
+        "survey"
+      ]
+    },
+    {
+      "name": "supplierName",
+      "title": "Study supplier",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "hnes_rev_study"
+      ]
+    },
+    {
+      "name": "supplyCWS",
+      "title": "CWS Supply",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "design",
+        "survey"
+      ]
+    },
+    {
+      "name": "supportD2",
+      "title": "D2 Pipework Clipped at 300mm",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "surveyNotes",
+      "title": "General Notes",
+      "type": "textarea",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "surveyRecommendations",
+      "title": "Improvement Opportunities",
+      "type": "textarea",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "systemCleansed",
+      "title": "Central Heating Chemically Cleansed",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "systemTreated",
+      "title": "System Chemically Treated",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "systemVolume",
+      "title": "Central Heating Volume",
+      "type": "number",
+      "units": "l",
+      "status": "approved",
+      "vargroups": [
+        "acceptance",
+        "design"
+      ]
+    },
+    {
+      "name": "tCWS",
+      "title": "Kitchen Tap Cold Temperature",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "tColdHot",
+      "title": "DHW pipework cold prior to response time testing.",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "tDHW",
+      "title": "DHW Readings, Kitchen Tap Temperature",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "tDHW1",
+      "title": "Kitchen Tap Temperature",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "tDHW2",
+      "title": "Adjusted Kitchen Tap Temperature",
+      "type": "boolean",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "tDHWBasin",
+      "title": "Bathroom Basin Tap Temperature",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "tDHWBasinMaintained",
+      "title": "Bathroom Basin Tap Temperature Maintained",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "tDHWBath",
+      "title": "Bath Tap Temperature",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "tDHWPeak",
+      "title": "DHW Readings, Peak Output Temperature",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "tDHWShower",
+      "title": "DHW Readings, Shower Output Temperature",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "tDHWTap",
+      "title": "tDHWTap",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "tDesignHTGRtn",
+      "title": "tDesignHTGRtn",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "tF",
+      "title": "Design flow temperature",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "tF1",
+      "title": "Initial Readings, Meter Flow Temperature",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "tFDHW1",
+      "title": "DHW Readings, Meter Flow Temperature",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "tFDHWPeak",
+      "title": "DHW Readings, Meter Flow Temperature",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "tFHTGPeak",
+      "title": "HTG Readings, Meter Flow Temperature",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "tFOff",
+      "title": "Design flow temperature (secondary)",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "tFlowObserved",
+      "title": "Observed Flow Temperature",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "tHTGOut",
+      "title": "HTG Readings, Tertiary Output Temperature",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "tHTGRtn",
+      "title": "HTG Readings, Tertiary Return Temperature",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "tLimitHTGRtn",
+      "title": "tLimitHTGRtn",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "tPeak",
+      "title": "Peak network flow temperature",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "design",
+        "survey"
+      ]
+    },
+    {
+      "name": "tPriRtnCH",
+      "title": "Central heating network return temperature",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "design",
+        "survey"
+      ]
+    },
+    {
+      "name": "tPriRtnDHW",
+      "title": "DHW network return temperature",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "design",
+        "survey"
+      ]
+    },
+    {
+      "name": "tPriRtnPeak",
+      "title": "tPriRtnPeak",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "tR",
+      "title": "Expected average return temperature",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "tR1",
+      "title": "Initial Readings, Meter Return Temperature",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "tRDHW1",
+      "title": "DHW Readings, Meter Return Temperature",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "tRDHWPeak",
+      "title": "DHW Readings, Meter Return Temperature",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "tRHTGPeak",
+      "title": "HTG Readings, Meter Return Temperature",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "tReturnObserved",
+      "title": "Observed Return Temperature",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "tRiseEST",
+      "title": "tRiseEST",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "tSetDHW",
+      "title": "tSetDHW",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "tSetHTG",
+      "title": "tSetHTG",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "tSetpointDHW",
+      "title": "DHW Setpoint Temperature",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "tSetpointHTG",
+      "title": "HIU Heating Setpoint Temperature",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "tTolerance",
+      "title": "DHW Temperature Tolerance",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "tToleranceHTG",
+      "title": "HTG Temperature Tolerance",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "tVWART24",
+      "title": "tVWART24",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "tXPeak",
+      "title": "External temperature at peak load",
+      "type": "number",
+      "units": "°C",
+      "status": "approved",
+      "vargroups": [
+        "design",
+        "survey"
+      ]
+    },
+    {
+      "name": "tap45in45",
+      "title": "DHW Response",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "tapTime45C",
+      "title": "Time for Kitchen Tap to reach 45°C",
+      "type": "number",
+      "units": "seconds",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "tapTime50C",
+      "title": "DHW Readings, Time for Kitchen Tap to reach 50°C",
+      "type": "number",
+      "units": "seconds",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "targetRound",
+      "title": "Target funding round",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "hnes_application"
+      ]
+    },
+    {
+      "name": "tariffHP",
+      "title": "Electrical Tariff",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "testoFittedDHW",
+      "title": "Test sensors ready",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "testoPrefix",
+      "title": "testoPrefix",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "thermalImage",
+      "title": "Thermal Image",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "tmvBasin",
+      "title": "Bathroom Basin TMV",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "tmvBasinLocation",
+      "title": "Bathroom Basin TMV Location",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "tmvBasinMakeModel",
+      "title": "Bathroom Basin TMV Make and Model",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "tmvBasinType",
+      "title": "Bathroom Basin TMV Certification Scheme",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "trapChecked",
+      "title": "Trap Checked",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "trapInstall",
+      "title": "Waterless Waste Trap Vertical",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "trvPresets",
+      "title": "Radiator Return Temperatures",
+      "type": "sheet",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "tundishInstall",
+      "title": "Tundish Installed Vertical in Space",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "typeDHW",
+      "title": "DHW Type",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "acceptance",
+        "device"
+      ]
+    },
+    {
+      "name": "typeEmitter",
+      "title": "Central heating emitter",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "acceptance",
+        "design",
+        "survey"
+      ]
+    },
+    {
+      "name": "typeEmitterD",
+      "title": "typeEmitterD",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "typeHTG",
+      "title": "typeHTG",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "typeRTL",
+      "title": "Radiator return control",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "acceptance",
+        "design",
+        "survey"
+      ]
+    },
+    {
+      "name": "typeRoomStat",
+      "title": "Room thermostat",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "typeTRV",
+      "title": "Radiator flow control",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "acceptance",
+        "design",
+        "survey"
+      ]
+    },
+    {
+      "name": "ufhFlowRates",
+      "title": "Underfloor Heating Zone Flow Rates",
+      "type": "textarea",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "ufhLabelled",
+      "title": "Underfloor Heating Labelling",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "ufhOverheat",
+      "title": "Underfloor Heating Overheat Protection",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "ufhOverheatStatFitted",
+      "title": "UFH Overheat Fitted",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "ufhOverheatStatTested",
+      "title": "UFH Overheat Tested",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "unswitchedFusedSpur",
+      "title": "Unswitched Fused Spur",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "unventedG3",
+      "title": "Unvented (G3) Qualified",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "onboarding"
+      ]
+    },
+    {
+      "name": "vBuffer",
+      "title": "Buffer volume",
+      "type": "number",
+      "units": "l",
+      "status": "approved",
+      "vargroups": [
+        "design",
+        "survey"
+      ]
+    },
+    {
+      "name": "vBuffer9",
+      "title": "vBuffer9",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "vDHWEST",
+      "title": "vDHWEST",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "vP24",
+      "title": "vP24",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "vPCH",
+      "title": "vPCH",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "vPDHW",
+      "title": "vPDHW",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "vPHEST",
+      "title": "vPHEST",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "vPPEST",
+      "title": "vPPEST",
+      "type": "number",
+      "status": "approved",
+      "vargroups": [
+        "design"
+      ]
+    },
+    {
+      "name": "vatNo",
+      "title": "VAT Number",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "onboarding"
+      ]
+    },
+    {
+      "name": "voltageRoomStat",
+      "title": "Room thermostat volt-free",
+      "type": "select",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "washingMachineWasteChecked",
+      "title": "Washing Machine Waste Pipe Checked",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "wastePipeFloodTested",
+      "title": "Waste Pipe Flood Tested",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "waterSamplesTaken",
+      "title": "Water Samples Taken",
+      "type": "boolean",
+      "status": "approved",
+      "vargroups": [
+        "acceptance"
+      ]
+    },
+    {
+      "name": "wqInhibitor",
+      "title": "Inhibitor Dosing",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "wqLastReport",
+      "title": "Last Analysis Report",
+      "type": "text",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "wqSampleTaken",
+      "title": "Sample Taken",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    },
+    {
+      "name": "wqSideStream",
+      "title": "Side-stream Filtration",
+      "type": "passfail",
+      "status": "approved",
+      "vargroups": [
+        "survey"
+      ]
+    }
+  ]
+}

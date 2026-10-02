@@ -69,4 +69,6 @@ The quality of installations is maintained through the use of standard processes
 
 ![image](https://github.com/heatweb/HNQAP/assets/7034068/70228675-7ffe-4fab-bc68-9c11c51434b5)
 
+## Data standard
 
+The [`standard/`](standard/) folder is the machine-readable data standard: the six-level MQTT address, every registered vargroup and varkey with its shape (`vocabulary.json`, with readable tables), proposed names, and the BMS connection guide. Third-party tools and code assistants should build against it.
