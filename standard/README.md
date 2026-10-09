@@ -47,6 +47,35 @@ heatweb/myHeatNetwork/global/network/design/gasCalorificValue = 39.5
 acme/unit4_bodyshop/cp1/cp1/status/spray                    = 1
 ```
 
+### Device names on monitored elements
+
+On an element that HNTAS monitors (energy centre, substation, district or
+communal distribution, consumer connection), a device is **named for the
+official monitoring point it serves**, and the quantity keeps its ordinary
+varkey (`tF`, `tR`, `kwh`, `m3h`). A consumer of the data binds the device
+to the point by its name alone; a meter under a generic name (`hm1`,
+`subst`) cannot be told apart from the next meter on the same element.
+
+| Device name | Monitoring point | Meaning |
+|---|---|---|
+| `intake` | SS1, DD1, CD1 | intake boundary meter (primary side) |
+| `offtake` | SS2 | offtake boundary meter (secondary side) |
+| `termination` | DD2, CD2 | termination boundary meter |
+| `boundary` | EC3, CC1 | boundary meter |
+| `pump` | EC4, SS3 | distribution pump set |
+| `makeup` | EC5 | make-up water meter |
+| `watermeter` | SS4 | water meter |
+| `pressure` | EC8, SS7 | operating pressure measurement point |
+| `SS1` … `SS7`, `EC1` … `EC8`, `DD1` … `DD3`, `CD1` … `CD3`, `CC1` | that point | the official point code, written in capitals as the HNTAS guidance writes it — distinct from the element id `ss1` |
+
+```
+heatweb/myHeatNetwork/ss1/intake/hmeter/tF   = 69.3   (SS1, primary side)
+heatweb/myHeatNetwork/ss1/offtake/hmeter/tF  = 64.1   (SS2, secondary side)
+heatweb/myHeatNetwork/ec1/EC3/hmeter/kwh     = 15869  (point code as the name)
+```
+
+Matching is case-insensitive; the capitals are a reading convention.
+
 ### Why the levels are MQTT-shaped
 
 - **Wildcards at any level**: `heatweb/myHeatNetwork/+/+/sensor/#` reads every sensor on a network.
