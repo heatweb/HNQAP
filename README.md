@@ -1,5 +1,7 @@
 # HNQAP — Heat Network Quality Assurance Publications
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23647605.svg)](https://doi.org/10.5281/zenodo.23647605)
+
 **Open standards for heat network quality assurance, developed in the open with the industry. Website: [hnqap.org](https://hnqap.org)**
 
 HNQAP is where the heat network industry agrees how monitoring data is named

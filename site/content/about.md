@@ -49,7 +49,10 @@ attribution and a copy of the licence.
 
 ## Citing HNQAP
 
-Cite the release you used. The repository carries a
+Every release is archived on Zenodo. The DOI
+[10.5281/zenodo.23647605](https://doi.org/10.5281/zenodo.23647605) always
+resolves to the latest version, and each release has its own DOI on that
+page. Cite the release you used. The repository carries a
 [`CITATION.cff`](https://github.com/heatweb/HNQAP/blob/main/CITATION.cff) file,
 so GitHub's "Cite this repository" button gives the reference in APA or
 BibTeX. For a single KPI, cite its code and page, for example

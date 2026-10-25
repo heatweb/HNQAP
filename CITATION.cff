@@ -13,6 +13,11 @@ authors:
 repository-code: "https://github.com/heatweb/HNQAP"
 url: "https://hnqap.org"
 license: Apache-2.0
+doi: "10.5281/zenodo.23647605"
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.23647605"
+    description: "All versions (concept DOI); each release also has its own DOI"
 version: "1.1.0"
 date-released: "2026-10-25"
 keywords:
