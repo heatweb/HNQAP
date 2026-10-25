@@ -40,3 +40,20 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+
+  # Tell IndexNow search engines (Bing, Yandex, others) the pages changed.
+  # The key file is site/static/<key>.txt, served at the site root.
+  indexnow:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Submit sitemap URLs
+        env:
+          KEY: 64cda48f8e085aa1ed22645c1d38a209
+        run: |
+          sleep 30
+          urls=$(curl -fsS https://hnqap.org/sitemap.xml | grep -o '<loc>[^<]*' | sed 's/<loc>//' | jq -R . | jq -sc .)
+          body=$(jq -nc --arg key "$KEY" --argjson urls "$urls" '{host:"hnqap.org", key:$key, keyLocation:("https://hnqap.org/" + $key + ".txt"), urlList:$urls}')
+          code=$(curl -s -o /dev/null -w '%{http_code}' -X POST https://api.indexnow.org/indexnow -H 'Content-Type: application/json; charset=utf-8' -d "$body")
+          echo "IndexNow: HTTP $code for $(echo "$urls" | jq length) URLs"
+          case "$code" in 200|202) ;; *) echo "::warning::IndexNow returned $code" ;; esac
