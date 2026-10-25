@@ -1,0 +1,991 @@
+{
+ "title": "Heat Network KPI Reference",
+ "generated": "2026-10-25",
+ "subtitle": "Generated from the platform's KPI registry. A working basis for a proposed British Standard on heat network key performance indicators.",
+ "intro": "One table per element type, in network order from the energy centre to the dwelling. The layout follows the KPI tables of the HNTAS Milestone 4 technical specifications so the two can be compared row by row; the columns that differ carry the detail a KPI needs to be computed the same way on every network.",
+ "legend": [
+  [
+   "Code",
+   "`<element>-KPI-<nn>`; a letter after the number is a variant (A reported form, B weather-compensated or per-source form). `-C-` marks the cooling form of a KPI; `-M-` a meter-health KPI; `-H-` a health KPI (hours below outage limits, offered as an alternative to the outage KPIs 04 and 05)."
+  ],
+  [
+   "Standing",
+   "**HNTAS**: in the HNTAS Milestone 4 specifications, assessed (pass/fail) or reported (expected value only). **HNTAS-style**: an HNTAS KPI's method applied where the scheme does not yet reach, such as cooling. **Heatweb**: a diagnostic KPI the platform runs that HNTAS does not define. **proposed**: defined here, not yet computed by the platform."
+  ],
+  [
+   "Monitoring points",
+   "Point code, minimum data frequency, and the fields read. \"x, else y\" is a fallback chain: the first source with data at each reading is used."
+  ],
+  [
+   "Threshold",
+   "Pass criterion for an assessed KPI; \"expected value\" for a reported one. \"(proposed)\" marks a value put forward for review."
+  ],
+  [
+   "Calculation",
+   "The maths, in as few words as states it exactly."
+  ],
+  [
+   "Period",
+   "The window the KPI is assessed over."
+  ]
+ ],
+ "notation": "tF, tR flow and return temperature (°C); q volumetric flow rate (m³/h); V volume register (m³); E energy register (kWh); ΔE, ΔV register increase over the period or day; 1.163 kWh/(m³·K) the volumetric heat capacity of water; Σ over the period; n readings. Volume weighting pairs readings in 5-minute buckets. Data at a higher frequency than the minimum is used at that frequency.",
+ "rules": "Readings that fail the out-of-range bounds for their channel are excluded before any KPI is computed. A setpoint input follows the live setpoint stream where the controls publish one and falls back to the design value where they do not. Consumer Connection KPIs 01 to 03 are assessed across all consumer connections together, not dwelling by dwelling.",
+ "elements": [
+  {
+   "code": "EC",
+   "name": "Energy Centre",
+   "rows": [
+    {
+     "code": "EC-KPI-01",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "Energy Centre ARMS connectivity",
+     "monitoring": "all EC points",
+     "threshold": "≥ 99%",
+     "calc": "received intervals ÷ expected intervals across connected points",
+     "period": "Monthly"
+    },
+    {
+     "code": "EC-KPI-02",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "Energy Centre monitoring point data completeness",
+     "monitoring": "all EC points",
+     "threshold": "≥ 95%",
+     "calc": "valid readings ÷ expected readings",
+     "period": "Monthly"
+    },
+    {
+     "code": "EC-KPI-03",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "Energy Centre monitoring points operational",
+     "monitoring": "all EC points",
+     "threshold": "100% of ARMS-connected points",
+     "calc": "points with no error/negative/out-of-range values ÷ total points",
+     "period": "Monthly"
+    },
+    {
+     "code": "EC-KPI-04",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "Energy Centre unplanned interruptions",
+     "monitoring": "EC · tF (sensor, else heat meter); sensor dP",
+     "threshold": "≤ 3 a year",
+     "calc": "count of >12h periods below min flow temp OR min dP without 48h notice. Uses design/minFlowTemp design/minDPIndex",
+     "period": "Previous 12 months"
+    },
+    {
+     "code": "EC-KPI-05",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "Energy Centre planned interruptions",
+     "monitoring": "EC · tF (sensor, else heat meter); sensor dP",
+     "threshold": "≤ 1 a year",
+     "calc": "count of noticed (≥48h) interruptions. Uses design/minFlowTemp design/minDPIndex",
+     "period": "Previous 12 months"
+    },
+    {
+     "code": "EC-KPI-06",
+     "group": "heat",
+     "standing": "HNTAS · reported",
+     "title": "Energy Centre average flow temperature",
+     "monitoring": "EC · tF (sensor, else heat meter)",
+     "threshold": "[expected average flow temperature]",
+     "calc": "time-weighted mean of flow temperature. Uses design/tF",
+     "period": "Monthly"
+    },
+    {
+     "code": "EC-KPI-07",
+     "group": "heat",
+     "standing": "HNTAS · reported",
+     "title": "Energy Centre average return temperature",
+     "monitoring": "EC · tR (sensor, else heat meter)",
+     "threshold": "[expected average return temperature]",
+     "calc": "time-weighted mean of return temperature",
+     "period": "Monthly"
+    },
+    {
+     "code": "EC-KPI-08",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "EC flow temperature variance from set point",
+     "monitoring": "EC · tF (sensor, else heat meter), tF (setpoint, else design)",
+     "threshold": "0 ± 2 °C",
+     "calc": "mean |tF - setpoint|",
+     "period": "Monthly"
+    },
+    {
+     "code": "EC-KPI-09A",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "EC volume weighted average flow temperature (VWAFT)",
+     "monitoring": "EC · tF (heat meter, else sensor); heat meter m³/h",
+     "threshold": "[expected] ± 3 °C",
+     "calc": "Σ(tF · flow volume) ÷ Σ(volume). Uses design/tF",
+     "period": "Monthly"
+    },
+    {
+     "code": "EC-KPI-09B",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "EC VWAFT (weather-compensated variant)",
+     "monitoring": "EC · tF (heat meter, else sensor), tF (setpoint, else design); heat meter m³/h",
+     "threshold": "tracks compensated setpoint ± 3 °C",
+     "calc": "as 09A against live setpoint",
+     "period": "Monthly"
+    },
+    {
+     "code": "EC-KPI-10A",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "EC flow temperature stability",
+     "monitoring": "EC · tF (sensor, else heat meter), tF (setpoint, else design)",
+     "threshold": "≥ 95% within thresholds",
+     "calc": "1 - (time above upper + below lower) ÷ total",
+     "period": "Monthly"
+    },
+    {
+     "code": "EC-KPI-10B",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "EC flow temperature stability (weather-compensated)",
+     "monitoring": "EC · tF (sensor, else heat meter), tF (setpoint, else design)",
+     "threshold": "≥ 95%",
+     "calc": "as 10A against compensated setpoint",
+     "period": "Monthly"
+    },
+    {
+     "code": "EC-KPI-11",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "EC flow temperature uptime",
+     "monitoring": "EC · tF (sensor, else heat meter)",
+     "threshold": "≥ 98% above minimum flow temp (99.5% at M4)",
+     "calc": "time above minimum ÷ total time. Uses design/minFlowTemp",
+     "period": "Monthly"
+    },
+    {
+     "code": "EC-KPI-12",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "EC pressure differential uptime",
+     "monitoring": "EC · sensor dP",
+     "threshold": "≥ 99% above minimum dP (99.5% at M4)",
+     "calc": "time above minimum dP ÷ total. Uses design/minDPIndex",
+     "period": "Monthly"
+    },
+    {
+     "code": "EC-KPI-13",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "Max allowable differential pressure exceedance",
+     "monitoring": "EC · sensor dpSupply",
+     "threshold": "100% below maximum dP",
+     "calc": "1 - time above max dP ÷ total. Uses design/maxDPSupply",
+     "period": "Monthly"
+    },
+    {
+     "code": "EC-KPI-14",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "Max allowable operating pressure exceedance",
+     "monitoring": "EC · sensor pressure",
+     "threshold": "100% below maximum operating pressure",
+     "calc": "1 - time above max pressure ÷ total. Uses design/maxPressure",
+     "period": "Monthly"
+    },
+    {
+     "code": "EC-KPI-15",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "Top-up water volume",
+     "monitoring": "EC · water meter m³",
+     "threshold": "≤ 1% of system volume per month (0.17% at M4/TS1)",
+     "calc": "make-up volume ÷ system volume per month. Uses design/systemVolume",
+     "period": "Monthly"
+    },
+    {
+     "code": "EC-KPI-16A",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "Heat fraction (source A)",
+     "monitoring": "EC · heat meter kWh",
+     "threshold": "[design heat fraction]",
+     "calc": "source A heat out ÷ total heat out",
+     "period": "Monthly"
+    },
+    {
+     "code": "EC-KPI-16B",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "Heat fraction (source B)",
+     "monitoring": "EC · heat meter kWh",
+     "threshold": "[design heat fraction]",
+     "calc": "source B heat out ÷ total heat out",
+     "period": "Monthly"
+    },
+    {
+     "code": "EC-KPI-18",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "Network distribution pump energy",
+     "monitoring": "EC · electricity meter kwhElectric",
+     "threshold": "< 1% of annual heat generation",
+     "calc": "sum of distribution pump electricity (excl. shunts). Uses design/kwhAnnualPump",
+     "period": "Monthly"
+    },
+    {
+     "code": "EC-KPI-H-01",
+     "group": "health",
+     "standing": "Heatweb",
+     "title": "Energy Centre hours below outage limits",
+     "monitoring": "EC · tF (sensor, else heat meter); sensor dpIndex",
+     "threshold": "< 60 h a year, judged on the month pro rata (≈ 4.9 h in 30 days); shorter windows report hours used",
+     "calc": "Σ_i min(t_{i+1} − t_i, 1 h) over readings with tF < tF_min or dP < dP_min; tF and dP spans unioned. Offered as an alternative to KPI-04/05. Uses design/minFlowTemp design/minDPIndex",
+     "period": "Monthly (pro rata)"
+    },
+    {
+     "code": "EC-KPI-17-A",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "Heat generation efficiency (source A)",
+     "monitoring": "EC · heat meter kWh; gas meter m3Gas, kWh",
+     "threshold": "gas/oil 80% · biomass 75% · electric 98% · heat pump COP 2.0 · CHP QI 105",
+     "calc": "heat out ÷ fuel in (boiler gross; HP CoP uses emeter). Uses design/efficiency",
+     "period": "Monthly"
+    },
+    {
+     "code": "EC-KPI-17-B",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "Heat generation efficiency (source B)",
+     "monitoring": "EC · heat meter kWh; gas meter m3Gas, kWh; electricity meter kwhElectric",
+     "threshold": "gas/oil 80% · biomass 75% · electric 98% · heat pump COP 2.0 · CHP QI 105",
+     "calc": "as 17-A per source. Uses design/efficiency",
+     "period": "Monthly"
+    }
+   ]
+  },
+  {
+   "code": "DD",
+   "name": "District Distribution",
+   "rows": [
+    {
+     "code": "DD-KPI-01",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "District Distribution ARMS connectivity",
+     "monitoring": "all DD points",
+     "threshold": "≥ 99%",
+     "calc": "received intervals ÷ expected intervals across connected points",
+     "period": "Monthly"
+    },
+    {
+     "code": "DD-KPI-02",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "District Distribution monitoring point data completeness",
+     "monitoring": "all DD points",
+     "threshold": "≥ 95%",
+     "calc": "valid readings ÷ expected readings",
+     "period": "Monthly"
+    },
+    {
+     "code": "DD-KPI-03",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "District Distribution monitoring points operational",
+     "monitoring": "all DD points",
+     "threshold": "100% of ARMS-connected points",
+     "calc": "points with no error/negative/out-of-range values ÷ total points",
+     "period": "Monthly"
+    },
+    {
+     "code": "DD-KPI-04",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "District Distribution unplanned interruptions",
+     "monitoring": "DD1 · 30 min · tF (sensor, else heat meter); DD · sensor dP",
+     "threshold": "≤ 3 a year",
+     "calc": "count of >12h periods below min flow temp OR min dP without 48h notice. Uses design/minFlowTemp design/minDPIndex",
+     "period": "Previous 12 months"
+    },
+    {
+     "code": "DD-KPI-05",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "District Distribution planned interruptions",
+     "monitoring": "DD1 · 30 min · tF (sensor, else heat meter); DD · sensor dP",
+     "threshold": "≤ 1 a year",
+     "calc": "count of noticed (≥48h) interruptions. Uses design/minFlowTemp design/minDPIndex",
+     "period": "Previous 12 months"
+    },
+    {
+     "code": "DD-KPI-06",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "DD network heat loss",
+     "monitoring": "DD1 · 30 min · heat meter kWh",
+     "threshold": "per design W/dwelling basis",
+     "calc": "initiation kWh - Σ(termination kWh), as W/dwelling",
+     "period": "Monthly"
+    },
+    {
+     "code": "DD-KPI-07",
+     "group": "heat",
+     "standing": "HNTAS · reported",
+     "title": "DD average flow temperature",
+     "monitoring": "DD1 · 30 min · tF (sensor, else heat meter)",
+     "threshold": "[expected]",
+     "calc": "time-weighted mean. Uses design/tF",
+     "period": "Monthly"
+    },
+    {
+     "code": "DD-KPI-08",
+     "group": "heat",
+     "standing": "HNTAS · reported",
+     "title": "DD average return temperature",
+     "monitoring": "DD1 · 30 min · tR (sensor, else heat meter)",
+     "threshold": "[expected]",
+     "calc": "time-weighted mean. Uses design/tR",
+     "period": "Monthly"
+    },
+    {
+     "code": "DD-KPI-09",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "DD flow temperature uptime",
+     "monitoring": "DD1 · 30 min · tF (sensor, else heat meter)",
+     "threshold": "≥ 98% (99.5% at M4)",
+     "calc": "time above minimum/total. Uses design/minFlowTemp",
+     "period": "Monthly"
+    },
+    {
+     "code": "DD-KPI-10",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "DD network bypass flow rate",
+     "monitoring": "DD1 · 30 min · heat meter m³/h",
+     "threshold": "[design bypass allowance]",
+     "calc": "initiation q - Σ(termination q). Uses design/maxBypassFlow",
+     "period": "Monthly"
+    },
+    {
+     "code": "DD-KPI-H-01",
+     "group": "health",
+     "standing": "Heatweb",
+     "title": "District Distribution hours below outage limits",
+     "monitoring": "DD1 · 30 min · tF (sensor, else heat meter); DD3 · 5 min · sensor dpIndex",
+     "threshold": "< 60 h a year, judged on the month pro rata (≈ 4.9 h in 30 days); shorter windows report hours used",
+     "calc": "Σ_i min(t_{i+1} − t_i, 1 h) over readings with tF < tF_min or dP < dP_min; tF and dP spans unioned. Offered as an alternative to KPI-04/05. Uses design/minFlowTemp design/minDPIndex",
+     "period": "Monthly (pro rata)"
+    }
+   ]
+  },
+  {
+   "code": "SS",
+   "name": "Substation",
+   "rows": [
+    {
+     "code": "SS-KPI-01",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "Substation ARMS connectivity",
+     "monitoring": "all SS points",
+     "threshold": "≥ 99%",
+     "calc": "received intervals ÷ expected intervals across connected points",
+     "period": "Monthly"
+    },
+    {
+     "code": "SS-KPI-02",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "Substation monitoring point data completeness",
+     "monitoring": "all SS points",
+     "threshold": "≥ 95%",
+     "calc": "valid readings ÷ expected readings",
+     "period": "Monthly"
+    },
+    {
+     "code": "SS-KPI-03",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "Substation monitoring points operational",
+     "monitoring": "all SS points",
+     "threshold": "100% of ARMS-connected points",
+     "calc": "points with no error/negative/out-of-range values ÷ total points",
+     "period": "Monthly"
+    },
+    {
+     "code": "SS-KPI-04",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "Substation unplanned interruptions",
+     "monitoring": "SS1 · 5 min · tF (sensor, else heat meter); SS · sensor dP",
+     "threshold": "≤ 3 a year",
+     "calc": "count of >12h periods below min flow temp OR min dP without 48h notice. Uses design/minFlowTempOff design/minDPIndex",
+     "period": "Previous 12 months"
+    },
+    {
+     "code": "SS-KPI-05",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "Substation planned interruptions",
+     "monitoring": "SS1 · 5 min · tF (sensor, else heat meter); SS · sensor dP",
+     "threshold": "≤ 1 a year",
+     "calc": "count of noticed (≥48h) interruptions. Uses design/minFlowTempOff design/minDPIndex",
+     "period": "Previous 12 months"
+    },
+    {
+     "code": "SS-KPI-06",
+     "group": "heat",
+     "standing": "HNTAS · reported",
+     "title": "Substation average flow temperature",
+     "monitoring": "SS1 · 5 min · tF (sensor, else heat meter)",
+     "threshold": "[expected average flow temperature]",
+     "calc": "time-weighted mean. Uses design/tFOff",
+     "period": "Monthly"
+    },
+    {
+     "code": "SS-KPI-07",
+     "group": "heat",
+     "standing": "HNTAS · reported",
+     "title": "Substation average return temperature",
+     "monitoring": "SS1 · 5 min · tR (sensor, else heat meter)",
+     "threshold": "[expected average return temperature]",
+     "calc": "time-weighted mean",
+     "period": "Monthly"
+    },
+    {
+     "code": "SS-KPI-08",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "SS flow temperature variance from set point",
+     "monitoring": "SS1 · 5 min · tF (sensor, else heat meter); SS · tF (setpoint, else design)",
+     "threshold": "0 ± 2 °C",
+     "calc": "mean |tF - setpoint|",
+     "period": "Monthly"
+    },
+    {
+     "code": "SS-KPI-09A",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "SS volume weighted average flow temperature",
+     "monitoring": "SS1 · 5 min · tF (heat meter, else sensor); heat meter m³/h",
+     "threshold": "[network flow temp] ± 3 °C",
+     "calc": "Σ(tF · volume) ÷ Σ(volume). Uses design/tFOff",
+     "period": "Monthly"
+    },
+    {
+     "code": "SS-KPI-09B",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "SS VWAFT (weather-compensated)",
+     "monitoring": "SS1 · 5 min · tF (heat meter, else sensor); heat meter m³/h; SS · tF (setpoint, else design)",
+     "threshold": "± 3 °C vs compensated setpoint",
+     "calc": "as 09A",
+     "period": "Monthly"
+    },
+    {
+     "code": "SS-KPI-10A",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "SS flow temperature stability",
+     "monitoring": "SS1 · 5 min · tF (sensor, else heat meter); SS · tF (setpoint, else design)",
+     "threshold": "≥ 95% within thresholds",
+     "calc": "1-(out-of-band time/total)",
+     "period": "Monthly"
+    },
+    {
+     "code": "SS-KPI-10B",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "SS flow temperature stability (weather-comp)",
+     "monitoring": "SS1 · 5 min · tF (sensor, else heat meter); SS · tF (setpoint, else design)",
+     "threshold": "≥ 95%",
+     "calc": "as 10A",
+     "period": "Monthly"
+    },
+    {
+     "code": "SS-KPI-11",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "SS flow temperature uptime",
+     "monitoring": "SS1 · 5 min · tF (sensor, else heat meter)",
+     "threshold": "≥ 98% (99.5% at M4)",
+     "calc": "time above minimum/total. Uses design/minFlowTempOff",
+     "period": "Monthly"
+    },
+    {
+     "code": "SS-KPI-12",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "Substation average approach temperature",
+     "monitoring": "SS2 · 5 min · heat meter tROff; SS1 · 5 min · heat meter tR",
+     "threshold": "≤ design maximum approach",
+     "calc": "mean(primary tR - secondary tR). Uses design/maxApproachTemp",
+     "period": "Monthly"
+    },
+    {
+     "code": "SS-KPI-13",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "SS pressure differential uptime",
+     "monitoring": "SS · sensor dP",
+     "threshold": "≥ 99% (99.5% at M4)",
+     "calc": "time above min dP/total. Uses design/minDPIndex",
+     "period": "Monthly"
+    },
+    {
+     "code": "SS-KPI-14",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "SS max differential pressure exceedance",
+     "monitoring": "SS6 · 5 min · sensor dpOff",
+     "threshold": "100% below max dP",
+     "calc": "1-time above/total. Uses design/maxDPOff",
+     "period": "Monthly"
+    },
+    {
+     "code": "SS-KPI-15",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "SS max operating pressure exceedance",
+     "monitoring": "SS · sensor pressure",
+     "threshold": "100% below max pressure",
+     "calc": "1-time above/total. Uses design/maxPressure",
+     "period": "Monthly"
+    },
+    {
+     "code": "SS-KPI-16",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "SS top-up water volume",
+     "monitoring": "SS · water meter m³",
+     "threshold": "≤ 1%/month (0.17% at M4)",
+     "calc": "make-up/system volume monthly. Uses design/systemVolume",
+     "period": "Monthly"
+    },
+    {
+     "code": "SS-KPI-17",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "SS distribution pump energy",
+     "monitoring": "SS3 · 30 min · electricity meter kwhElectric",
+     "threshold": "< 1% of annual heat throughput",
+     "calc": "pump electricity sum (excl. shunts). Uses design/kwhAnnualPump",
+     "period": "Monthly"
+    },
+    {
+     "code": "SS-KPI-H-01",
+     "group": "health",
+     "standing": "Heatweb",
+     "title": "Substation hours below outage limits",
+     "monitoring": "SS2 · 5 min · tFOff (sensor, else heat meter); SS5 · 5 min · sensor dpIndex",
+     "threshold": "< 60 h a year, judged on the month pro rata (≈ 4.9 h in 30 days); shorter windows report hours used",
+     "calc": "Σ_i min(t_{i+1} − t_i, 1 h) over readings with tF < tF_min or dP < dP_min; tF and dP spans unioned. Offered as an alternative to KPI-04/05. Uses design/minFlowTempOff design/minDPIndex",
+     "period": "Monthly (pro rata)"
+    }
+   ]
+  },
+  {
+   "code": "CD",
+   "name": "Communal Distribution",
+   "rows": [
+    {
+     "code": "CD-KPI-01",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "Communal Distribution ARMS connectivity",
+     "monitoring": "all CD points",
+     "threshold": "≥ 99%",
+     "calc": "received intervals ÷ expected intervals across connected points",
+     "period": "Monthly"
+    },
+    {
+     "code": "CD-KPI-02",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "Communal Distribution monitoring point data completeness",
+     "monitoring": "all CD points",
+     "threshold": "≥ 95%",
+     "calc": "valid readings ÷ expected readings",
+     "period": "Monthly"
+    },
+    {
+     "code": "CD-KPI-03",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "Communal Distribution monitoring points operational",
+     "monitoring": "all CD points",
+     "threshold": "100% of ARMS-connected points",
+     "calc": "points with no error/negative/out-of-range values ÷ total points",
+     "period": "Monthly"
+    },
+    {
+     "code": "CD-KPI-04",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "Communal Distribution unplanned interruptions",
+     "monitoring": "CD1 · 30 min · tF (sensor, else heat meter); CD · sensor dP",
+     "threshold": "≤ 3 a year",
+     "calc": "count of >12h periods below min flow temp OR min dP without 48h notice. Uses design/minDPIndex",
+     "period": "Previous 12 months"
+    },
+    {
+     "code": "CD-KPI-05",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "Communal Distribution planned interruptions",
+     "monitoring": "CD1 · 30 min · tF (sensor, else heat meter); CD · sensor dP",
+     "threshold": "≤ 1 a year",
+     "calc": "count of noticed (≥48h) interruptions. Uses design/minDPIndex",
+     "period": "Previous 12 months"
+    },
+    {
+     "code": "CD-KPI-06",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "CD network heat loss",
+     "monitoring": "CD1 · 30 min · heat meter kWh",
+     "threshold": "per design W/dwelling basis",
+     "calc": "initiation kWh - Σ(termination kWh), as W/dwelling",
+     "period": "Monthly"
+    },
+    {
+     "code": "CD-KPI-07",
+     "group": "heat",
+     "standing": "HNTAS · reported",
+     "title": "CD average flow temperature",
+     "monitoring": "CD1 · 30 min · tF (sensor, else heat meter)",
+     "threshold": "[expected]",
+     "calc": "time-weighted mean. Uses design/tF",
+     "period": "Monthly"
+    },
+    {
+     "code": "CD-KPI-08",
+     "group": "heat",
+     "standing": "HNTAS · reported",
+     "title": "CD average return temperature",
+     "monitoring": "CD1 · 30 min · tR (sensor, else heat meter)",
+     "threshold": "[expected]",
+     "calc": "time-weighted mean. Uses design/tR",
+     "period": "Monthly"
+    },
+    {
+     "code": "CD-KPI-09",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "CD network bypass flow rate",
+     "monitoring": "CD1 · 30 min · heat meter m³/h",
+     "threshold": "[design bypass allowance]",
+     "calc": "initiation q - Σ(termination q)",
+     "period": "Monthly"
+    },
+    {
+     "code": "CD-KPI-H-01",
+     "group": "health",
+     "standing": "Heatweb",
+     "title": "Communal Distribution hours below outage limits",
+     "monitoring": "CD1 · 30 min · tF (sensor, else heat meter); CD3 · 5 min · sensor dpIndex",
+     "threshold": "< 60 h a year, judged on the month pro rata (≈ 4.9 h in 30 days); shorter windows report hours used",
+     "calc": "Σ_i min(t_{i+1} − t_i, 1 h) over readings with tF < tF_min or dP < dP_min; tF and dP spans unioned. Offered as an alternative to KPI-04/05. Uses design/minFlowTemp design/minDPIndex",
+     "period": "Monthly (pro rata)"
+    }
+   ]
+  },
+  {
+   "code": "CC",
+   "name": "Consumer Connection",
+   "rows": [
+    {
+     "code": "CC-KPI-01",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "Consumer Connection ARMS connectivity (aggregated)",
+     "monitoring": "all CC points",
+     "threshold": "≥ 90%",
+     "calc": "received intervals ÷ expected intervals across ALL CC points combined",
+     "period": "Monthly"
+    },
+    {
+     "code": "CC-KPI-02",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "Consumer Connection data completeness (aggregated)",
+     "monitoring": "all CC points",
+     "threshold": "≥ 85%",
+     "calc": "valid readings ÷ expected readings across all CCs",
+     "period": "Monthly"
+    },
+    {
+     "code": "CC-KPI-03",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "Consumer Connection monitoring points operational (aggregated)",
+     "monitoring": "all CC points",
+     "threshold": "= 100%",
+     "calc": "points with no error/negative/out-of-range values ÷ total points (two-stage; ALL heat-meter channels tF tR m³ q kW kWh)",
+     "period": "Monthly"
+    },
+    {
+     "code": "CC-KPI-04",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "Consumer Connection unplanned interruptions",
+     "monitoring": "CC1 · 30 min · tF (heat meter, else sensor)",
+     "threshold": "≤ 3 a year",
+     "calc": "count of unplanned interruptions (≥ 12 h below minimum flow temp)",
+     "period": "Previous 12 months"
+    },
+    {
+     "code": "CC-KPI-05",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "Consumer Connection planned interruptions",
+     "monitoring": "CC1 · 30 min · tF (heat meter, else sensor)",
+     "threshold": "≤ 1 a year",
+     "calc": "count of planned interruptions (≥ 12 h below minimum flow temp)",
+     "period": "Previous 12 months"
+    },
+    {
+     "code": "CC-KPI-06",
+     "group": "heat",
+     "standing": "HNTAS · reported",
+     "title": "Consumer Connection heat generation efficiency",
+     "monitoring": "CC1 · 30 min · tF (heat meter, else sensor)",
+     "threshold": "≥ 90% of design efficiency target",
+     "calc": "heat generated at the CC ÷ energy input to the CC",
+     "period": "Monthly"
+    },
+    {
+     "code": "CC-KPI-07",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "Consumer Connection volume-weighted average return temperature",
+     "monitoring": "CC1 · 30 min · tR (heat meter, else sensor); heat meter m³/h",
+     "threshold": "≤ 45 °C",
+     "calc": "Σ(tR · q) ÷ Σ(q) by 5-min buckets",
+     "period": "Monthly"
+    },
+    {
+     "code": "CC-KPI-07A",
+     "group": "heat",
+     "standing": "HNTAS · reported",
+     "title": "Consumer Connection average return temperature (reported)",
+     "monitoring": "CC1 · 30 min · tR (heat meter, else sensor)",
+     "threshold": "expected value",
+     "calc": "time-average of tR",
+     "period": "Monthly"
+    },
+    {
+     "code": "CC-KPI-08",
+     "group": "heat",
+     "standing": "HNTAS · assessed",
+     "title": "Consumer Connection volume-weighted average temperature difference (VWATD)",
+     "monitoring": "CC1 · 30 min · heat meter kWh, m³",
+     "threshold": "≥ 5 °C (pair: CC-07 or CC-08 must be met)",
+     "calc": "kWh register delta ÷ (1.163 · m³ register delta)",
+     "period": "Monthly"
+    },
+    {
+     "code": "CC-KPI-C-01",
+     "group": "cooling",
+     "standing": "HNTAS-style · proposed",
+     "title": "Consumer Connection cooling ARMS connectivity (aggregated)",
+     "monitoring": "CC1 · all cooling meter channels",
+     "threshold": "≥ 90%",
+     "calc": "Σ intervals received ÷ Σ intervals expected, all cooling CC points combined",
+     "period": "Monthly"
+    },
+    {
+     "code": "CC-KPI-C-02",
+     "group": "cooling",
+     "standing": "HNTAS-style · proposed",
+     "title": "Consumer Connection cooling data completeness (aggregated)",
+     "monitoring": "CC1 · all cooling meter channels",
+     "threshold": "≥ 85%",
+     "calc": "Σ valid readings ÷ Σ expected readings, all cooling CC points combined",
+     "period": "Monthly"
+    },
+    {
+     "code": "CC-KPI-C-03",
+     "group": "cooling",
+     "standing": "HNTAS-style · proposed",
+     "title": "Consumer Connection cooling monitoring points operational (aggregated)",
+     "monitoring": "CC1 · 30 min · cooling meter kWh, m³, m³/h, kW, tF, tR",
+     "threshold": "= 100%",
+     "calc": "points with no error, negative or out-of-range value ÷ points connected with complete data (C-01, C-02); every cooling-meter channel",
+     "period": "Monthly"
+    },
+    {
+     "code": "CC-KPI-C-04",
+     "group": "cooling",
+     "standing": "HNTAS-style · proposed",
+     "title": "Consumer Connection cooling unplanned interruptions",
+     "monitoring": "CC1 · 30 min · cooling meter tF",
+     "threshold": "≤ 3 a year",
+     "calc": "count of unplanned periods ≥ 12 h with chilled flow tF > maximum chilled flow temperature. Uses design/tFMaxCool (proposed)",
+     "period": "Previous 12 months"
+    },
+    {
+     "code": "CC-KPI-C-05",
+     "group": "cooling",
+     "standing": "HNTAS-style · proposed",
+     "title": "Consumer Connection cooling planned interruptions",
+     "monitoring": "CC1 · 30 min · cooling meter tF",
+     "threshold": "≤ 1 a year",
+     "calc": "count of planned periods ≥ 12 h with chilled flow tF > maximum chilled flow temperature. Uses design/tFMaxCool (proposed)",
+     "period": "Previous 12 months"
+    },
+    {
+     "code": "CC-KPI-C-07",
+     "group": "cooling",
+     "standing": "HNTAS-style · proposed",
+     "title": "Consumer Connection cooling volume-weighted average return temperature",
+     "monitoring": "CC1 · 30 min · cooling meter tR, m³/h",
+     "threshold": "≥ design cooling return − 2 °C (proposed; pair: C-07 or C-08 must be met)",
+     "calc": "Σ(tR · q) ÷ Σ q over 5-minute buckets. Uses design/tRCool (proposed)",
+     "period": "Monthly"
+    },
+    {
+     "code": "CC-KPI-C-07A",
+     "group": "cooling",
+     "standing": "HNTAS-style · reported · proposed",
+     "title": "Consumer Connection cooling average return temperature (reported)",
+     "monitoring": "CC1 · 30 min · cooling meter tR",
+     "threshold": "expected value",
+     "calc": "Σ tR ÷ n (time average)",
+     "period": "Monthly"
+    },
+    {
+     "code": "CC-KPI-C-08",
+     "group": "cooling",
+     "standing": "HNTAS-style",
+     "title": "Consumer Connection cooling volume-weighted average temperature difference",
+     "monitoring": "CC1 · 30 min · cooling meter kWh, m³",
+     "threshold": "≥ 4 °C (proposed; pair: C-07 or C-08 must be met)",
+     "calc": "ΔT = ΔE ÷ (1.163 · ΔV); ΔE, ΔV = register deltas over the period (kWh, m³)",
+     "period": "Monthly"
+    },
+    {
+     "code": "CC-KPI-M-01",
+     "group": "meter",
+     "standing": "Heatweb",
+     "title": "Meter reporting (not silent)",
+     "monitoring": "CC1 · 30 min · heat meter kWh; cooling meter kWh",
+     "threshold": "last reading within 72 h of period end",
+     "calc": "a reading on every meter within the last 72 h of the period",
+     "period": "Rolling 7 days; month"
+    },
+    {
+     "code": "CC-KPI-M-02",
+     "group": "meter",
+     "standing": "Heatweb",
+     "title": "Meter channel coverage",
+     "monitoring": "CC1 · 30 min · heat meter kWh, m³, m³/h, kW, tF, tR",
+     "threshold": "6 of 6 channels",
+     "calc": "channels with ≥ 1 reading among kWh, m³, m³/h, kW, tF, tR (the fewest on any of the dwelling’s meters)",
+     "period": "Rolling 7 days; month"
+    },
+    {
+     "code": "CC-KPI-M-03",
+     "group": "meter",
+     "standing": "Heatweb",
+     "title": "Meter reading cadence",
+     "monitoring": "CC1 · 30 min · heat meter kWh; cooling meter kWh",
+     "threshold": "≥ 0.9 readings per day",
+     "calc": "energy-register readings ÷ days in period",
+     "period": "Rolling 7 days; month"
+    },
+    {
+     "code": "CC-KPI-M-04",
+     "group": "meter",
+     "standing": "Heatweb",
+     "title": "Register integrity",
+     "monitoring": "CC1 · 30 min · heat meter kWh; cooling meter kWh",
+     "threshold": "0 faults",
+     "calc": "days with ΔE < 0 (register stepped back) or ΔE > 500 kWh (implausible jump), all the dwelling’s meters",
+     "period": "Rolling 7 days; month"
+    },
+    {
+     "code": "CC-KPI-M-05",
+     "group": "meter",
+     "standing": "Heatweb",
+     "title": "Plausible temperature difference",
+     "monitoring": "CC1 · 30 min · heat meter kWh, m³; cooling meter kWh, m³",
+     "threshold": "0 °C ≤ ΔT ≤ 80 °C",
+     "calc": "ΔT = ΔE ÷ (1.163 · ΔV) within bounds; outside = scaling, units or a replaced meter",
+     "period": "Rolling 7 days; month"
+    },
+    {
+     "code": "CC-KPI-M-06",
+     "group": "meter",
+     "standing": "Heatweb",
+     "title": "Flow comes to rest (no constant flow)",
+     "monitoring": "CC1 · 30 min · heat meter m³/h; cooling meter m³/h",
+     "threshold": "≥ 2% of flow readings at zero",
+     "calc": "readings with q = 0 ÷ all q readings, per meter (needs ≥ 6 readings); below target = flow never at rest: bypass or control fault",
+     "period": "Rolling 7 days; month"
+    },
+    {
+     "code": "CC-KPI-M-07",
+     "group": "meter",
+     "standing": "Heatweb",
+     "title": "No low temperature difference at volume",
+     "monitoring": "CC1 · 30 min · heat meter kWh, m³; cooling meter kWh, m³",
+     "threshold": "heat: not (ΔT < 5 °C and > 150 L/day); cooling: not (ΔT < 2 °C and > 1,000 L/day)",
+     "calc": "ΔT = ΔE ÷ (1.163 · ΔV); L/day = 1000 · ΔV ÷ days",
+     "period": "Rolling 7 days; month"
+    },
+    {
+     "code": "CC-KPI-M-08",
+     "group": "meter",
+     "standing": "Heatweb",
+     "title": "No simultaneous heating and cooling",
+     "monitoring": "CC1 · 30 min · heat meter kWh; cooling meter kWh",
+     "threshold": "< 30% of active days",
+     "calc": "days with heat ΔE > 0.5 kWh and cooling ΔE > 0.5 kWh ÷ days with either",
+     "period": "Rolling 7 days; month"
+    },
+    {
+     "code": "CC-KPI-M-09",
+     "group": "meter",
+     "standing": "Heatweb",
+     "title": "Load follows demand (no flat load)",
+     "monitoring": "CC1 · 30 min · heat meter kWh",
+     "threshold": "CV ≥ 0.2",
+     "calc": "CV = σ ÷ μ of daily heat ΔE over ≥ 7 days, applied when μ > 2 kWh/day; below target = constant load: control fault",
+     "period": "Rolling 7 days; month"
+    },
+    {
+     "code": "CC-KPI-M-10",
+     "group": "meter",
+     "standing": "Heatweb · reported",
+     "title": "Consumption band (reported)",
+     "monitoring": "CC1 · 30 min · heat meter kWh, m³; cooling meter kWh, m³",
+     "threshold": "low: < 2 kWh/day and < 40 L/day; high: > max(15 kWh/day, 2 × site median)",
+     "calc": "daily ΔE and ΔV compared with the site's median dwelling",
+     "period": "Rolling 7 days; month"
+    },
+    {
+     "code": "CC-KPI-M-11",
+     "group": "meter",
+     "standing": "Heatweb · reported",
+     "title": "Cooling offset by heating (24 h overlap)",
+     "monitoring": "CC1 · 30 min · heat meter kWh; cooling meter kWh",
+     "threshold": "expected value (reported; site-wide figure on the combined element)",
+     "calc": "Σ_d min(ΔE_heat,d, ΔE_cool,d) ÷ Σ_d ΔE_cool,d over the period's days",
+     "period": "Rolling 7 days; month"
+    }
+   ]
+  }
+ ],
+ "groupLabels": {
+  "cooling": "Cooling forms",
+  "meter": "Meter health",
+  "health": "Hours below outage limits (alternative to 04/05)"
+ }
+}
