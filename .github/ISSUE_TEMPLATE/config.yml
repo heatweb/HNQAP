@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Questions and ideas
+    url: https://github.com/heatweb/HNQAP/discussions
+    about: Ask a question or float an idea before it becomes a proposal.
+  - name: How to take part
+    url: https://hnqap.org/collaborate/
+    about: What needs review, how decisions are made, and the route to a standard.

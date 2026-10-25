@@ -1,0 +1,44 @@
+name: KPI comment
+description: Comment on one KPI's threshold, calculation, monitoring points or period.
+title: "KPI: "
+labels: ["kpi"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you. Comments are public. Do not include client names, site names, addresses or meter serials.
+  - type: input
+    id: kpi
+    attributes:
+      label: KPI code
+      description: As printed in the reference, for example SS-KPI-07 or CC-KPI-C-06.
+      placeholder: SS-KPI-07
+    validations:
+      required: true
+  - type: dropdown
+    id: aspect
+    attributes:
+      label: What is the comment about?
+      multiple: true
+      options:
+        - Threshold
+        - Calculation
+        - Monitoring points or data frequency
+        - Period
+        - Standing (HNTAS / HNTAS-style / Heatweb / proposed)
+        - Wording
+        - Something else
+    validations:
+      required: true
+  - type: textarea
+    id: comment
+    attributes:
+      label: Comment
+      description: What should change, and why? Evidence from real networks carries the most weight.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed text or value
+      description: Optional. The threshold, formula or wording you would use instead.

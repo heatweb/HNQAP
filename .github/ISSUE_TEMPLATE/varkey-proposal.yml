@@ -1,0 +1,53 @@
+name: Varkey proposal
+description: Propose a new data point name (varkey) or vargroup for the vocabulary.
+title: "Varkey: "
+labels: ["vocabulary"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Search the [vocabulary](https://hnqap.org/vocabulary/) and the [monitoring points](https://hnqap.org/monitoring-points/) first: if a name with your meaning exists, use it in its units. A varkey has one type and one set of units everywhere.
+  - type: input
+    id: name
+    attributes:
+      label: Proposed name
+      description: camelCase, ASCII letters and digits.
+      placeholder: tReturnSecondary
+    validations:
+      required: true
+  - type: input
+    id: vargroup
+    attributes:
+      label: Vargroup
+      placeholder: sensor
+    validations:
+      required: true
+  - type: dropdown
+    id: type
+    attributes:
+      label: Type
+      options:
+        - number
+        - text
+        - passfail
+        - boolean
+        - date
+        - other
+    validations:
+      required: true
+  - type: input
+    id: units
+    attributes:
+      label: Units
+      placeholder: °C
+  - type: input
+    id: meaning
+    attributes:
+      label: Meaning, in one line
+    validations:
+      required: true
+  - type: input
+    id: aliases
+    attributes:
+      label: Existing spellings
+      description: Optional. Legacy or vendor names this would replace, to record as aliases.

@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: "If you use HNQAP, please cite the release you used."
+title: "HNQAP: Heat Network Quality Assurance Publications"
+abstract: >-
+  An open data standard for heat network monitoring: a six-level MQTT
+  address for every data point (HNQAP-MQTT), a vocabulary of point names
+  with fixed types and units, a table of monitoring points, and a reference
+  of heat network KPIs per element type with thresholds and calculations.
+type: dataset
+authors:
+  - name: "Heatweb Solutions Ltd"
+    website: "https://heatweb.co.uk"
+repository-code: "https://github.com/heatweb/HNQAP"
+url: "https://hnqap.org"
+license: Apache-2.0
+version: "1.1.0"
+date-released: "2026-10-25"
+keywords:
+  - heat networks
+  - district heating
+  - key performance indicators
+  - HNTAS
+  - MQTT
+  - building management systems
+  - data standard

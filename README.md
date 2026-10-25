@@ -1,7 +1,33 @@
-# HNQAP
-Heat Network Quality Assurance Publications
+# HNQAP — Heat Network Quality Assurance Publications
 
-This project contains documents, tools and data used in quality assurance procedures relating to heat networks and zero-carbon building services technologies.
+**Open standards for heat network quality assurance, developed in the open with the industry. Website: [hnqap.org](https://hnqap.org)**
+
+HNQAP is where the heat network industry agrees how monitoring data is named
+and how performance is measured, so that the same network gets the same
+answer whichever BMS, meter platform or analytics tool it runs on.
+
+| | | |
+|---|---|---|
+| **[HNQAP-MQTT v1](https://hnqap.org/protocol/)** | A six-level address for every data point: `schema/network/element/device/vargroup/varkey` | Draft for public comment |
+| **[KPI reference](https://hnqap.org/kpis/)** | Heat network KPIs in one table per element type, with monitoring points, thresholds and calculations ([JSON](kpis/kpi-reference.json), [PDF](kpis/heat-network-kpi-reference.pdf)) | Draft; proposed thresholds open for review |
+| **[Monitoring points](https://hnqap.org/monitoring-points/)** | Every assurance monitoring point with its address, units and frequency ([JSON](standard/monitoring-points.json)) | Draft |
+| **[Vocabulary](https://hnqap.org/vocabulary/)** | Registered point names, each with one type and one set of units ([JSON](standard/vocabulary.json)) | Live; proposals open |
+
+**Get started:** [hnqap.org/getting-started](https://hnqap.org/getting-started/) ·
+**Take part:** [hnqap.org/collaborate](https://hnqap.org/collaborate/) and
+[CONTRIBUTING.md](CONTRIBUTING.md) ·
+**For AI agents:** [llms.txt](https://hnqap.org/llms.txt)
+
+HNQAP is Apache-2.0 licensed and maintained by Heatweb Solutions Ltd with
+contributors from across the industry. It is independent of, and not
+endorsed by, the Heat Network Technical Assurance Scheme, whose documents
+remain the authority for the scheme. Cite it with [CITATION.cff](CITATION.cff).
+
+---
+
+## Earlier publications
+
+This project also contains documents, tools and data used in quality assurance procedures relating to heat networks and zero-carbon building services technologies.
 
 As well as guidance documents, the project provides JSON and SQL data that describe objects, fields and procedures. 
 
@@ -68,7 +94,3 @@ The quality of installations is maintained through the use of standard processes
 ### Operational KPIs
 
 ![image](https://github.com/heatweb/HNQAP/assets/7034068/70228675-7ffe-4fab-bc68-9c11c51434b5)
-
-## Data standard
-
-The [`standard/`](standard/) folder is the machine-readable data standard: the six-level MQTT address, every registered vargroup and varkey with its shape (`vocabulary.json`, with readable tables), proposed names, and the BMS connection guide. Third-party tools and code assistants should build against it.

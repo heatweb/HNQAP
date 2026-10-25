@@ -1,0 +1,13 @@
+{
+  "name": "hnqap-site",
+  "private": true,
+  "type": "module",
+  "description": "Builds hnqap.org from the repository's Markdown and JSON.",
+  "scripts": {
+    "build": "node build.mjs",
+    "serve": "node build.mjs && npx --yes http-server@14.1.1 ../_site -p 8099 -c-1"
+  },
+  "dependencies": {
+    "marked": "12.0.2"
+  }
+}

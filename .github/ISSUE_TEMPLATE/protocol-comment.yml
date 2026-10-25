@@ -1,0 +1,30 @@
+name: Protocol comment
+description: Comment on HNQAP-MQTT, the data standard, or the address of a monitoring point.
+title: "Protocol: "
+labels: ["protocol"]
+body:
+  - type: input
+    id: section
+    attributes:
+      label: Section or monitoring point
+      description: A protocol section (for example §2.2) or a point code (for example SS1).
+      placeholder: §5 Timestamps
+    validations:
+      required: true
+  - type: textarea
+    id: comment
+    attributes:
+      label: Comment
+      description: What is unclear, missing or wrong, and how it affects an implementation.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed text
+      description: Optional.
+  - type: input
+    id: implementation
+    attributes:
+      label: Your implementation
+      description: Optional. The kind of system you are connecting or building (BMS, gateway, meter platform, analytics tool).

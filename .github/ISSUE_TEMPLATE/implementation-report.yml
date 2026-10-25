@@ -1,0 +1,43 @@
+name: Implementation report
+description: Tell us how one or more KPIs behaved when you computed them on a real network.
+title: "Report: "
+labels: ["implementation report"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Implementation reports are the evidence that turns a proposal into a standard. Describe the network in general terms only: no site names, addresses, client names or meter serials.
+  - type: input
+    id: kpis
+    attributes:
+      label: KPI codes
+      placeholder: SS-KPI-07, SS-KPI-H-01
+    validations:
+      required: true
+  - type: textarea
+    id: network
+    attributes:
+      label: The network, in general terms
+      description: Type (district, communal, ambient loop), approximate size (dwellings, substations), age, heat sources, any cooling.
+      placeholder: Communal network, 6 blocks, ~400 dwellings, gas boilers with CHP, built 2012.
+    validations:
+      required: true
+  - type: textarea
+    id: data
+    attributes:
+      label: Data used
+      description: Period, monitoring points, data frequency, gaps, and the platform or tool that computed the KPI.
+    validations:
+      required: true
+  - type: textarea
+    id: results
+    attributes:
+      label: Results
+      description: The values you got, and pass or fail against the threshold.
+    validations:
+      required: true
+  - type: textarea
+    id: findings
+    attributes:
+      label: What surprised you, or what should change
+      description: Anything that suggests the threshold, calculation or monitoring points need revising.
