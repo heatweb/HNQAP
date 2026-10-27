@@ -6,7 +6,7 @@
  "legend": [
   [
    "Code",
-   "`<element>-KPI-<nn>`; a letter after the number is a variant (A reported form, B weather-compensated or per-source form). `-C-` marks the cooling form of a KPI; `-M-` a meter-health KPI; `-H-` a health KPI (hours below outage limits, offered as an alternative to the outage KPIs 04 and 05)."
+   "`<element>-KPI-<nn>`; a letter after the number is a variant (A reported form, B weather-compensated or per-source form). `-C-` marks the cooling form of a KPI; `-M-` a meter-health KPI; `-H-` a health KPI (hours below outage limits, offered as an alternative to the outage KPIs 04 and 05); `-A-` monitoring point coverage (the required points present, the companion to KPIs 01 and 02)."
   ],
   [
    "Standing",
@@ -30,7 +30,7 @@
   ]
  ],
  "notation": "tF, tR flow and return temperature (°C); q volumetric flow rate (m³/h); V volume register (m³); E energy register (kWh); ΔE, ΔV register increase over the period or day; 1.163 kWh/(m³·K) the volumetric heat capacity of water; Σ over the period; n readings. Volume weighting pairs readings in 5-minute buckets. Data at a higher frequency than the minimum is used at that frequency.",
- "rules": "Readings that fail the out-of-range bounds for their channel are excluded before any KPI is computed. A setpoint input follows the live setpoint stream where the controls publish one and falls back to the design value where they do not. Consumer Connection KPIs 01 to 03 are assessed across all consumer connections together, not dwelling by dwelling.",
+ "rules": "Readings that fail the out-of-range bounds for their channel are excluded before any KPI is computed. A setpoint input follows the live setpoint stream where the controls publish one and falls back to the design value where they do not. Consumer Connection KPIs 01 to 03 are assessed across all consumer connections together, not dwelling by dwelling. Completeness (KPI-02) counts readings per channel: a heat meter’s six channels (E, kW, q, tF, tR, V) are six data points, each expected at the point’s minimum frequency.",
  "departures": [
   {
    "topic": "Out-of-range bounds on cumulative registers (all KPI-03, and the exclusion rule)",
@@ -41,10 +41,27 @@
     "CD-KPI-03",
     "CC-KPI-03"
    ],
-   "published": "One range per quantity for every reading: energy 0–55,000 kWh, volume 0–10,000 m³ (the DESNZ data-pilot workbook thresholds).",
+   "published": "One range per quantity for every reading: energy 0–55,000 kWh, volume 0–10,000 m³ (the data-pilot workbook thresholds).",
    "here": "Register channels (E, V) take bounds set per network from the meters' register span; the published ranges stay the default and still apply to interval and rate channels.",
    "why": "A heat meter register several years old legitimately reads millions of kWh and hundreds of thousands of m³. Under the published ranges every reading of a healthy meter is out of range and the point fails KPI-03 on good data.",
    "ref": "https://github.com/heatweb/HNQAP/issues/4"
+  },
+  {
+   "topic": "KPI-01 ARMS connectivity and KPI-02 data completeness: which monitoring points",
+   "codes": [
+    "EC-KPI-01",
+    "EC-KPI-02",
+    "DD-KPI-01",
+    "DD-KPI-02",
+    "SS-KPI-01",
+    "SS-KPI-02",
+    "CD-KPI-01",
+    "CD-KPI-02"
+   ],
+   "published": "Read literally, every monitoring point the standard requires for the element, whether or not it is installed.",
+   "here": "The required points minus those declared not installed, with a reason (the network's Monitoring & Metering Strategy exclusions); a point merely not yet mapped still counts as missing. Missing points are assessed by the companion coverage KPI (-A-01, 100%).",
+   "why": "Under the literal reading a network missing one required point fails KPI-01 and KPI-02 every month, whatever its data, so neither can show an installed point going down — the only case the 99% and 95% thresholds make sense for.",
+   "ref": "https://github.com/heatweb/HNQAP/issues/5"
   },
   {
    "topic": "CC-KPI-08 volume-weighted average temperature difference",
@@ -70,6 +87,16 @@
      "monitoring": "all EC points",
      "threshold": "≥ 99%",
      "calc": "received intervals ÷ expected intervals across connected points",
+     "period": "Monthly"
+    },
+    {
+     "code": "EC-KPI-A-01",
+     "group": "coverage",
+     "standing": "Heatweb",
+     "title": "Energy Centre monitoring point coverage",
+     "monitoring": "all EC points",
+     "threshold": "100% of required monitoring points installed and mapped",
+     "calc": "required monitoring point instances installed and mapped ÷ required instances (the standard's set for the element). A point declared not installed counts as missing here, and leaves KPI-01 and KPI-02",
      "period": "Monthly"
     },
     {
@@ -309,6 +336,16 @@
      "period": "Monthly"
     },
     {
+     "code": "DD-KPI-A-01",
+     "group": "coverage",
+     "standing": "Heatweb",
+     "title": "District Distribution monitoring point coverage",
+     "monitoring": "all DD points",
+     "threshold": "100% of required monitoring points installed and mapped",
+     "calc": "required monitoring point instances installed and mapped ÷ required instances (the standard's set for the element). A point declared not installed counts as missing here, and leaves KPI-01 and KPI-02",
+     "period": "Monthly"
+    },
+    {
      "code": "DD-KPI-02",
      "group": "heat",
      "standing": "HNTAS · assessed",
@@ -422,6 +459,16 @@
      "monitoring": "all SS points",
      "threshold": "≥ 99%",
      "calc": "received intervals ÷ expected intervals across connected points",
+     "period": "Monthly"
+    },
+    {
+     "code": "SS-KPI-A-01",
+     "group": "coverage",
+     "standing": "Heatweb",
+     "title": "Substation monitoring point coverage",
+     "monitoring": "all SS points",
+     "threshold": "100% of required monitoring points installed and mapped",
+     "calc": "required monitoring point instances installed and mapped ÷ required instances (the standard's set for the element). A point declared not installed counts as missing here, and leaves KPI-01 and KPI-02",
      "period": "Monthly"
     },
     {
@@ -631,6 +678,16 @@
      "period": "Monthly"
     },
     {
+     "code": "CD-KPI-A-01",
+     "group": "coverage",
+     "standing": "Heatweb",
+     "title": "Communal Distribution monitoring point coverage",
+     "monitoring": "all CD points",
+     "threshold": "100% of required monitoring points installed and mapped",
+     "calc": "required monitoring point instances installed and mapped ÷ required instances (the standard's set for the element). A point declared not installed counts as missing here, and leaves KPI-01 and KPI-02",
+     "period": "Monthly"
+    },
+    {
      "code": "CD-KPI-02",
      "group": "heat",
      "standing": "HNTAS · assessed",
@@ -734,6 +791,16 @@
      "monitoring": "all CC points",
      "threshold": "≥ 90%",
      "calc": "received intervals ÷ expected intervals across ALL CC points combined",
+     "period": "Monthly"
+    },
+    {
+     "code": "CC-KPI-A-01",
+     "group": "coverage",
+     "standing": "Heatweb",
+     "title": "Consumer Connection monitoring point coverage",
+     "monitoring": "all CC points",
+     "threshold": "100% of required monitoring points installed and mapped",
+     "calc": "required monitoring point instances installed and mapped ÷ required instances (the standard's set for the element). A point declared not installed counts as missing here, and leaves KPI-01 and KPI-02",
      "period": "Monthly"
     },
     {
@@ -1012,6 +1079,7 @@
  "groupLabels": {
   "cooling": "Cooling forms",
   "meter": "Meter health",
-  "health": "Hours below outage limits (alternative to 04/05)"
+  "health": "Hours below outage limits (alternative to 04/05)",
+  "coverage": "Monitoring point coverage (companion to 01/02)"
  }
 }

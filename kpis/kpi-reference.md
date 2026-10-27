@@ -8,7 +8,7 @@ One table per element type, in network order from the energy centre to the dwell
 
 | Column | Meaning |
 |---|---|
-| Code | `<element>-KPI-<nn>`; a letter after the number is a variant (A reported form, B weather-compensated or per-source form). `-C-` marks the cooling form of a KPI; `-M-` a meter-health KPI; `-H-` a health KPI (hours below outage limits, offered as an alternative to the outage KPIs 04 and 05). |
+| Code | `<element>-KPI-<nn>`; a letter after the number is a variant (A reported form, B weather-compensated or per-source form). `-C-` marks the cooling form of a KPI; `-M-` a meter-health KPI; `-H-` a health KPI (hours below outage limits, offered as an alternative to the outage KPIs 04 and 05); `-A-` monitoring point coverage (the required points present, the companion to KPIs 01 and 02). |
 | Standing | **HNTAS**: in the HNTAS Milestone 4 specifications, assessed (pass/fail) or reported (expected value only). **HNTAS-style**: an HNTAS KPI's method applied where the scheme does not yet reach, such as cooling. **Heatweb**: a diagnostic KPI the platform runs that HNTAS does not define. **proposed**: defined here, not yet computed by the platform. |
 | Monitoring points | Point code, minimum data frequency, and the fields read. "x, else y" is a fallback chain: the first source with data at each reading is used. |
 | Threshold | Pass criterion for an assessed KPI; "expected value" for a reported one. "(proposed)" marks a value put forward for review. |
@@ -17,7 +17,7 @@ One table per element type, in network order from the energy centre to the dwell
 
 **Notation.** tF, tR flow and return temperature (°C); q volumetric flow rate (m³/h); V volume register (m³); E energy register (kWh); ΔE, ΔV register increase over the period or day; 1.163 kWh/(m³·K) the volumetric heat capacity of water; Σ over the period; n readings. Volume weighting pairs readings in 5-minute buckets. Data at a higher frequency than the minimum is used at that frequency.
 
-**Rules that apply to every KPI.** Readings that fail the out-of-range bounds for their channel are excluded before any KPI is computed. A setpoint input follows the live setpoint stream where the controls publish one and falls back to the design value where they do not. Consumer Connection KPIs 01 to 03 are assessed across all consumer connections together, not dwelling by dwelling.
+**Rules that apply to every KPI.** Readings that fail the out-of-range bounds for their channel are excluded before any KPI is computed. A setpoint input follows the live setpoint stream where the controls publish one and falls back to the design value where they do not. Consumer Connection KPIs 01 to 03 are assessed across all consumer connections together, not dwelling by dwelling. Completeness (KPI-02) counts readings per channel: a heat meter’s six channels (E, kW, q, tF, tR, V) are six data points, each expected at the point’s minimum frequency.
 
 ## Where this reference departs from the published methods
 
@@ -25,7 +25,8 @@ Each departure is deliberate and is argued in the linked issue; comments there a
 
 | Topic | Published method | This reference | Why | Issue |
 |---|---|---|---|---|
-| Out-of-range bounds on cumulative registers (all KPI-03, and the exclusion rule) | One range per quantity for every reading: energy 0–55,000 kWh, volume 0–10,000 m³ (the DESNZ data-pilot workbook thresholds). | Register channels (E, V) take bounds set per network from the meters' register span; the published ranges stay the default and still apply to interval and rate channels. | A heat meter register several years old legitimately reads millions of kWh and hundreds of thousands of m³. Under the published ranges every reading of a healthy meter is out of range and the point fails KPI-03 on good data. | [#4](https://github.com/heatweb/HNQAP/issues/4) |
+| Out-of-range bounds on cumulative registers (all KPI-03, and the exclusion rule) | One range per quantity for every reading: energy 0–55,000 kWh, volume 0–10,000 m³ (the data-pilot workbook thresholds). | Register channels (E, V) take bounds set per network from the meters' register span; the published ranges stay the default and still apply to interval and rate channels. | A heat meter register several years old legitimately reads millions of kWh and hundreds of thousands of m³. Under the published ranges every reading of a healthy meter is out of range and the point fails KPI-03 on good data. | [#4](https://github.com/heatweb/HNQAP/issues/4) |
+| KPI-01 ARMS connectivity and KPI-02 data completeness: which monitoring points | Read literally, every monitoring point the standard requires for the element, whether or not it is installed. | The required points minus those declared not installed, with a reason (the network's Monitoring & Metering Strategy exclusions); a point merely not yet mapped still counts as missing. Missing points are assessed by the companion coverage KPI (-A-01, 100%). | Under the literal reading a network missing one required point fails KPI-01 and KPI-02 every month, whatever its data, so neither can show an installed point going down — the only case the 99% and 95% thresholds make sense for. | [#5](https://github.com/heatweb/HNQAP/issues/5) |
 | CC-KPI-08 volume-weighted average temperature difference | Estimated from the volume-weighted average flow and return temperatures. | ΔE ÷ (1.163 · ΔV): the energy and volume register increase over the period. | Two readings suffice, so the KPI is resilient to reading frequency and missing data, and applies to low-frequency systems and monthly meter summaries; studies support its accuracy. | [#3](https://github.com/heatweb/HNQAP/issues/3) |
 
 ## Energy Centre (EC)
@@ -33,6 +34,9 @@ Each departure is deliberate and is argued in the linked issue; comments there a
 | Code | Standing | KPI | Monitoring points | Threshold | Calculation | Period |
 |---|---|---|---|---|---|---|
 | EC‑KPI‑01 | HNTAS · assessed | Energy Centre ARMS connectivity | all EC points | ≥ 99% | received intervals ÷ expected intervals across connected points | Monthly |
+| **Monitoring point coverage (companion to 01/02)** | | | | | | |
+| EC‑KPI‑A‑01 | Heatweb | Energy Centre monitoring point coverage | all EC points | 100% of required monitoring points installed and mapped | required monitoring point instances installed and mapped ÷ required instances (the standard's set for the element). A point declared not installed counts as missing here, and leaves KPI-01 and KPI-02 | Monthly |
+| **heat** | | | | | | |
 | EC‑KPI‑02 | HNTAS · assessed | Energy Centre monitoring point data completeness | all EC points | ≥ 95% | valid readings ÷ expected readings | Monthly |
 | EC‑KPI‑03 | HNTAS · assessed | Energy Centre monitoring points operational | all EC points | 100% of ARMS-connected points | points with no error/negative/out-of-range values ÷ total points | Monthly |
 | EC‑KPI‑04 | HNTAS · assessed | Energy Centre unplanned interruptions | EC · tF (sensor, else heat meter); sensor dP | ≤ 3 a year | count of >12h periods below min flow temp OR min dP without 48h notice. Uses design/minFlowTemp design/minDPIndex | Previous 12 months |
@@ -63,6 +67,9 @@ Each departure is deliberate and is argued in the linked issue; comments there a
 | Code | Standing | KPI | Monitoring points | Threshold | Calculation | Period |
 |---|---|---|---|---|---|---|
 | DD‑KPI‑01 | HNTAS · assessed | District Distribution ARMS connectivity | all DD points | ≥ 99% | received intervals ÷ expected intervals across connected points | Monthly |
+| **Monitoring point coverage (companion to 01/02)** | | | | | | |
+| DD‑KPI‑A‑01 | Heatweb | District Distribution monitoring point coverage | all DD points | 100% of required monitoring points installed and mapped | required monitoring point instances installed and mapped ÷ required instances (the standard's set for the element). A point declared not installed counts as missing here, and leaves KPI-01 and KPI-02 | Monthly |
+| **heat** | | | | | | |
 | DD‑KPI‑02 | HNTAS · assessed | District Distribution monitoring point data completeness | all DD points | ≥ 95% | valid readings ÷ expected readings | Monthly |
 | DD‑KPI‑03 | HNTAS · assessed | District Distribution monitoring points operational | all DD points | 100% of ARMS-connected points | points with no error/negative/out-of-range values ÷ total points | Monthly |
 | DD‑KPI‑04 | HNTAS · assessed | District Distribution unplanned interruptions | DD1 · 30 min · tF (sensor, else heat meter); DD · sensor dP | ≤ 3 a year | count of >12h periods below min flow temp OR min dP without 48h notice. Uses design/minFlowTemp design/minDPIndex | Previous 12 months |
@@ -80,6 +87,9 @@ Each departure is deliberate and is argued in the linked issue; comments there a
 | Code | Standing | KPI | Monitoring points | Threshold | Calculation | Period |
 |---|---|---|---|---|---|---|
 | SS‑KPI‑01 | HNTAS · assessed | Substation ARMS connectivity | all SS points | ≥ 99% | received intervals ÷ expected intervals across connected points | Monthly |
+| **Monitoring point coverage (companion to 01/02)** | | | | | | |
+| SS‑KPI‑A‑01 | Heatweb | Substation monitoring point coverage | all SS points | 100% of required monitoring points installed and mapped | required monitoring point instances installed and mapped ÷ required instances (the standard's set for the element). A point declared not installed counts as missing here, and leaves KPI-01 and KPI-02 | Monthly |
+| **heat** | | | | | | |
 | SS‑KPI‑02 | HNTAS · assessed | Substation monitoring point data completeness | all SS points | ≥ 95% | valid readings ÷ expected readings | Monthly |
 | SS‑KPI‑03 | HNTAS · assessed | Substation monitoring points operational | all SS points | 100% of ARMS-connected points | points with no error/negative/out-of-range values ÷ total points | Monthly |
 | SS‑KPI‑04 | HNTAS · assessed | Substation unplanned interruptions | SS1 · 5 min · tF (sensor, else heat meter); SS · sensor dP | ≤ 3 a year | count of >12h periods below min flow temp OR min dP without 48h notice. Uses design/minFlowTempOff design/minDPIndex | Previous 12 months |
@@ -106,6 +116,9 @@ Each departure is deliberate and is argued in the linked issue; comments there a
 | Code | Standing | KPI | Monitoring points | Threshold | Calculation | Period |
 |---|---|---|---|---|---|---|
 | CD‑KPI‑01 | HNTAS · assessed | Communal Distribution ARMS connectivity | all CD points | ≥ 99% | received intervals ÷ expected intervals across connected points | Monthly |
+| **Monitoring point coverage (companion to 01/02)** | | | | | | |
+| CD‑KPI‑A‑01 | Heatweb | Communal Distribution monitoring point coverage | all CD points | 100% of required monitoring points installed and mapped | required monitoring point instances installed and mapped ÷ required instances (the standard's set for the element). A point declared not installed counts as missing here, and leaves KPI-01 and KPI-02 | Monthly |
+| **heat** | | | | | | |
 | CD‑KPI‑02 | HNTAS · assessed | Communal Distribution monitoring point data completeness | all CD points | ≥ 95% | valid readings ÷ expected readings | Monthly |
 | CD‑KPI‑03 | HNTAS · assessed | Communal Distribution monitoring points operational | all CD points | 100% of ARMS-connected points | points with no error/negative/out-of-range values ÷ total points | Monthly |
 | CD‑KPI‑04 | HNTAS · assessed | Communal Distribution unplanned interruptions | CD1 · 30 min · tF (sensor, else heat meter); CD · sensor dP | ≤ 3 a year | count of >12h periods below min flow temp OR min dP without 48h notice. Uses design/minDPIndex | Previous 12 months |
@@ -122,6 +135,9 @@ Each departure is deliberate and is argued in the linked issue; comments there a
 | Code | Standing | KPI | Monitoring points | Threshold | Calculation | Period |
 |---|---|---|---|---|---|---|
 | CC‑KPI‑01 | HNTAS · assessed | Consumer Connection ARMS connectivity (aggregated) | all CC points | ≥ 90% | received intervals ÷ expected intervals across ALL CC points combined | Monthly |
+| **Monitoring point coverage (companion to 01/02)** | | | | | | |
+| CC‑KPI‑A‑01 | Heatweb | Consumer Connection monitoring point coverage | all CC points | 100% of required monitoring points installed and mapped | required monitoring point instances installed and mapped ÷ required instances (the standard's set for the element). A point declared not installed counts as missing here, and leaves KPI-01 and KPI-02 | Monthly |
+| **heat** | | | | | | |
 | CC‑KPI‑02 | HNTAS · assessed | Consumer Connection data completeness (aggregated) | all CC points | ≥ 85% | valid readings ÷ expected readings across all CCs | Monthly |
 | CC‑KPI‑03 | HNTAS · assessed | Consumer Connection monitoring points operational (aggregated) | all CC points | = 100% | points with no error/negative/out-of-range values ÷ total points (two-stage; ALL heat-meter channels tF tR m³ q kW kWh) | Monthly |
 | CC‑KPI‑04 | HNTAS · assessed | Consumer Connection unplanned interruptions | CC1 · 30 min · tF (heat meter, else sensor) | ≤ 3 a year | count of unplanned interruptions (≥ 12 h below minimum flow temp) | Previous 12 months |

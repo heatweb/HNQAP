@@ -16,6 +16,13 @@ to the issue where they were discussed.
     healthy long-lived meters (#4).
   - CC-KPI-08 VWATD from the energy and volume register increase, not
     estimated from the volume-weighted temperatures (#3).
+  - KPI-01 and KPI-02 over the points a network has: required points
+    minus those declared not installed, with a reason (#5).
+- **Monitoring point coverage** (`-A-01` on every element type): the
+  required points installed and mapped, target 100%, the companion to
+  KPI-01 and KPI-02 (#5).
+- KPI-02 completeness counts readings per channel (a heat meter is six
+  data points), stated in the rules that apply to every KPI.
 
 ## 1.1.0 — 2026-10-25
 
