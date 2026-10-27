@@ -64,6 +64,37 @@
    "ref": "https://github.com/heatweb/HNQAP/issues/5"
   },
   {
+   "topic": "Temperature KPIs: the heat meter, and a BMS sensor only as a flagged fallback",
+   "codes": [
+    "EC-KPI-04",
+    "EC-KPI-06",
+    "EC-KPI-07",
+    "EC-KPI-08",
+    "EC-KPI-09A",
+    "EC-KPI-10A",
+    "EC-KPI-11",
+    "DD-KPI-04",
+    "DD-KPI-07",
+    "DD-KPI-08",
+    "DD-KPI-09",
+    "SS-KPI-04",
+    "SS-KPI-06",
+    "SS-KPI-07",
+    "SS-KPI-08",
+    "SS-KPI-09A",
+    "SS-KPI-10A",
+    "SS-KPI-11",
+    "SS-KPI-12",
+    "CD-KPI-04",
+    "CD-KPI-07",
+    "CD-KPI-08"
+   ],
+   "published": "The heat meter's flow and return temperatures; the place of a BMS temperature sensor is not settled.",
+   "here": "The heat meter whenever it has data. A BMS sensor is used only as a declared fallback, when the meter channel has no readings or the meter is declared not installed, and every KPI computed from it is flagged \"via fallback\".",
+   "why": "A heat meter is MID-approved and calibrated; a BMS sensor is not, and an automatic switch would be hard to police. Refusing the sensor outright would leave a network without its meter blind; the flag keeps the operational KPIs working while showing the value is not on the standard basis.",
+   "ref": "https://github.com/heatweb/HNQAP/issues/6"
+  },
+  {
    "topic": "CC-KPI-08 volume-weighted average temperature difference",
    "codes": [
     "CC-KPI-08"
@@ -124,7 +155,7 @@
      "group": "heat",
      "standing": "HNTAS · assessed",
      "title": "Energy Centre unplanned interruptions",
-     "monitoring": "EC · tF (sensor, else heat meter); sensor dP",
+     "monitoring": "EC · tF (heat meter, else sensor); sensor dP",
      "threshold": "≤ 3 a year",
      "calc": "count of >12h periods below min flow temp OR min dP without 48h notice. Uses design/minFlowTemp design/minDPIndex",
      "period": "Previous 12 months"
@@ -134,7 +165,7 @@
      "group": "heat",
      "standing": "HNTAS · assessed",
      "title": "Energy Centre planned interruptions",
-     "monitoring": "EC · tF (sensor, else heat meter); sensor dP",
+     "monitoring": "EC · tF (heat meter, else sensor); sensor dP",
      "threshold": "≤ 1 a year",
      "calc": "count of noticed (≥48h) interruptions. Uses design/minFlowTemp design/minDPIndex",
      "period": "Previous 12 months"
@@ -144,7 +175,7 @@
      "group": "heat",
      "standing": "HNTAS · reported",
      "title": "Energy Centre average flow temperature",
-     "monitoring": "EC · tF (sensor, else heat meter)",
+     "monitoring": "EC · tF (heat meter, else sensor)",
      "threshold": "[expected average flow temperature]",
      "calc": "time-weighted mean of flow temperature. Uses design/tF",
      "period": "Monthly"
@@ -154,7 +185,7 @@
      "group": "heat",
      "standing": "HNTAS · reported",
      "title": "Energy Centre average return temperature",
-     "monitoring": "EC · tR (sensor, else heat meter)",
+     "monitoring": "EC · tR (heat meter, else sensor)",
      "threshold": "[expected average return temperature]",
      "calc": "time-weighted mean of return temperature",
      "period": "Monthly"
@@ -164,7 +195,7 @@
      "group": "heat",
      "standing": "HNTAS · assessed",
      "title": "EC flow temperature variance from set point",
-     "monitoring": "EC · tF (sensor, else heat meter), tF (setpoint, else design)",
+     "monitoring": "EC · tF (heat meter, else sensor), tF (setpoint, else design)",
      "threshold": "0 ± 2 °C",
      "calc": "mean |tF - setpoint|",
      "period": "Monthly"
@@ -194,7 +225,7 @@
      "group": "heat",
      "standing": "HNTAS · assessed",
      "title": "EC flow temperature stability",
-     "monitoring": "EC · tF (sensor, else heat meter), tF (setpoint, else design)",
+     "monitoring": "EC · tF (heat meter, else sensor), tF (setpoint, else design)",
      "threshold": "≥ 95% within thresholds",
      "calc": "1 - (time above upper + below lower) ÷ total",
      "period": "Monthly"
@@ -204,7 +235,7 @@
      "group": "heat",
      "standing": "HNTAS · assessed",
      "title": "EC flow temperature stability (weather-compensated)",
-     "monitoring": "EC · tF (sensor, else heat meter), tF (setpoint, else design)",
+     "monitoring": "EC · tF (heat meter, else sensor), tF (setpoint, else design)",
      "threshold": "≥ 95%",
      "calc": "as 10A against compensated setpoint",
      "period": "Monthly"
@@ -214,7 +245,7 @@
      "group": "heat",
      "standing": "HNTAS · assessed",
      "title": "EC flow temperature uptime",
-     "monitoring": "EC · tF (sensor, else heat meter)",
+     "monitoring": "EC · tF (heat meter, else sensor)",
      "threshold": "≥ 98% above minimum flow temp (99.5% at M4)",
      "calc": "time above minimum ÷ total time. Uses design/minFlowTemp",
      "period": "Monthly"
@@ -294,7 +325,7 @@
      "group": "health",
      "standing": "Heatweb",
      "title": "Energy Centre hours below outage limits",
-     "monitoring": "EC · tF (sensor, else heat meter); sensor dpIndex",
+     "monitoring": "EC · tF (heat meter, else sensor); sensor dpIndex",
      "threshold": "< 60 h a year, judged on the month pro rata (≈ 4.9 h in 30 days); shorter windows report hours used",
      "calc": "Σ_i min(t_{i+1} − t_i, 1 h) over readings with tF < tF_min or dP < dP_min; tF and dP spans unioned. Offered as an alternative to KPI-04/05. Uses design/minFlowTemp design/minDPIndex",
      "period": "Monthly (pro rata)"
@@ -370,7 +401,7 @@
      "group": "heat",
      "standing": "HNTAS · assessed",
      "title": "District Distribution unplanned interruptions",
-     "monitoring": "DD1 · 30 min · tF (sensor, else heat meter); DD · sensor dP",
+     "monitoring": "DD1 · 30 min · tF (heat meter, else sensor); DD · sensor dP",
      "threshold": "≤ 3 a year",
      "calc": "count of >12h periods below min flow temp OR min dP without 48h notice. Uses design/minFlowTemp design/minDPIndex",
      "period": "Previous 12 months"
@@ -380,7 +411,7 @@
      "group": "heat",
      "standing": "HNTAS · assessed",
      "title": "District Distribution planned interruptions",
-     "monitoring": "DD1 · 30 min · tF (sensor, else heat meter); DD · sensor dP",
+     "monitoring": "DD1 · 30 min · tF (heat meter, else sensor); DD · sensor dP",
      "threshold": "≤ 1 a year",
      "calc": "count of noticed (≥48h) interruptions. Uses design/minFlowTemp design/minDPIndex",
      "period": "Previous 12 months"
@@ -400,7 +431,7 @@
      "group": "heat",
      "standing": "HNTAS · reported",
      "title": "DD average flow temperature",
-     "monitoring": "DD1 · 30 min · tF (sensor, else heat meter)",
+     "monitoring": "DD1 · 30 min · tF (heat meter, else sensor)",
      "threshold": "[expected]",
      "calc": "time-weighted mean. Uses design/tF",
      "period": "Monthly"
@@ -410,7 +441,7 @@
      "group": "heat",
      "standing": "HNTAS · reported",
      "title": "DD average return temperature",
-     "monitoring": "DD1 · 30 min · tR (sensor, else heat meter)",
+     "monitoring": "DD1 · 30 min · tR (heat meter, else sensor)",
      "threshold": "[expected]",
      "calc": "time-weighted mean. Uses design/tR",
      "period": "Monthly"
@@ -420,7 +451,7 @@
      "group": "heat",
      "standing": "HNTAS · assessed",
      "title": "DD flow temperature uptime",
-     "monitoring": "DD1 · 30 min · tF (sensor, else heat meter)",
+     "monitoring": "DD1 · 30 min · tF (heat meter, else sensor)",
      "threshold": "≥ 98% (99.5% at M4)",
      "calc": "time above minimum/total. Uses design/minFlowTemp",
      "period": "Monthly"
@@ -440,7 +471,7 @@
      "group": "health",
      "standing": "Heatweb",
      "title": "District Distribution hours below outage limits",
-     "monitoring": "DD1 · 30 min · tF (sensor, else heat meter); DD3 · 5 min · sensor dpIndex",
+     "monitoring": "DD1 · 30 min · tF (heat meter, else sensor); DD3 · 5 min · sensor dpIndex",
      "threshold": "< 60 h a year, judged on the month pro rata (≈ 4.9 h in 30 days); shorter windows report hours used",
      "calc": "Σ_i min(t_{i+1} − t_i, 1 h) over readings with tF < tF_min or dP < dP_min; tF and dP spans unioned. Offered as an alternative to KPI-04/05. Uses design/minFlowTemp design/minDPIndex",
      "period": "Monthly (pro rata)"
@@ -496,7 +527,7 @@
      "group": "heat",
      "standing": "HNTAS · assessed",
      "title": "Substation unplanned interruptions",
-     "monitoring": "SS1 · 5 min · tF (sensor, else heat meter); SS · sensor dP",
+     "monitoring": "SS1 · 5 min · tF (heat meter, else sensor); SS · sensor dP",
      "threshold": "≤ 3 a year",
      "calc": "count of >12h periods below min flow temp OR min dP without 48h notice. Uses design/minFlowTempOff design/minDPIndex",
      "period": "Previous 12 months"
@@ -506,7 +537,7 @@
      "group": "heat",
      "standing": "HNTAS · assessed",
      "title": "Substation planned interruptions",
-     "monitoring": "SS1 · 5 min · tF (sensor, else heat meter); SS · sensor dP",
+     "monitoring": "SS1 · 5 min · tF (heat meter, else sensor); SS · sensor dP",
      "threshold": "≤ 1 a year",
      "calc": "count of noticed (≥48h) interruptions. Uses design/minFlowTempOff design/minDPIndex",
      "period": "Previous 12 months"
@@ -516,7 +547,7 @@
      "group": "heat",
      "standing": "HNTAS · reported",
      "title": "Substation average flow temperature",
-     "monitoring": "SS1 · 5 min · tF (sensor, else heat meter)",
+     "monitoring": "SS1 · 5 min · tF (heat meter, else sensor)",
      "threshold": "[expected average flow temperature]",
      "calc": "time-weighted mean. Uses design/tFOff",
      "period": "Monthly"
@@ -526,7 +557,7 @@
      "group": "heat",
      "standing": "HNTAS · reported",
      "title": "Substation average return temperature",
-     "monitoring": "SS1 · 5 min · tR (sensor, else heat meter)",
+     "monitoring": "SS1 · 5 min · tR (heat meter, else sensor)",
      "threshold": "[expected average return temperature]",
      "calc": "time-weighted mean",
      "period": "Monthly"
@@ -536,7 +567,7 @@
      "group": "heat",
      "standing": "HNTAS · assessed",
      "title": "SS flow temperature variance from set point",
-     "monitoring": "SS1 · 5 min · tF (sensor, else heat meter); SS · tF (setpoint, else design)",
+     "monitoring": "SS1 · 5 min · tF (heat meter, else sensor); SS · tF (setpoint, else design)",
      "threshold": "0 ± 2 °C",
      "calc": "mean |tF - setpoint|",
      "period": "Monthly"
@@ -566,7 +597,7 @@
      "group": "heat",
      "standing": "HNTAS · assessed",
      "title": "SS flow temperature stability",
-     "monitoring": "SS1 · 5 min · tF (sensor, else heat meter); SS · tF (setpoint, else design)",
+     "monitoring": "SS1 · 5 min · tF (heat meter, else sensor); SS · tF (setpoint, else design)",
      "threshold": "≥ 95% within thresholds",
      "calc": "1-(out-of-band time/total)",
      "period": "Monthly"
@@ -576,7 +607,7 @@
      "group": "heat",
      "standing": "HNTAS · assessed",
      "title": "SS flow temperature stability (weather-comp)",
-     "monitoring": "SS1 · 5 min · tF (sensor, else heat meter); SS · tF (setpoint, else design)",
+     "monitoring": "SS1 · 5 min · tF (heat meter, else sensor); SS · tF (setpoint, else design)",
      "threshold": "≥ 95%",
      "calc": "as 10A",
      "period": "Monthly"
@@ -586,7 +617,7 @@
      "group": "heat",
      "standing": "HNTAS · assessed",
      "title": "SS flow temperature uptime",
-     "monitoring": "SS1 · 5 min · tF (sensor, else heat meter)",
+     "monitoring": "SS1 · 5 min · tF (heat meter, else sensor)",
      "threshold": "≥ 98% (99.5% at M4)",
      "calc": "time above minimum/total. Uses design/minFlowTempOff",
      "period": "Monthly"
@@ -656,7 +687,7 @@
      "group": "health",
      "standing": "Heatweb",
      "title": "Substation hours below outage limits",
-     "monitoring": "SS2 · 5 min · tFOff (sensor, else heat meter); SS5 · 5 min · sensor dpIndex",
+     "monitoring": "SS2 · 5 min · tFOff (heat meter, else sensor); SS5 · 5 min · sensor dpIndex",
      "threshold": "< 60 h a year, judged on the month pro rata (≈ 4.9 h in 30 days); shorter windows report hours used",
      "calc": "Σ_i min(t_{i+1} − t_i, 1 h) over readings with tF < tF_min or dP < dP_min; tF and dP spans unioned. Offered as an alternative to KPI-04/05. Uses design/minFlowTempOff design/minDPIndex",
      "period": "Monthly (pro rata)"
@@ -712,7 +743,7 @@
      "group": "heat",
      "standing": "HNTAS · assessed",
      "title": "Communal Distribution unplanned interruptions",
-     "monitoring": "CD1 · 30 min · tF (sensor, else heat meter); CD · sensor dP",
+     "monitoring": "CD1 · 30 min · tF (heat meter, else sensor); CD · sensor dP",
      "threshold": "≤ 3 a year",
      "calc": "count of >12h periods below min flow temp OR min dP without 48h notice. Uses design/minDPIndex",
      "period": "Previous 12 months"
@@ -722,7 +753,7 @@
      "group": "heat",
      "standing": "HNTAS · assessed",
      "title": "Communal Distribution planned interruptions",
-     "monitoring": "CD1 · 30 min · tF (sensor, else heat meter); CD · sensor dP",
+     "monitoring": "CD1 · 30 min · tF (heat meter, else sensor); CD · sensor dP",
      "threshold": "≤ 1 a year",
      "calc": "count of noticed (≥48h) interruptions. Uses design/minDPIndex",
      "period": "Previous 12 months"
@@ -742,7 +773,7 @@
      "group": "heat",
      "standing": "HNTAS · reported",
      "title": "CD average flow temperature",
-     "monitoring": "CD1 · 30 min · tF (sensor, else heat meter)",
+     "monitoring": "CD1 · 30 min · tF (heat meter, else sensor)",
      "threshold": "[expected]",
      "calc": "time-weighted mean. Uses design/tF",
      "period": "Monthly"
@@ -752,7 +783,7 @@
      "group": "heat",
      "standing": "HNTAS · reported",
      "title": "CD average return temperature",
-     "monitoring": "CD1 · 30 min · tR (sensor, else heat meter)",
+     "monitoring": "CD1 · 30 min · tR (heat meter, else sensor)",
      "threshold": "[expected]",
      "calc": "time-weighted mean. Uses design/tR",
      "period": "Monthly"
@@ -772,7 +803,7 @@
      "group": "health",
      "standing": "Heatweb",
      "title": "Communal Distribution hours below outage limits",
-     "monitoring": "CD1 · 30 min · tF (sensor, else heat meter); CD3 · 5 min · sensor dpIndex",
+     "monitoring": "CD1 · 30 min · tF (heat meter, else sensor); CD3 · 5 min · sensor dpIndex",
      "threshold": "< 60 h a year, judged on the month pro rata (≈ 4.9 h in 30 days); shorter windows report hours used",
      "calc": "Σ_i min(t_{i+1} − t_i, 1 h) over readings with tF < tF_min or dP < dP_min; tF and dP spans unioned. Offered as an alternative to KPI-04/05. Uses design/minFlowTemp design/minDPIndex",
      "period": "Monthly (pro rata)"

@@ -23,6 +23,9 @@ to the issue where they were discussed.
   KPI-01 and KPI-02 (#5).
 - KPI-02 completeness counts readings per channel (a heat meter is six
   data points), stated in the rules that apply to every KPI.
+- **Temperature KPIs: the heat meter first, a BMS sensor only as a
+  flagged fallback** (#6). The catalogue writes these inputs meter-first
+  (`hmeter/tF||sensor/tF`); earlier versions listed the sensor first.
 
 ## 1.1.0 — 2026-10-25
 
