@@ -1,6 +1,6 @@
 # Heat Network KPI Reference
 
-*Generated 2026-10-25. Generated from the platform's KPI registry. A working basis for a proposed British Standard on heat network key performance indicators.*
+*Generated 2026-10-27. Generated from the platform's KPI registry. A working basis for a proposed British Standard on heat network key performance indicators.*
 
 ## How to read the tables
 
@@ -18,6 +18,15 @@ One table per element type, in network order from the energy centre to the dwell
 **Notation.** tF, tR flow and return temperature (°C); q volumetric flow rate (m³/h); V volume register (m³); E energy register (kWh); ΔE, ΔV register increase over the period or day; 1.163 kWh/(m³·K) the volumetric heat capacity of water; Σ over the period; n readings. Volume weighting pairs readings in 5-minute buckets. Data at a higher frequency than the minimum is used at that frequency.
 
 **Rules that apply to every KPI.** Readings that fail the out-of-range bounds for their channel are excluded before any KPI is computed. A setpoint input follows the live setpoint stream where the controls publish one and falls back to the design value where they do not. Consumer Connection KPIs 01 to 03 are assessed across all consumer connections together, not dwelling by dwelling.
+
+## Where this reference departs from the published methods
+
+Each departure is deliberate and is argued in the linked issue; comments there are welcome.
+
+| Topic | Published method | This reference | Why | Issue |
+|---|---|---|---|---|
+| Out-of-range bounds on cumulative registers (all KPI-03, and the exclusion rule) | One range per quantity for every reading: energy 0–55,000 kWh, volume 0–10,000 m³ (the DESNZ data-pilot workbook thresholds). | Register channels (E, V) take bounds set per network from the meters' register span; the published ranges stay the default and still apply to interval and rate channels. | A heat meter register several years old legitimately reads millions of kWh and hundreds of thousands of m³. Under the published ranges every reading of a healthy meter is out of range and the point fails KPI-03 on good data. | [#4](https://github.com/heatweb/HNQAP/issues/4) |
+| CC-KPI-08 volume-weighted average temperature difference | Estimated from the volume-weighted average flow and return temperatures. | ΔE ÷ (1.163 · ΔV): the energy and volume register increase over the period. | Two readings suffice, so the KPI is resilient to reading frequency and missing data, and applies to low-frequency systems and monthly meter summaries; studies support its accuracy. | [#3](https://github.com/heatweb/HNQAP/issues/3) |
 
 ## Energy Centre (EC)
 

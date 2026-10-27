@@ -229,6 +229,9 @@ for (const el of kpi.elements) {
       `| Period | ${r.period} |`,
       '',
       r.group && kpi.groupLabels[r.group] ? `Part of the **${kpi.groupLabels[r.group]}** family.\n` : '',
+      ...(kpi.departures ?? [])
+        .filter((d) => (d.codes ?? []).includes(code))
+        .map((d) => `> **Departs from the published method: ${d.topic}.** Published: ${d.published} This reference: ${d.here} Why: ${d.why} [Discussed in #${d.ref.split('/').pop()}](${d.ref}); see [all departures](/kpis/#where-this-reference-departs-from-the-published-methods).\n`),
       `## Discuss this KPI`,
       '',
       `Is the threshold right? Does the calculation match what you compute on your networks? [Comment on ${code}](${issue}), or report how it behaves on your data. Comments are public and are read before every revision.`,
